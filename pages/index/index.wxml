@@ -1,0 +1,26 @@
+<view class="page">
+  <view class="hero">
+    <view class="badge">演示练习</view>
+    <view class="emblem">医</view>
+    <view class="title">国家医学考试系统</view>
+    <view class="sub">口腔 / 医学学员机考练手（非官方）</view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">考试流程（对齐机考体验）</view>
+    <view class="step"><text class="n">1</text>登录：准考证号 + 证件号</view>
+    <view class="step"><text class="n">2</text>答题：计时、标疑、题号跳转</view>
+    <view class="step"><text class="n">3</text>分段：进入下一段后本段锁定</view>
+    <view class="step"><text class="n">4</text>交卷确认（提示未答题）</view>
+    <view class="step"><text class="n">5</text>成绩页：分数 / 正确率 / 用时</view>
+  </view>
+
+  <view class="card notice">
+    <view class="card-title">重要说明</view>
+    <view class="p">本小程序为学员练习演示，<text class="em">不是</text>国家医学考试中心官方产品，题目均为本地假数据，不接后端、云开发或真实鉴权。</view>
+    <view class="p">默认体验时长 30 分钟，演示版可随时交卷；倒计时结束将自动交卷。</view>
+  </view>
+
+  <button class="cta" bindtap="goLogin">进入考场登录</button>
+  <view class="foot">本地演示 · touristappid</view>
+</view>

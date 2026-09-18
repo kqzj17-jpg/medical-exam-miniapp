@@ -1,0 +1,17 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/login/login",
+    "pages/exam/exam",
+    "pages/result/result"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#0B3A6E",
+    "navigationBarTitleText": "国家医学考试系统",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#EEF3F8",
+    "backgroundTextStyle": "light"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

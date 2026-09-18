@@ -1,0 +1,43 @@
+page {
+  --navy: #0b3a6e;
+  --navy-2: #124e8c;
+  --teal: #0e7c7b;
+  --teal-2: #1a9a8f;
+  --bg: #eef3f8;
+  --card: #ffffff;
+  --text: #1c2430;
+  --muted: #6b7788;
+  --line: #d7e0ea;
+  --danger: #d64545;
+  --flag: #e6b800;
+  --answered: #8b95a3;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 28rpx;
+  line-height: 1.55;
+  box-sizing: border-box;
+}
+
+view,
+text,
+button,
+input,
+scroll-view {
+  box-sizing: border-box;
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  background: none;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+button::after {
+  border: none;
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}

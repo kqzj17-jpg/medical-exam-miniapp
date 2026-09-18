@@ -1,0 +1,41 @@
+<view class="page">
+  <view class="panel">
+    <view class="head">
+      <view class="kicker">National Medical Examination · Demo</view>
+      <view class="h1">国家医学考试系统</view>
+      <view class="h2">考生登录</view>
+    </view>
+
+    <view class="field">
+      <view class="label">准考证号</view>
+      <input
+        class="input"
+        maxlength="20"
+        placeholder="请输入准考证号"
+        value="{{ticketNo}}"
+        bindinput="onTicket"
+      />
+    </view>
+    <view class="field">
+      <view class="label">证件号</view>
+      <input
+        class="input"
+        maxlength="18"
+        placeholder="请输入证件号"
+        value="{{idNo}}"
+        bindinput="onId"
+      />
+    </view>
+
+    <view class="hint">演示模式不校验真实考籍，输入后即可进入。也可一键填入示例账号。</view>
+
+    <button class="btn primary" bindtap="onLogin">登录进入考场</button>
+    <button class="btn ghost" bindtap="onFillDemo">一键填入示例账号</button>
+  </view>
+
+  <view class="demo-card" wx:if="{{filled}}">
+    <view>示例准考证号：{{demo.ticketNo}}</view>
+    <view>示例证件号：{{demo.idNo}}</view>
+    <view>示例姓名：{{demo.name}}</view>
+  </view>
+</view>

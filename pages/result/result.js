@@ -1,4 +1,5 @@
 const exam = require('../../utils/exam.js')
+const ui = require('../../utils/ui.js')
 
 Page({
   data: {
@@ -12,10 +13,15 @@ Page({
       unanswered: 0,
       autoSubmitted: false
     },
-    sectionStats: []
+    sectionStats: [],
+    needRotate: false,
+    titleBarPx: 8,
+    statusPx: 4,
+    capsulePad: 96
   },
 
   onLoad() {
+    ui.applyLandscape(this)
     const app = getApp()
     const result = app.globalData.result || exam.loadResult()
     if (!result) {
@@ -32,6 +38,10 @@ Page({
       }
     })
     this.setData({ result, sectionStats })
+  },
+
+  onShow() {
+    ui.applyLandscape(this)
   },
 
   retry() {

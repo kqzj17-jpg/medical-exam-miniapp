@@ -66,7 +66,7 @@ function gridForSection(session, sectionId) {
     else if (session.answers[q.id]) status = 'answered'
     return {
       id: q.id,
-      no: i + 1,
+      no: q.no || i + 1,
       status,
       current: q.id === session.currentQid
     }
@@ -75,9 +75,29 @@ function gridForSection(session, sectionId) {
 
 function displayNo(qid) {
   const q = getQuestion(qid)
-  if (!q) return 1
-  const list = getQuestionsBySection(q.section)
-  return list.findIndex((item) => item.id === qid) + 1
+  return (q && q.no) || 1
+}
+
+function getSectionList(session) {
+  return bank.SECTIONS.map((s) => {
+    const qs = getQuestionsBySection(s.id)
+    const from = qs.length ? qs[0].no : 0
+    const to = qs.length ? qs[qs.length - 1].no : 0
+    return {
+      id: s.id,
+      name: s.name,
+      label: s.name + ' : ' + from + '~' + to,
+      hint: s.hint || '',
+      hintLong: s.hintLong || '',
+      locked: isLocked(session, s.id),
+      current: session.currentSection === s.id
+    }
+  })
+}
+
+function getTypeHint(sectionId) {
+  const s = bank.SECTIONS.find((item) => item.id === sectionId)
+  return (s && (s.hintLong || s.hint)) || ''
 }
 
 function remainingSeconds(session, now) {
@@ -88,9 +108,10 @@ function remainingSeconds(session, now) {
 
 function formatClock(seconds) {
   const s = Math.max(0, Math.floor(seconds))
-  const m = Math.floor(s / 60)
+  const h = Math.floor(s / 3600)
+  const m = Math.floor((s % 3600) / 60)
   const r = s % 60
-  return String(m).padStart(2, '0') + ':' + String(r).padStart(2, '0')
+  return [h, m, r].map((n) => String(n).padStart(2, '0')).join(':')
 }
 
 function formatDuration(seconds) {
@@ -297,6 +318,8 @@ module.exports = {
   flaggedCount,
   gridForSection,
   displayNo,
+  getSectionList,
+  getTypeHint,
   remainingSeconds,
   formatClock,
   formatDuration,

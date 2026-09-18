@@ -1,114 +1,94 @@
-.page {
-  min-height: 100vh;
-  padding: 0 32rpx 80rpx;
-  background: #eef3f8;
+.desk {
+  height: 100%;
+  background: #3a6ea5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12rpx 24rpx;
+}
+
+.win {
+  width: 820rpx;
+  max-width: 100%;
+  background: #d4d0c8;
+  border: 2rpx solid #fff;
+  border-right-color: #404040;
+  border-bottom-color: #404040;
+}
+
+.bar {
+  background: #1f4b99;
+  color: #fff;
+  font-size: 20rpx;
+  font-weight: 700;
+  padding: 6rpx 12rpx;
+}
+
+.body {
+  display: flex;
+  padding: 12rpx;
 }
 
 .hero {
+  width: 220rpx;
   text-align: center;
-  padding: 48rpx 24rpx 32rpx;
+  padding: 10rpx 8rpx;
 }
 
 .ok {
-  font-size: 28rpx;
-  color: #0e7c7b;
+  font-size: 20rpx;
+  color: #cc0000;
   font-weight: 700;
-}
-
-.wish {
-  margin-top: 6rpx;
-  font-size: 24rpx;
-  color: #6b7788;
 }
 
 .score {
-  margin-top: 12rpx;
-  font-size: 112rpx;
+  font-size: 72rpx;
   font-weight: 700;
-  color: #0b3a6e;
+  color: #1f4b99;
   line-height: 1.1;
+  margin-top: 8rpx;
 }
 
-.score-label {
-  font-size: 22rpx;
-  color: #8a93a0;
+.score-lab {
+  font-size: 16rpx;
+  color: #444;
 }
 
-.card {
+.table {
+  flex: 1;
   background: #fff;
-  border-radius: 16rpx;
-  padding: 8rpx 28rpx;
-  margin-bottom: 24rpx;
+  padding: 6rpx 14rpx;
 }
 
 .row {
   display: flex;
   justify-content: space-between;
-  padding: 22rpx 0;
-  border-bottom: 1rpx solid #eef2f6;
-  font-size: 26rpx;
-}
-
-.row.last {
-  border-bottom: none;
+  padding: 6rpx 0;
+  border-bottom: 1rpx solid #e0e0e0;
+  font-size: 18rpx;
 }
 
 .k {
-  color: #6b7788;
+  color: #444;
 }
 
 .v {
-  color: #1c2430;
-  font-weight: 600;
-  max-width: 70%;
-  text-align: right;
-}
-
-.sec-title {
-  padding: 20rpx 0 8rpx;
-  font-size: 26rpx;
   font-weight: 700;
-  color: #0b3a6e;
 }
 
-.sec-row {
+.ops {
   display: flex;
-  justify-content: space-between;
-  padding: 16rpx 0 22rpx;
-  font-size: 26rpx;
+  justify-content: flex-end;
+  padding: 0 12rpx 12rpx;
 }
 
-.name {
-  color: #334155;
+.ops .win-btn {
+  margin-left: 12rpx;
+  min-width: 120rpx;
+  height: 40rpx;
+  line-height: 36rpx;
 }
 
-.detail {
-  color: #0e7c7b;
-  font-weight: 600;
-}
-
-.note {
-  font-size: 22rpx;
-  color: #8a93a0;
-  text-align: center;
-  margin: 8rpx 12rpx 24rpx;
-}
-
-.cta {
-  height: 88rpx;
-  line-height: 88rpx;
-  background: #0b3a6e;
-  color: #fff;
-  border-radius: 12rpx;
-  font-size: 30rpx;
-}
-
-.ghost {
-  margin-top: 16rpx;
-  height: 80rpx;
-  line-height: 80rpx;
-  background: #fff;
-  color: #0b3a6e;
-  border-radius: 12rpx;
-  font-size: 28rpx;
+.ok {
+  font-weight: 700;
 }

@@ -35,10 +35,15 @@ const a1 = bank.QUESTIONS.filter((q) => q.section === 'A1')
 const a3 = bank.QUESTIONS.filter((q) => q.section === 'A3')
 assert(a1.length > 0 && a3.length > 0, 'A1、A3 均需有题')
 assert(a3.every((q) => q.caseStem), 'A3 应含病例题干')
+assert(a1[0].no === 1 && a3[0].no === a1.length + 1, '题号应为全局连续编号')
+assert(exam.formatClock(90) === '00:01:30', '剩余时间应为时:分:秒')
 
 const candidate = bank.DEMO_CANDIDATE
 const session = exam.createSession(candidate)
 assert(session.currentSection === 'A1', '默认从 A1 开始')
+const secList = exam.getSectionList(session)
+assert(secList[0].label.indexOf('1~') !== -1, '分段列表应含题号范围')
+assert(secList[1].label.indexOf('A3') !== -1, '应列出 A3 分段')
 
 exam.selectAnswer(session, session.currentQid, 'C')
 assert(session.answers[session.currentQid] === 'C', '作答应写入')

@@ -1,4 +1,7 @@
 {
   "usingComponents": {},
-  "navigationBarTitleText": "考生登录"
+  "navigationStyle": "custom",
+  "disableScroll": true,
+  "pageOrientation": "landscape",
+  "backgroundColor": "#3A6EA5"
 }

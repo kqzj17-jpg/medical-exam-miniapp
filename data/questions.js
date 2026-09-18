@@ -9,14 +9,27 @@ const DEMO_CANDIDATE = {
   idNo: '110101199001011234',
   gender: '男',
   examName: '口腔执业医师资格考试（演示）',
-  site: '演示考站'
+  site: '演示考站',
+  examTime: '09:00-09:30'
 }
 
 const DURATION_SECONDS = 30 * 60
 
 const SECTIONS = [
-  { id: 'A1', name: 'A1', title: 'A1 型题', hint: '单句最佳选择题' },
-  { id: 'A3', name: 'A3', title: 'A3 型题', hint: '病例组型最佳选择题' }
+  {
+    id: 'A1',
+    name: 'A1',
+    title: 'A1 型题',
+    hint: '单句型最佳选择题',
+    hintLong: '每一道考试题下面有A、B、C、D、E五个备选答案。请从中选择一个最佳答案。'
+  },
+  {
+    id: 'A3',
+    name: 'A3',
+    title: 'A3 型题',
+    hint: '病例组型最佳选择题',
+    hintLong: '以下提供若干个案例，每个案例下设若干道考题。请根据案例所提供的信息，在每一道考试题下面的A、B、C、D、E五个备选答案中选择一个最佳答案。'
+  }
 ]
 
 function opt(A, B, C, D, E) {
@@ -377,6 +390,9 @@ A3_CASES.forEach((c) => {
 })
 
 const QUESTIONS = A1.concat(A3)
+QUESTIONS.forEach((q, i) => {
+  q.no = i + 1
+})
 
 module.exports = {
   DEMO_CANDIDATE,

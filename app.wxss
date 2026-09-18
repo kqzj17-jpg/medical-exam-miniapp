@@ -1,20 +1,10 @@
 page {
-  --navy: #0b3a6e;
-  --navy-2: #124e8c;
-  --teal: #0e7c7b;
-  --teal-2: #1a9a8f;
-  --bg: #eef3f8;
-  --card: #ffffff;
-  --text: #1c2430;
-  --muted: #6b7788;
-  --line: #d7e0ea;
-  --danger: #d64545;
-  --flag: #e6b800;
-  --answered: #8b95a3;
-  background: var(--bg);
-  color: var(--text);
-  font-size: 28rpx;
-  line-height: 1.55;
+  height: 100%;
+  background: #c8c8c8;
+  color: #000;
+  font-size: 22rpx;
+  line-height: 1.45;
+  font-family: SimSun, "Songti SC", "Noto Serif SC", "PingFang SC", serif;
   box-sizing: border-box;
 }
 
@@ -32,12 +22,56 @@ button {
   background: none;
   font-size: inherit;
   line-height: inherit;
+  font-family: inherit;
 }
 
 button::after {
   border: none;
 }
 
-.safe-bottom {
-  padding-bottom: env(safe-area-inset-bottom);
+.win-btn {
+  background: #e6e6e6;
+  color: #000;
+  border-top: 2rpx solid #fff;
+  border-left: 2rpx solid #fff;
+  border-right: 2rpx solid #6e6e6e;
+  border-bottom: 2rpx solid #6e6e6e;
+  font-size: 20rpx;
+  padding: 0 14rpx;
+  height: 42rpx;
+  line-height: 38rpx;
+  border-radius: 0;
+}
+
+.win-btn:active {
+  border-top: 2rpx solid #6e6e6e;
+  border-left: 2rpx solid #6e6e6e;
+  border-right: 2rpx solid #fff;
+  border-bottom: 2rpx solid #fff;
+}
+
+.rotate-gate {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 100;
+  background: #1f4b99;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40rpx;
+}
+
+.rotate-box {
+  font-size: 28rpx;
+}
+
+.rotate-sub {
+  margin-top: 12rpx;
+  font-size: 22rpx;
+  opacity: 0.85;
 }

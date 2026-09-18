@@ -6,12 +6,14 @@
     "pages/result/result"
   ],
   "window": {
-    "navigationBarBackgroundColor": "#0B3A6E",
+    "navigationBarBackgroundColor": "#1F4B99",
     "navigationBarTitleText": "国家医学考试系统",
     "navigationBarTextStyle": "white",
-    "backgroundColor": "#EEF3F8",
-    "backgroundTextStyle": "light"
+    "backgroundColor": "#C8C8C8",
+    "backgroundTextStyle": "light",
+    "pageOrientation": "landscape"
   },
+  "pageOrientation": "landscape",
   "style": "v2",
   "sitemapLocation": "sitemap.json"
 }

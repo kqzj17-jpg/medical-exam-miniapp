@@ -1,4 +1,7 @@
 {
   "usingComponents": {},
-  "navigationBarTitleText": "考试成绩"
+  "navigationStyle": "custom",
+  "disableScroll": true,
+  "pageOrientation": "landscape",
+  "backgroundColor": "#3A6EA5"
 }

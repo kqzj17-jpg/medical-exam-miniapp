@@ -1,20 +1,29 @@
 const exam = require('../../utils/exam.js')
+const ui = require('../../utils/ui.js')
 
 Page({
   data: {
-    remainingText: '30:00',
+    needRotate: false,
+    titleBarPx: 32,
+    statusPx: 6,
+    capsulePad: 96,
+    remainingText: '00:30:00',
     timeUrgent: false,
     unansweredCount: 0,
     flaggedCount: 0,
     sections: [],
-    currentSection: 'A1',
+    candidate: {
+      name: '',
+      ticketNo: '',
+      examTime: '09:00-09:30'
+    },
+    typeLabel: 'A1',
+    typeHint: '',
     isLocked: false,
     question: { options: [] },
     displayNo: 1,
-    sectionTotal: 0,
     selected: '',
     flagged: false,
-    drawerOpen: false,
     grid: [],
     dialog: {
       show: false,
@@ -32,8 +41,9 @@ Page({
   submitting: false,
 
   onLoad() {
+    ui.applyLandscape(this)
     const app = getApp()
-    let session = app.globalData.session || exam.loadSession()
+    const session = app.globalData.session || exam.loadSession()
     const candidate = app.globalData.candidate || exam.loadCandidate()
     if (!session || !candidate) {
       wx.redirectTo({ url: '/pages/login/login' })
@@ -43,9 +53,15 @@ Page({
       wx.redirectTo({ url: '/pages/result/result' })
       return
     }
+    if (!candidate.examTime) candidate.examTime = exam.DEMO_CANDIDATE.examTime
     this.session = session
+    this.setData({ candidate })
     this.syncView()
     this.startTimer()
+  },
+
+  onShow() {
+    ui.applyLandscape(this)
   },
 
   onUnload() {
@@ -92,21 +108,17 @@ Page({
   syncView() {
     const session = this.session
     const q = exam.getQuestion(session.currentQid)
-    const sections = exam.getSections().map((s) => ({
-      id: s.id,
-      name: s.name,
-      locked: exam.isLocked(session, s.id)
-    }))
-    const sectionQs = exam.getQuestionsBySection(session.currentSection)
+    const sections = exam.getSectionList(session)
+    const current = sections.find((s) => s.id === session.currentSection) || sections[0]
     this.setData({
       unansweredCount: exam.unansweredCount(session),
       flaggedCount: exam.flaggedCount(session),
       sections,
-      currentSection: session.currentSection,
+      typeLabel: current ? current.name : session.currentSection,
+      typeHint: exam.getTypeHint(session.currentSection),
       isLocked: exam.isLocked(session, session.currentSection),
       question: q,
       displayNo: exam.displayNo(session.currentQid),
-      sectionTotal: sectionQs.length,
       selected: session.answers[session.currentQid] || '',
       flagged: !!session.flagged[session.currentQid],
       grid: exam.gridForSection(session, session.currentSection)
@@ -167,7 +179,7 @@ Page({
     this.pendingSection = targetId
     this.showDialog({
       type: 'nextSection',
-      title: '进入下一段',
+      title: '提示',
       content: '考试将进入下一分段. 进入后本段试题将无法再作修改. 确认要进入下一段考试吗?',
       confirmText: '进入下一段',
       cancelText: '继续作答'
@@ -201,6 +213,11 @@ Page({
     }
     exam.toggleFlag(this.session, this.session.currentQid)
     this.syncView()
+  },
+
+  onRefresh() {
+    this.syncView()
+    wx.showToast({ title: '已刷新', icon: 'none' })
   },
 
   onJumpUnanswered() {
@@ -238,9 +255,11 @@ Page({
         this.askEnterSection(nextId)
         return
       }
-      if (exam.isLastSection(this.session) || exam.isLocked(this.session, this.session.currentSection)) {
-        wx.showToast({ title: '已是本段最后一题', icon: 'none' })
+      if (exam.isLastSection(this.session)) {
+        this.onAskSubmit()
+        return
       }
+      wx.showToast({ title: '已是本段最后一题', icon: 'none' })
       return
     }
     this.syncView()
@@ -252,10 +271,6 @@ Page({
     this.syncView()
   },
 
-  toggleDrawer() {
-    this.setData({ drawerOpen: !this.data.drawerOpen })
-  },
-
   onAskSubmit() {
     const n = exam.unansweredCount(this.session)
     const content =
@@ -264,7 +279,7 @@ Page({
         : '全部试题已作答. 确认要完成考试吗?'
     this.showDialog({
       type: 'submit',
-      title: '完成考试',
+      title: '提示',
       content,
       confirmText: '确认交卷',
       cancelText: '继续作答'
@@ -286,11 +301,11 @@ Page({
     exam.persistResult(result)
     this.showDialog({
       type: 'submitted',
-      title: '交卷成功',
+      title: '提示',
       content: autoSubmitted
         ? '考试时间已到，系统已自动交卷。交卷成功！祝您好运！'
         : '交卷成功！祝您好运！',
-      confirmText: '查看成绩',
+      confirmText: '确定',
       cancelText: ''
     })
   },

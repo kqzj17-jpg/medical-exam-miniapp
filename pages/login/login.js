@@ -1,11 +1,23 @@
 const exam = require('../../utils/exam.js')
+const ui = require('../../utils/ui.js')
 
 Page({
   data: {
     ticketNo: '',
     idNo: '',
-    filled: false,
-    demo: exam.DEMO_CANDIDATE
+    demo: exam.DEMO_CANDIDATE,
+    needRotate: false,
+    titleBarPx: 8,
+    statusPx: 4,
+    capsulePad: 96
+  },
+
+  onLoad() {
+    ui.applyLandscape(this)
+  },
+
+  onShow() {
+    ui.applyLandscape(this)
   },
 
   onTicket(e) {
@@ -20,8 +32,7 @@ Page({
     const demo = exam.DEMO_CANDIDATE
     this.setData({
       ticketNo: demo.ticketNo,
-      idNo: demo.idNo,
-      filled: true
+      idNo: demo.idNo
     })
   },
 
@@ -40,7 +51,8 @@ Page({
       ticketNo,
       idNo,
       examName: demo.examName,
-      site: demo.site
+      site: demo.site,
+      examTime: demo.examTime
     }
 
     const session = exam.createSession(candidate)

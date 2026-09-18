@@ -19,20 +19,22 @@ assert(app.window && app.window.pageOrientation === 'landscape', 'app.json windo
 })
 
 const phone = ui.computeStage({ windowWidth: 375, windowHeight: 667 })
-assert(phone.left === 0 && phone.top === 0, '应贴边铺满，不留 letterbox')
-assert(Math.abs(phone.scaleX * 1280 - 375) < 1e-6, '竖屏应拉满宽度')
-assert(Math.abs(phone.scaleY * 800 - 667) < 1e-6, '竖屏应拉满高度')
+assert(phone.scale === Math.max(375 / 1280, 667 / 800), '竖屏应为 cover 统一 scale')
+assert(phone.stageStyle.indexOf('scale(' + phone.scale + ')') !== -1, 'scaleX 与 scaleY 必须相同')
+assert(phone.stageStyle.indexOf(',') === -1 || phone.stageStyle.indexOf('scale(') < phone.stageStyle.lastIndexOf('scale('), '不得使用分开的 scaleX,scaleY')
 
 const land = ui.computeStage({ windowWidth: 667, windowHeight: 375 })
-assert(land.left === 0 && land.top === 0, '横屏贴边')
-assert(Math.abs(land.scaleX * 1280 - 667) < 1e-6, '横屏应拉满宽度')
-assert(Math.abs(land.scaleY * 800 - 375) < 1e-6, '横屏应拉满高度')
+const expectedLand = Math.max(667 / 1280, 375 / 800)
+assert(Math.abs(land.scale - expectedLand) < 1e-9, '横屏应为 cover 统一 scale')
+assert(land.scale * 1280 >= 667 - 1e-6, 'cover 应盖住宽度')
+assert(land.scale * 800 >= 375 - 1e-6, 'cover 应盖住高度')
 
 const pc = ui.computeStage({ windowWidth: 1280, windowHeight: 800 })
-assert(pc.scaleX === 1 && pc.scaleY === 1, '1280×800 应为 1:1')
+assert(pc.scale === 1, '1280×800 应为 1:1')
+assert(pc.left === 0 && pc.top === 0, '1:1 无偏移')
 
 console.log('UI fit OK', {
-  phone: { scaleX: Number(phone.scaleX.toFixed(3)), scaleY: Number(phone.scaleY.toFixed(3)) },
-  land: { scaleX: Number(land.scaleX.toFixed(3)), scaleY: Number(land.scaleY.toFixed(3)) },
-  pc: { scaleX: pc.scaleX, scaleY: pc.scaleY }
+  phone: { scale: Number(phone.scale.toFixed(3)), left: phone.left, top: phone.top },
+  land: { scale: Number(land.scale.toFixed(3)), left: land.left, top: land.top },
+  pc: { scale: pc.scale }
 })

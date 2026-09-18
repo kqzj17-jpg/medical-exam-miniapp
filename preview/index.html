@@ -153,11 +153,14 @@
     const DESIGN_W = 1280, DESIGN_H = 800
     function fit() {
       const w = window.innerWidth, h = window.innerHeight
+      const scale = Math.max(w / DESIGN_W, h / DESIGN_H)
+      const left = Math.round((w - DESIGN_W * scale) / 2)
+      const top = Math.round((h - DESIGN_H * scale) / 2)
       const el = document.getElementById('stage')
       el.style.position = 'absolute'
-      el.style.left = '0'
-      el.style.top = '0'
-      el.style.transform = 'scale(' + (w / DESIGN_W) + ',' + (h / DESIGN_H) + ')'
+      el.style.left = left + 'px'
+      el.style.top = top + 'px'
+      el.style.transform = 'scale(' + scale + ')'
     }
     window.addEventListener('resize', fit)
     fit()

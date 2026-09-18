@@ -120,5 +120,4 @@
       </view>
     </view>
   </view>
-  <view class="fit-hint" wx:if="{{showFitHint}}">完整机考界面已等比缩放 · 建议模拟器自定义 1280×800 以 1:1 查看</view>
 </view>

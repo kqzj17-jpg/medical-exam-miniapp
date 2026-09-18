@@ -6,8 +6,8 @@
   <title>国家医学考试系统（桌面预览 · 演示）</title>
   <style>
     * { box-sizing: border-box; }
-    html, body { margin: 0; height: 100%; background: #5a5a5a; font-family: SimSun, "Songti SC", "Noto Serif SC", serif; }
-    .viewport { position: fixed; inset: 0; overflow: hidden; background: #5a5a5a; }
+    html, body { margin: 0; height: 100%; background: #d4d0c8; font-family: SimSun, "Songti SC", "Noto Serif SC", serif; }
+    .viewport { position: fixed; inset: 0; overflow: hidden; background: #d4d0c8; }
     .stage { width: 1280px; height: 800px; background: #d4d0c8; overflow: hidden; display: flex; flex-direction: column; transform-origin: 0 0; }
     .titlebar { height: 32px; background: #1f4b99; color: #fff; display: flex; align-items: center; padding: 0 10px; font-size: 14px; font-weight: 700; flex-shrink: 0; }
     .titlebar .demo { margin-left: 10px; font-size: 12px; font-weight: 400; opacity: .9; }
@@ -15,7 +15,6 @@
     .win { background: #d4d0c8; border: 2px solid #fff; border-right-color: #404040; border-bottom-color: #404040; }
     .win-btn { background: #e6e6e6; border: 2px solid #fff; border-right-color: #6e6e6e; border-bottom-color: #6e6e6e; height: 28px; padding: 0 12px; font-size: 13px; font-family: inherit; cursor: pointer; }
     .win-btn:active { border-color: #6e6e6e #fff #fff #6e6e6e; }
-    .fit-hint { position: absolute; left: 8px; bottom: 6px; color: #d8d8d8; font-size: 11px; font-family: sans-serif; pointer-events: none; }
     .hidden { display: none !important; }
 
     .login-win { width: 720px; }
@@ -149,21 +148,16 @@
         </div>
       </div>
     </div>
-    <div class="fit-hint" id="fitHint">完整机考界面已等比缩放 · 建议窗口 1280×800 以 1:1 查看</div>
   </div>
   <script>
     const DESIGN_W = 1280, DESIGN_H = 800
     function fit() {
       const w = window.innerWidth, h = window.innerHeight
-      const scale = Math.min(w / DESIGN_W, h / DESIGN_H)
-      const left = Math.round((w - DESIGN_W * scale) / 2)
-      const top = Math.round((h - DESIGN_H * scale) / 2)
       const el = document.getElementById('stage')
       el.style.position = 'absolute'
-      el.style.left = left + 'px'
-      el.style.top = top + 'px'
-      el.style.transform = 'scale(' + scale + ')'
-      document.getElementById('fitHint').style.display = scale < 0.98 ? 'block' : 'none'
+      el.style.left = '0'
+      el.style.top = '0'
+      el.style.transform = 'scale(' + (w / DESIGN_W) + ',' + (h / DESIGN_H) + ')'
     }
     window.addEventListener('resize', fit)
     fit()

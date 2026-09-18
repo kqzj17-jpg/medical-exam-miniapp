@@ -15,24 +15,24 @@ assert(app.window && app.window.pageOrientation === 'landscape', 'app.json windo
   assert(json.pageOrientation === 'landscape', name + ' 页面 json 须横屏')
   const wxml = fs.readFileSync(path.join(__dirname, '../pages/' + name + '/' + name + '.wxml'), 'utf8')
   assert(wxml.indexOf('page-orientation="landscape"') !== -1, name + ' wxml 须含 page-meta landscape')
+  assert(wxml.indexOf('fit-hint') === -1, name + ' 不应再显示缩放提示')
 })
 
 const phone = ui.computeStage({ windowWidth: 375, windowHeight: 667 })
-assert(Math.abs(phone.scale - 375 / 1280) < 1e-6, '竖屏应按宽度等比缩放')
-assert(phone.scale * 800 < 667, '缩放后高度应落入窗口')
-assert(phone.left === 0, '竖屏应水平铺满')
-assert(phone.top > 0, '竖屏应垂直居中留灰边')
+assert(phone.left === 0 && phone.top === 0, '应贴边铺满，不留 letterbox')
+assert(Math.abs(phone.scaleX * 1280 - 375) < 1e-6, '竖屏应拉满宽度')
+assert(Math.abs(phone.scaleY * 800 - 667) < 1e-6, '竖屏应拉满高度')
 
 const land = ui.computeStage({ windowWidth: 667, windowHeight: 375 })
-assert(land.scale * 1280 <= 667 + 1e-6, '横屏宽度不溢出')
-assert(land.scale * 800 <= 375 + 1e-6, '横屏高度不溢出')
+assert(land.left === 0 && land.top === 0, '横屏贴边')
+assert(Math.abs(land.scaleX * 1280 - 667) < 1e-6, '横屏应拉满宽度')
+assert(Math.abs(land.scaleY * 800 - 375) < 1e-6, '横屏应拉满高度')
 
 const pc = ui.computeStage({ windowWidth: 1280, windowHeight: 800 })
-assert(pc.scale === 1, '1280×800 应为 1:1')
-assert(pc.left === 0 && pc.top === 0, '1:1 无偏移')
+assert(pc.scaleX === 1 && pc.scaleY === 1, '1280×800 应为 1:1')
 
 console.log('UI fit OK', {
-  phone: { scale: Number(phone.scale.toFixed(3)), top: phone.top },
-  land: { scale: Number(land.scale.toFixed(3)), left: land.left },
-  pc: { scale: pc.scale }
+  phone: { scaleX: Number(phone.scaleX.toFixed(3)), scaleY: Number(phone.scaleY.toFixed(3)) },
+  land: { scaleX: Number(land.scaleX.toFixed(3)), scaleY: Number(land.scaleY.toFixed(3)) },
+  pc: { scaleX: pc.scaleX, scaleY: pc.scaleY }
 })

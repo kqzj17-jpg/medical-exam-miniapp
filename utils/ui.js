@@ -4,26 +4,23 @@ const DESIGN_H = 800
 function computeStage(sys) {
   const w = (sys && sys.windowWidth) || 375
   const h = (sys && sys.windowHeight) || 667
-  const scale = Math.min(w / DESIGN_W, h / DESIGN_H)
-  const left = Math.round((w - DESIGN_W * scale) / 2)
-  const top = Math.round((h - DESIGN_H * scale) / 2)
+  const scaleX = w / DESIGN_W
+  const scaleY = h / DESIGN_H
   return {
-    scale,
-    left,
-    top,
+    scaleX,
+    scaleY,
+    left: 0,
+    top: 0,
     stageStyle:
-      'position:absolute;left:' +
-      left +
-      'px;top:' +
-      top +
-      'px;width:' +
+      'position:absolute;left:0;top:0;width:' +
       DESIGN_W +
       'px;height:' +
       DESIGN_H +
       'px;transform:scale(' +
-      scale +
-      ');transform-origin:0 0;',
-    showFitHint: scale < 0.98
+      scaleX +
+      ',' +
+      scaleY +
+      ');transform-origin:0 0;'
   }
 }
 
@@ -38,8 +35,8 @@ function applyStage(page) {
   const fit = computeStage(sys)
   page.setData({
     stageStyle: fit.stageStyle,
-    showFitHint: fit.showFitHint,
-    stageScale: fit.scale
+    stageScaleX: fit.scaleX,
+    stageScaleY: fit.scaleY
   })
 }
 

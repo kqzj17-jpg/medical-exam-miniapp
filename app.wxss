@@ -1,7 +1,7 @@
 page {
   height: 100%;
   overflow: hidden;
-  background: #5a5a5a;
+  background: #d4d0c8;
   color: #000;
   font-size: 14px;
   line-height: 1.4;
@@ -36,7 +36,7 @@ button::after {
   top: 0;
   right: 0;
   bottom: 0;
-  background: #5a5a5a;
+  background: #d4d0c8;
   overflow: hidden;
 }
 
@@ -45,17 +45,6 @@ button::after {
   height: 800px;
   overflow: hidden;
   background: #d4d0c8;
-}
-
-.fit-hint {
-  position: absolute;
-  left: 8px;
-  bottom: 6px;
-  z-index: 4;
-  color: #d8d8d8;
-  font-size: 11px;
-  pointer-events: none;
-  font-family: sans-serif;
 }
 
 .win-btn {

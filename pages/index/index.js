@@ -2,8 +2,7 @@ const ui = require('../../utils/ui.js')
 
 Page({
   data: {
-    stageStyle: ui.DEFAULT_STAGE_STYLE,
-    showFitHint: false
+    stageStyle: ui.DEFAULT_STAGE_STYLE
   },
 
   onLoad() {

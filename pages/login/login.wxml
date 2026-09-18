@@ -34,5 +34,4 @@
       </view>
     </view>
   </view>
-  <view class="fit-hint" wx:if="{{showFitHint}}">完整界面已等比缩放 · 建议模拟器 1280×800</view>
 </view>

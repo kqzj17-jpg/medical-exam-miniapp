@@ -6,8 +6,7 @@ Page({
     ticketNo: '',
     idNo: '',
     demo: exam.DEMO_CANDIDATE,
-    stageStyle: ui.DEFAULT_STAGE_STYLE,
-    showFitHint: false
+    stageStyle: ui.DEFAULT_STAGE_STYLE
   },
 
   onLoad() {

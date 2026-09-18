@@ -14,8 +14,7 @@ Page({
       autoSubmitted: false
     },
     sectionStats: [],
-    stageStyle: ui.DEFAULT_STAGE_STYLE,
-    showFitHint: false
+    stageStyle: ui.DEFAULT_STAGE_STYLE
   },
 
   onLoad() {

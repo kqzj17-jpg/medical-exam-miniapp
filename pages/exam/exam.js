@@ -4,8 +4,6 @@ const ui = require('../../utils/ui.js')
 Page({
   data: {
     stageStyle: ui.DEFAULT_STAGE_STYLE,
-    showFitHint: false,
-    stageScale: 1,
     remainingText: '00:30:00',
     timeUrgent: false,
     unansweredCount: 0,

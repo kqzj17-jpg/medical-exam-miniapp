@@ -6,9 +6,6 @@ App({
   },
 
   onLaunch() {
-    if (wx.setPageOrientation) {
-      wx.setPageOrientation({ orientation: 'landscape' })
-    }
     try {
       const candidate = wx.getStorageSync('nmec_candidate')
       const session = wx.getStorageSync('nmec_session')

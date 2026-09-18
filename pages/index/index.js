@@ -2,18 +2,24 @@ const ui = require('../../utils/ui.js')
 
 Page({
   data: {
-    needRotate: false,
-    titleBarPx: 8,
-    statusPx: 4,
-    capsulePad: 96
+    stageStyle: ui.DEFAULT_STAGE_STYLE,
+    showFitHint: false
   },
 
   onLoad() {
-    ui.applyLandscape(this)
+    ui.bindStage(this)
   },
 
   onShow() {
-    ui.applyLandscape(this)
+    ui.applyStage(this)
+  },
+
+  onResize() {
+    ui.applyStage(this)
+  },
+
+  onUnload() {
+    ui.unbindStage(this)
   },
 
   goLogin() {

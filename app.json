@@ -9,11 +9,9 @@
     "navigationBarBackgroundColor": "#1F4B99",
     "navigationBarTitleText": "国家医学考试系统",
     "navigationBarTextStyle": "white",
-    "backgroundColor": "#C8C8C8",
-    "backgroundTextStyle": "light",
-    "pageOrientation": "landscape"
+    "backgroundColor": "#5A5A5A",
+    "backgroundTextStyle": "light"
   },
-  "pageOrientation": "landscape",
   "style": "v2",
   "sitemapLocation": "sitemap.json"
 }

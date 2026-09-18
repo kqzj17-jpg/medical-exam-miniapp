@@ -1,9 +1,10 @@
 page {
   height: 100%;
-  background: #c8c8c8;
+  overflow: hidden;
+  background: #5a5a5a;
   color: #000;
-  font-size: 22rpx;
-  line-height: 1.45;
+  font-size: 14px;
+  line-height: 1.4;
   font-family: SimSun, "Songti SC", "Noto Serif SC", "PingFang SC", serif;
   box-sizing: border-box;
 }
@@ -29,49 +30,82 @@ button::after {
   border: none;
 }
 
+.viewport {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: #5a5a5a;
+  overflow: hidden;
+}
+
+.stage {
+  width: 1280px;
+  height: 800px;
+  overflow: hidden;
+  background: #d4d0c8;
+}
+
+.fit-hint {
+  position: absolute;
+  left: 8px;
+  bottom: 6px;
+  z-index: 4;
+  color: #d8d8d8;
+  font-size: 11px;
+  pointer-events: none;
+  font-family: sans-serif;
+}
+
 .win-btn {
   background: #e6e6e6;
   color: #000;
-  border-top: 2rpx solid #fff;
-  border-left: 2rpx solid #fff;
-  border-right: 2rpx solid #6e6e6e;
-  border-bottom: 2rpx solid #6e6e6e;
-  font-size: 20rpx;
-  padding: 0 14rpx;
-  height: 42rpx;
-  line-height: 38rpx;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #fff #6e6e6e #6e6e6e #fff;
+  font-size: 13px;
+  height: 28px;
+  line-height: 24px;
+  padding: 0 12px;
   border-radius: 0;
 }
 
 .win-btn:active {
-  border-top: 2rpx solid #6e6e6e;
-  border-left: 2rpx solid #6e6e6e;
-  border-right: 2rpx solid #fff;
-  border-bottom: 2rpx solid #fff;
+  border-color: #6e6e6e #fff #fff #6e6e6e;
 }
 
-.rotate-gate {
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  z-index: 100;
+.titlebar {
+  height: 32px;
   background: #1f4b99;
   color: #fff;
   display: flex;
   align-items: center;
+  padding: 0 10px;
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.titlebar .demo {
+  margin-left: 10px;
+  font-size: 12px;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+.desk {
+  width: 1280px;
+  height: 768px;
+  background: #3a6ea5;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  text-align: center;
-  padding: 40rpx;
 }
 
-.rotate-box {
-  font-size: 28rpx;
-}
-
-.rotate-sub {
-  margin-top: 12rpx;
-  font-size: 22rpx;
-  opacity: 0.85;
+.win {
+  background: #d4d0c8;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #fff #404040 #404040 #fff;
 }

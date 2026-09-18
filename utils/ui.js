@@ -1,22 +1,70 @@
-function applyLandscape(page) {
-  if (wx.setPageOrientation) {
-    wx.setPageOrientation({ orientation: 'landscape' })
+const DESIGN_W = 1280
+const DESIGN_H = 800
+
+function computeStage(sys) {
+  const w = (sys && sys.windowWidth) || 375
+  const h = (sys && sys.windowHeight) || 667
+  const scale = Math.min(w / DESIGN_W, h / DESIGN_H)
+  const left = Math.round((w - DESIGN_W * scale) / 2)
+  const top = Math.round((h - DESIGN_H * scale) / 2)
+  return {
+    scale,
+    left,
+    top,
+    stageStyle:
+      'position:absolute;left:' +
+      left +
+      'px;top:' +
+      top +
+      'px;width:' +
+      DESIGN_W +
+      'px;height:' +
+      DESIGN_H +
+      'px;transform:scale(' +
+      scale +
+      ');transform-origin:0 0;',
+    showFitHint: scale < 0.98
   }
-  const sys = wx.getSystemInfoSync()
-  let cap = { top: 6, height: 24, bottom: 32, left: sys.windowWidth, width: 0 }
+}
+
+function applyStage(page) {
+  let sys = { windowWidth: 375, windowHeight: 667 }
   try {
-    cap = wx.getMenuButtonBoundingClientRect() || cap
+    sys = wx.getSystemInfoSync() || sys
   } catch (e) {}
-  const titleBarPx = Math.max((cap.bottom || 32) + 4, 28)
-  const capsulePad = Math.max(8, sys.windowWidth - (cap.left || sys.windowWidth) + 8)
+  const fit = computeStage(sys)
   page.setData({
-    needRotate: sys.windowWidth < sys.windowHeight,
-    titleBarPx,
-    statusPx: cap.top || 4,
-    capsulePad
+    stageStyle: fit.stageStyle,
+    showFitHint: fit.showFitHint,
+    stageScale: fit.scale
   })
 }
 
+function bindStage(page) {
+  applyStage(page)
+  if (page._stageBound) return
+  page._stageBound = true
+  page._onStageResize = function () {
+    applyStage(page)
+  }
+  if (typeof wx !== 'undefined' && wx.onWindowResize) {
+    wx.onWindowResize(page._onStageResize)
+  }
+}
+
+function unbindStage(page) {
+  if (typeof wx !== 'undefined' && wx.offWindowResize && page._onStageResize) {
+    wx.offWindowResize(page._onStageResize)
+  }
+  page._stageBound = false
+}
+
 module.exports = {
-  applyLandscape
+  DESIGN_W,
+  DESIGN_H,
+  DEFAULT_STAGE_STYLE: computeStage({ windowWidth: 375, windowHeight: 667 }).stageStyle,
+  computeStage,
+  applyStage,
+  bindStage,
+  unbindStage
 }

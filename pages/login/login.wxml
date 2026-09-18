@@ -1,38 +1,37 @@
-<page-meta page-orientation="landscape" />
-<view class="desk">
-  <view class="win">
-    <view class="bar">
-      <text>国家医学考试系统 - 考生登录</text>
+<view class="viewport">
+  <view class="stage" style="{{stageStyle}}">
+    <view class="titlebar">
+      <text>国家医学考试系统</text>
+      <text class="demo">演示</text>
     </view>
-    <view class="body">
-      <view class="left">
-        <view class="emblem">医</view>
-        <view class="sys">国家医学考试系统</view>
-        <view class="paper">{{demo.examName}}</view>
-        <view class="note">演示练习 · 非官方</view>
-      </view>
-      <view class="right">
-        <view class="row">
-          <text class="lab">准考证号</text>
-          <input class="inp" maxlength="20" value="{{ticketNo}}" bindinput="onTicket" placeholder="" />
-        </view>
-        <view class="row">
-          <text class="lab">证件号</text>
-          <input class="inp" maxlength="18" value="{{idNo}}" bindinput="onId" placeholder="" />
-        </view>
-        <view class="hint">演示模式不校验真实考籍。可直接登录，或一键填入示例账号。</view>
-        <view class="btns">
-          <button class="win-btn" bindtap="onFillDemo">演示填入</button>
-          <button class="win-btn ok" bindtap="onLogin">登录</button>
+    <view class="desk">
+      <view class="win login-win">
+        <view class="titlebar">国家医学考试系统 - 考生登录</view>
+        <view class="login-body">
+          <view class="login-left">
+            <view class="emblem">医</view>
+            <view class="sys">国家医学考试系统</view>
+            <view class="paper">{{demo.examName}}</view>
+            <view class="note">演示练习 · 非官方</view>
+          </view>
+          <view class="login-right">
+            <view class="row">
+              <text class="lab">准考证号</text>
+              <input class="inp" maxlength="20" value="{{ticketNo}}" bindinput="onTicket" />
+            </view>
+            <view class="row">
+              <text class="lab">证件号</text>
+              <input class="inp" maxlength="18" value="{{idNo}}" bindinput="onId" />
+            </view>
+            <view class="hint">演示模式不校验真实考籍。可直接登录，或一键填入示例账号。</view>
+            <view class="btns">
+              <button class="win-btn" bindtap="onFillDemo">演示填入</button>
+              <button class="win-btn" bindtap="onLogin">登录</button>
+            </view>
+          </view>
         </view>
       </view>
     </view>
   </view>
-
-  <view class="rotate-gate" wx:if="{{needRotate}}">
-    <view class="rotate-box">
-      <view>请将模拟器 / 手机旋转为横屏</view>
-      <view class="rotate-sub">登录与答题均按机考宽屏设计</view>
-    </view>
-  </view>
+  <view class="fit-hint" wx:if="{{showFitHint}}">完整界面已等比缩放 · 建议模拟器 1280×800</view>
 </view>

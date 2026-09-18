@@ -3,10 +3,9 @@ const ui = require('../../utils/ui.js')
 
 Page({
   data: {
-    needRotate: false,
-    titleBarPx: 32,
-    statusPx: 6,
-    capsulePad: 96,
+    stageStyle: ui.DEFAULT_STAGE_STYLE,
+    showFitHint: false,
+    stageScale: 1,
     remainingText: '00:30:00',
     timeUrgent: false,
     unansweredCount: 0,
@@ -41,7 +40,7 @@ Page({
   submitting: false,
 
   onLoad() {
-    ui.applyLandscape(this)
+    ui.bindStage(this)
     const app = getApp()
     const session = app.globalData.session || exam.loadSession()
     const candidate = app.globalData.candidate || exam.loadCandidate()
@@ -61,10 +60,15 @@ Page({
   },
 
   onShow() {
-    ui.applyLandscape(this)
+    ui.applyStage(this)
+  },
+
+  onResize() {
+    ui.applyStage(this)
   },
 
   onUnload() {
+    ui.unbindStage(this)
     this.clearTimer()
   },
 

@@ -1,103 +1,79 @@
-.desk {
-  height: 100%;
-  background: #3a6ea5;
+.login-win {
+  width: 720px;
+}
+
+.login-body {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16rpx 40rpx;
+  padding: 20px 16px 16px;
 }
 
-.win {
-  width: 680rpx;
-  background: #d4d0c8;
-  border: 2rpx solid #fff;
-  border-right-color: #404040;
-  border-bottom-color: #404040;
-  box-shadow: 6rpx 6rpx 0 rgba(0, 0, 0, 0.2);
-}
-
-.bar {
-  background: #1f4b99;
-  color: #fff;
-  font-size: 20rpx;
-  font-weight: 700;
-  padding: 6rpx 12rpx;
-}
-
-.body {
-  display: flex;
-  padding: 18rpx 16rpx 16rpx;
-}
-
-.left {
-  width: 220rpx;
-  padding-right: 16rpx;
-  border-right: 2rpx solid #808080;
+.login-left {
+  width: 220px;
+  padding-right: 16px;
+  border-right: 1px solid #808080;
   text-align: center;
 }
 
 .emblem {
-  width: 72rpx;
-  height: 72rpx;
-  margin: 4rpx auto 8rpx;
+  width: 64px;
+  height: 64px;
+  margin: 8px auto;
   background: #1f4b99;
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 36rpx;
+  font-size: 28px;
   font-weight: 700;
 }
 
 .sys {
-  font-size: 22rpx;
+  font-size: 16px;
   font-weight: 700;
 }
 
 .paper {
-  margin-top: 8rpx;
-  font-size: 16rpx;
+  margin-top: 8px;
+  font-size: 12px;
   color: #333;
 }
 
 .note {
-  margin-top: 10rpx;
-  font-size: 16rpx;
+  margin-top: 10px;
+  font-size: 12px;
   color: #666;
 }
 
-.right {
+.login-right {
   flex: 1;
-  padding-left: 18rpx;
+  padding-left: 20px;
 }
 
 .row {
   display: flex;
   align-items: center;
-  margin-bottom: 12rpx;
+  margin-bottom: 14px;
 }
 
 .lab {
-  width: 110rpx;
-  font-size: 20rpx;
+  width: 80px;
+  font-size: 14px;
   flex-shrink: 0;
 }
 
 .inp {
   flex: 1;
-  height: 40rpx;
-  padding: 0 8rpx;
+  height: 28px;
+  padding: 0 8px;
   background: #fff;
-  border: 2rpx solid #808080;
-  border-right-color: #fff;
-  border-bottom-color: #fff;
-  font-size: 20rpx;
+  border: 1px solid #808080;
+  font-size: 14px;
 }
 
 .hint {
-  font-size: 16rpx;
+  font-size: 12px;
   color: #444;
-  margin: 4rpx 0 12rpx;
+  margin: 4px 0 16px;
   line-height: 1.45;
 }
 
@@ -107,12 +83,6 @@
 }
 
 .btns .win-btn {
-  margin-left: 12rpx;
-  min-width: 120rpx;
-  height: 40rpx;
-  line-height: 36rpx;
-}
-
-.ok {
-  font-weight: 700;
+  margin-left: 10px;
+  min-width: 88px;
 }

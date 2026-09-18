@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>国家医学考试系统（桌面预览 · 演示）</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; background: #5a5a5a; font-family: SimSun, "Songti SC", "Noto Serif SC", serif; }
+    .viewport { position: fixed; inset: 0; overflow: hidden; background: #5a5a5a; }
+    .stage { width: 1280px; height: 800px; background: #d4d0c8; overflow: hidden; display: flex; flex-direction: column; transform-origin: 0 0; }
+    .titlebar { height: 32px; background: #1f4b99; color: #fff; display: flex; align-items: center; padding: 0 10px; font-size: 14px; font-weight: 700; flex-shrink: 0; }
+    .titlebar .demo { margin-left: 10px; font-size: 12px; font-weight: 400; opacity: .9; }
+    .desk { flex: 1; background: #3a6ea5; display: flex; align-items: center; justify-content: center; }
+    .win { background: #d4d0c8; border: 2px solid #fff; border-right-color: #404040; border-bottom-color: #404040; }
+    .win-btn { background: #e6e6e6; border: 2px solid #fff; border-right-color: #6e6e6e; border-bottom-color: #6e6e6e; height: 28px; padding: 0 12px; font-size: 13px; font-family: inherit; cursor: pointer; }
+    .win-btn:active { border-color: #6e6e6e #fff #fff #6e6e6e; }
+    .fit-hint { position: absolute; left: 8px; bottom: 6px; color: #d8d8d8; font-size: 11px; font-family: sans-serif; pointer-events: none; }
+    .hidden { display: none !important; }
+
+    .login-win { width: 720px; }
+    .login-body { display: flex; padding: 20px 16px 16px; }
+    .login-left { width: 220px; padding-right: 16px; border-right: 1px solid #808080; text-align: center; }
+    .emblem { width: 64px; height: 64px; margin: 8px auto; background: #1f4b99; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 700; }
+    .login-right { flex: 1; padding-left: 20px; }
+    .row { display: flex; align-items: center; margin-bottom: 14px; }
+    .lab { width: 80px; font-size: 14px; }
+    .inp { flex: 1; height: 28px; padding: 0 8px; border: 1px solid #808080; font-size: 14px; }
+    .hint { font-size: 12px; color: #444; margin: 4px 0 16px; }
+    .btns { display: flex; justify-content: flex-end; gap: 10px; }
+
+    .upper { height: 616px; display: flex; }
+    .sidebar { width: 248px; height: 616px; background: #ece9e0; border-right: 1px solid #808080; padding: 8px 10px; overflow: hidden; }
+    .photo { width: 92px; height: 116px; margin: 0 auto 8px; background: #c8c8c8; border: 1px solid #666; position: relative; }
+    .sil-head { width: 28px; height: 28px; border-radius: 50%; background: #8e97a0; position: absolute; left: 32px; top: 14px; }
+    .sil-body { width: 52px; height: 40px; border-radius: 22px 22px 0 0; background: #8e97a0; position: absolute; left: 20px; top: 46px; }
+    .photo-cap { position: absolute; left: 0; right: 0; bottom: 2px; text-align: center; font-size: 11px; color: #555; }
+    .field { margin-bottom: 4px; }
+    .field .lab { font-size: 12px; color: #333; width: auto; }
+    .val { font-size: 14px; font-weight: 700; }
+    .remain { margin-top: 2px; background: #ff9ec8; border: 1px solid #cc5a8a; text-align: center; font-size: 22px; font-weight: 700; letter-spacing: 1px; padding: 3px 0; }
+    .side-btns { display: flex; gap: 6px; margin: 8px 0; }
+    .side-btns .win-btn { flex: 1; }
+    .rule { color: #cc0000; font-size: 12px; line-height: 1.35; margin-bottom: 8px; }
+    .sec-list { border: 1px solid #808080; background: #fff; }
+    .sec { font-size: 13px; padding: 5px 8px; cursor: pointer; }
+    .sec.on { background: #316ac5; color: #fff; }
+    .main { flex: 1; width: 0; height: 616px; display: flex; flex-direction: column; background: #fff; }
+    .typebar { height: 46px; padding: 6px 12px; background: #f3f3f3; border-bottom: 1px solid #b0b0b0; display: flex; }
+    .type-name { flex-shrink: 0; font-size: 16px; font-weight: 700; color: #1f4b99; margin-right: 12px; }
+    .type-hint { font-size: 13px; color: #333; }
+    .qarea { height: 570px; padding: 10px 16px; overflow: auto; }
+    .stem { font-size: 16px; margin-bottom: 10px; }
+    .opt { display: flex; align-items: flex-start; padding: 6px 8px; margin-bottom: 6px; border: 2px solid transparent; cursor: pointer; }
+    .opt.on { background: #ffff99; border-color: #1f4b99; }
+    .chk { width: 16px; height: 16px; border: 1px solid #333; background: #fff; margin-right: 8px; margin-top: 2px; text-align: center; font-size: 12px; line-height: 14px; }
+    .nav { height: 152px; background: #ece9e0; border-top: 1px solid #808080; padding: 8px 12px; }
+    .ops { display: flex; align-items: center; margin-bottom: 8px; gap: 8px; }
+    .ops-spacer { flex: 1; }
+    .grid { display: flex; flex-wrap: wrap; height: 78px; overflow: hidden; }
+    .cell { width: 36px; height: 22px; margin: 0 4px 4px 0; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #fff; cursor: pointer; }
+    .cell.unanswered { background: #e00000; }
+    .cell.answered { background: #8a8a8a; }
+    .cell.flagged { background: #f0d000; color: #000; }
+    .cell.current { box-shadow: inset 0 0 0 2px #000; }
+    .legend { font-size: 12px; }
+    .mask { position: absolute; inset: 0; background: rgba(0,0,0,.28); display: flex; align-items: center; justify-content: center; }
+    .dlg { width: 460px; background: #d4d0c8; border: 2px solid #fff; border-right-color: #404040; border-bottom-color: #404040; }
+    .dlg-bar { background: #1f4b99; color: #fff; font-size: 13px; font-weight: 700; padding: 5px 8px; }
+    .dlg-body { margin: 8px; padding: 16px; background: #fff; font-size: 14px; min-height: 72px; }
+    .dlg-ops { display: flex; justify-content: flex-end; gap: 8px; padding: 0 8px 8px; }
+  </style>
+</head>
+<body>
+  <div class="viewport">
+    <div class="stage" id="stage">
+      <div id="loginScreen">
+        <div class="titlebar">国家医学考试系统<span class="demo">演示 · 桌面预览</span></div>
+        <div class="desk">
+          <div class="win login-win">
+            <div class="titlebar">国家医学考试系统 - 考生登录</div>
+            <div class="login-body">
+              <div class="login-left">
+                <div class="emblem">医</div>
+                <div style="font-weight:700;font-size:16px;">国家医学考试系统</div>
+                <div style="font-size:12px;margin-top:8px;">口腔执业医师资格考试（演示）</div>
+                <div style="font-size:12px;color:#666;margin-top:10px;">浏览器预览布局 · 完整作答请用微信开发者工具</div>
+              </div>
+              <div class="login-right">
+                <div class="row"><span class="lab">准考证号</span><input class="inp" id="ticket" value="202509180010016" /></div>
+                <div class="row"><span class="lab">证件号</span><input class="inp" id="idno" value="110101199001011234" /></div>
+                <div class="hint">此页用于对照官方机考 1280×800 布局。缩放逻辑与小程序相同。</div>
+                <div class="btns">
+                  <button class="win-btn" id="btnEnter">登录进入考场</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="examScreen" class="hidden" style="display:flex;flex-direction:column;height:800px;">
+        <div class="titlebar">国家医学考试系统<span class="demo">演示 · 桌面预览</span></div>
+        <div class="upper">
+          <div class="sidebar">
+            <div class="photo"><div class="sil-head"></div><div class="sil-body"></div><div class="photo-cap">照片</div></div>
+            <div class="field"><div class="lab">姓名</div><div class="val">演示考生</div></div>
+            <div class="field"><div class="lab">准考证号</div><div class="val">202509180010016</div></div>
+            <div class="field"><div class="lab">考试时间</div><div class="val">09:00-09:30</div></div>
+            <div class="field"><div class="lab">剩余时间</div><div class="remain" id="remain">00:29:12</div></div>
+            <div class="field"><div class="lab">未答题数</div><div class="val" id="unanswered">5</div></div>
+            <div class="field"><div class="lab">标疑题数</div><div class="val" id="flaggedN">0</div></div>
+            <div class="side-btns">
+              <button class="win-btn" type="button">刷新</button>
+              <button class="win-btn" id="btnFinish" type="button">完成考试</button>
+            </div>
+            <div class="rule">注意：考试分若干段进行。进入下一段后，本段试题将不能回看和修改。</div>
+            <div class="sec-list">
+              <div class="sec on">A1 : 1~4</div>
+              <div class="sec">A3 : 5~6</div>
+            </div>
+          </div>
+          <div class="main">
+            <div class="typebar">
+              <div class="type-name">题型: A1</div>
+              <div class="type-hint">每一道考试题下面有A、B、C、D、E五个备选答案。请从中选择一个最佳答案。</div>
+            </div>
+            <div class="qarea" id="qarea"></div>
+          </div>
+        </div>
+        <div class="nav">
+          <div class="ops">
+            <button class="win-btn" id="btnFlag" type="button">标疑</button>
+            <button class="win-btn" id="btnUnans" type="button">转到未答题</button>
+            <button class="win-btn" id="btnFlagged" type="button">转到标疑题</button>
+            <div class="ops-spacer"></div>
+            <button class="win-btn" id="btnPrev" type="button">上一题</button>
+            <button class="win-btn" id="btnNext" type="button">下一题</button>
+          </div>
+          <div class="grid" id="grid"></div>
+          <div class="legend">颜色说明：黄色表示标疑，红色表示未答，灰色表示已答。</div>
+        </div>
+        <div class="mask hidden" id="mask">
+          <div class="dlg">
+            <div class="dlg-bar">提示</div>
+            <div class="dlg-body" id="dlgBody">交卷成功！祝您好运！</div>
+            <div class="dlg-ops"><button class="win-btn" id="dlgOk" type="button">确定</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="fit-hint" id="fitHint">完整机考界面已等比缩放 · 建议窗口 1280×800 以 1:1 查看</div>
+  </div>
+  <script>
+    const DESIGN_W = 1280, DESIGN_H = 800
+    function fit() {
+      const w = window.innerWidth, h = window.innerHeight
+      const scale = Math.min(w / DESIGN_W, h / DESIGN_H)
+      const left = Math.round((w - DESIGN_W * scale) / 2)
+      const top = Math.round((h - DESIGN_H * scale) / 2)
+      const el = document.getElementById('stage')
+      el.style.position = 'absolute'
+      el.style.left = left + 'px'
+      el.style.top = top + 'px'
+      el.style.transform = 'scale(' + scale + ')'
+      document.getElementById('fitHint').style.display = scale < 0.98 ? 'block' : 'none'
+    }
+    window.addEventListener('resize', fit)
+    fit()
+
+    const qs = [
+      { no: 1, stem: '釉质厚度最大的部位通常是', options: ['牙颈部','窝沟底部','牙尖或切缘处','邻面接触区','釉牙本质界'] },
+      { no: 2, stem: '牙周炎最主要的始动因子是', options: ['咬合创伤','食物嵌塞','牙菌斑生物膜','不良修复体','全身营养不良'] },
+      { no: 3, stem: '急性牙髓炎疼痛最典型的特点是', options: ['仅咀嚼时痛','自发痛、阵发痛、夜间痛并可放散','冷刺激一过性敏感','仅有咬合高点处疼痛','无痛'] },
+      { no: 4, stem: '干槽症最常见于', options: ['上前牙拔除后','乳牙滞留拔除后','下颌阻生第三磨牙拔除后','松动牙周炎患牙拔除后','乳牙残根脱落'] },
+      { no: 5, stem: '（A3 演示）目前最可能的诊断是', options: ['深龋','可复性牙髓炎','急性牙髓炎','慢性根尖周脓肿','牙本质敏感症'] },
+      { no: 6, stem: '（A3 演示）急诊期最恰当的处理是', options: ['仅开止痛药','开髓引流并预约根管治疗','立即全冠修复','立即正畸牵引','仅做脱敏'] }
+    ]
+    const keys = ['A','B','C','D','E']
+    let idx = 0
+    const answers = {}
+    const flags = {}
+
+    function render() {
+      const q = qs[idx]
+      const sel = answers[idx]
+      document.getElementById('qarea').innerHTML =
+        '<div class="stem">' + q.no + '. ' + q.stem + '</div>' +
+        q.options.map((t,i) => {
+          const k = keys[i]
+          const on = sel === k ? ' on' : ''
+          const ck = sel === k ? '✓' : ''
+          return '<div class="opt' + on + '" data-k="' + k + '"><div class="chk">' + ck + '</div><div>' + k + '. ' + t + '</div></div>'
+        }).join('')
+      document.getElementById('qarea').querySelectorAll('.opt').forEach(el => {
+        el.onclick = () => { answers[idx] = el.getAttribute('data-k'); render() }
+      })
+      const unanswered = qs.filter((_,i) => !answers[i]).length
+      const flaggedN = qs.filter((_,i) => flags[i]).length
+      document.getElementById('unanswered').textContent = unanswered
+      document.getElementById('flaggedN').textContent = flaggedN
+      document.getElementById('btnFlag').textContent = flags[idx] ? '取消标疑' : '标疑'
+      document.getElementById('grid').innerHTML = qs.map((item,i) => {
+        let st = 'unanswered'
+        if (flags[i]) st = 'flagged'
+        else if (answers[i]) st = 'answered'
+        if (i === idx) st += ' current'
+        return '<div class="cell ' + st + '" data-i="' + i + '">' + item.no + '</div>'
+      }).join('')
+      document.getElementById('grid').querySelectorAll('.cell').forEach(el => {
+        el.onclick = () => { idx = Number(el.getAttribute('data-i')); render() }
+      })
+    }
+
+    document.getElementById('btnEnter').onclick = () => {
+      document.getElementById('loginScreen').classList.add('hidden')
+      document.getElementById('examScreen').classList.remove('hidden')
+      render()
+    }
+    document.getElementById('btnPrev').onclick = () => { if (idx > 0) { idx--; render() } }
+    document.getElementById('btnNext').onclick = () => { if (idx < qs.length - 1) { idx++; render() } }
+    document.getElementById('btnFlag').onclick = () => { flags[idx] = !flags[idx]; render() }
+    document.getElementById('btnUnans').onclick = () => {
+      const n = qs.findIndex((_, i) => !answers[i])
+      if (n >= 0) { idx = n; render() }
+    }
+    document.getElementById('btnFlagged').onclick = () => {
+      const n = qs.findIndex((_, i) => flags[i])
+      if (n >= 0) { idx = n; render() }
+    }
+    document.getElementById('btnFinish').onclick = () => {
+      document.getElementById('dlgBody').textContent = '交卷成功！祝您好运！'
+      document.getElementById('mask').classList.remove('hidden')
+    }
+    document.getElementById('dlgOk').onclick = () => document.getElementById('mask').classList.add('hidden')
+
+    if (/[?&]exam=1/.test(location.search)) {
+      document.getElementById('btnEnter').click()
+    }
+  </script>
+</body>
+</html>

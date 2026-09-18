@@ -1,8 +1,6 @@
 {
   "usingComponents": {},
   "navigationStyle": "custom",
-  "navigationBarTitleText": "国家医学考试系统",
   "disableScroll": true,
-  "pageOrientation": "landscape",
-  "backgroundColor": "#C8C8C8"
+  "backgroundColor": "#5A5A5A"
 }

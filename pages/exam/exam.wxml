@@ -89,12 +89,15 @@
 
   <view class="nav">
     <view class="ops">
-      <button class="win-btn {{flagged ? 'marked' : ''}}" bindtap="onFlag">{{flagged ? '取消标疑' : '标疑'}}</button>
-      <button class="win-btn" bindtap="onJumpUnanswered">转到未答题</button>
-      <button class="win-btn" bindtap="onJumpFlagged">转到标疑题</button>
-      <view class="ops-spacer"></view>
-      <button class="win-btn" bindtap="onPrev">上一题</button>
-      <button class="win-btn" bindtap="onNext">下一题</button>
+      <view class="ops-left">
+        <button class="win-btn {{flagged ? 'marked' : ''}}" bindtap="onFlag">{{flagged ? '取消标疑' : '标疑'}}</button>
+        <button class="win-btn" bindtap="onJumpUnanswered">转到未答题</button>
+        <button class="win-btn" bindtap="onJumpFlagged">转到标疑题</button>
+      </view>
+      <view class="ops-right">
+        <button class="win-btn" bindtap="onPrev">上一题</button>
+        <button class="win-btn" bindtap="onNext">下一题</button>
+      </view>
     </view>
     <view class="grid">
       <view

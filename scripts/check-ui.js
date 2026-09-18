@@ -6,6 +6,10 @@ function assert(cond, msg) {
   if (!cond) throw new Error(msg)
 }
 
+function flatten(src) {
+  return src.replace(/\s+/g, ' ')
+}
+
 const app = JSON.parse(fs.readFileSync(path.join(__dirname, '../app.json'), 'utf8'))
 assert(app.pageOrientation === 'landscape', 'app.json 顶层须 pageOrientation: landscape')
 assert(app.window && app.window.pageOrientation === 'landscape', 'app.json window 须 pageOrientation: landscape')
@@ -25,12 +29,38 @@ assert(app.window && app.window.pageOrientation === 'landscape', 'app.json windo
 const uiSrc = fs.readFileSync(path.join(__dirname, '../utils/ui.js'), 'utf8')
 assert(uiSrc.indexOf('Math.max(w / DESIGN_W') === -1, 'ui.js 不应再 cover scale')
 assert(uiSrc.indexOf('safe-area') !== -1 || uiSrc.indexOf('safeArea') !== -1, 'ui.js 须处理 safeArea')
-assert(fs.readFileSync(path.join(__dirname, '../app.wxss'), 'utf8').indexOf('safe-area-inset') !== -1, 'app.wxss 须含安全区 padding')
+assert(uiSrc.indexOf('estimateOpsFit') !== -1, 'ui.js 须估算底栏按钮横向是否装得下')
+
+const appWxss = fs.readFileSync(path.join(__dirname, '../app.wxss'), 'utf8')
+assert(appWxss.indexOf('safe-area-inset') !== -1, 'app.wxss 须含安全区 padding')
+assert(/button\s*\{[^}]*min-width:\s*0/.test(flatten(appWxss)), 'app.wxss button 须 min-width:0 覆盖微信默认')
+assert(/\.win-btn\s*\{[^}]*min-width:\s*0/.test(flatten(appWxss)), 'app.wxss .win-btn 须 min-width:0')
+
+const examWxml = fs.readFileSync(path.join(__dirname, '../pages/exam/exam.wxml'), 'utf8')
+assert(examWxml.indexOf('class="ops-left"') !== -1, 'exam 底栏须分 ops-left（标疑等可换行）')
+assert(examWxml.indexOf('class="ops-right"') !== -1, 'exam 底栏须分 ops-right（上一题/下一题）')
+assert(examWxml.indexOf('ops-spacer') === -1, '不应再用 spacer 把下一题顶出屏幕')
+const rightChunk = examWxml.match(/class="ops-right"[\s\S]*?<\/view>/)
+assert(rightChunk, '找不到 ops-right 闭合')
+assert(rightChunk[0].indexOf('上一题') !== -1 && rightChunk[0].indexOf('下一题') !== -1, '上一题/下一题必须写在 ops-right 内')
+assert(examWxml.indexOf('bindtap="onPrev"') !== -1 && examWxml.indexOf('bindtap="onNext"') !== -1, '上一题/下一题须可点')
+
+const examWxss = fs.readFileSync(path.join(__dirname, '../pages/exam/exam.wxss'), 'utf8')
+const examFlat = flatten(examWxss)
+const navBlock = examWxss.match(/\.nav\s*\{[^}]+\}/)
+assert(navBlock && /width:\s*100%/.test(navBlock[0]), '.nav 宽度须 100%')
+assert(navBlock && /box-sizing:\s*border-box/.test(navBlock[0]), '.nav 须 box-sizing:border-box')
+assert(/\.ops-left\s*\{[^}]*flex-wrap:\s*wrap/.test(examFlat), 'ops-left 须允许换行')
+assert(/\.ops-left\s*\{[^}]*min-width:\s*0/.test(examFlat), 'ops-left 须 min-width:0，避免把右区挤出')
+assert(/\.ops-right\s*\{[^}]*flex-shrink:\s*0/.test(examFlat), 'ops-right 须 flex-shrink:0')
+assert(/\.ops\s+\.win-btn\s*\{[^}]*min-width:\s*0/.test(examFlat), '底栏按钮须 min-width:0')
+assert(/\.ops-right\s+\.win-btn\s*\{[^}]*flex-shrink:\s*0/.test(examFlat), '上一题/下一题按钮须 flex-shrink:0')
 
 const sizes = [
   { name: 'iPhone14 横屏', windowWidth: 844, windowHeight: 390, safeArea: { left: 47, top: 0, right: 797, bottom: 369 } },
   { name: 'iPhone14 Pro Max 横屏', windowWidth: 926, windowHeight: 428, safeArea: { left: 47, top: 0, right: 879, bottom: 407 } },
   { name: 'iPhone SE 横屏', windowWidth: 667, windowHeight: 375, safeArea: { left: 0, top: 0, right: 667, bottom: 375 } },
+  { name: '窄横屏扣除刘海 inner600', windowWidth: 667, windowHeight: 375, safeArea: { left: 44, top: 0, right: 644, bottom: 375 } },
   { name: 'iPad/桌面', windowWidth: 1280, windowHeight: 800, safeArea: { left: 0, top: 0, right: 1280, bottom: 800 } }
 ]
 
@@ -40,17 +70,68 @@ const results = sizes.map((s) => {
   assert(layout.workH + layout.titleH + layout.navH === layout.innerH, s.name + ' 高度应被标题+工作区+底栏分完')
   assert(layout.qareaH > 0, s.name + ' 题干区高度须为正')
   assert(layout.sideW / layout.innerW >= 0.2 && layout.sideW / layout.innerW <= 0.3, s.name + ' 左栏约 22%~26%')
+  assert(layout.ops && layout.ops.complete, s.name + ' 底栏「下一题」横向装不下: ' + JSON.stringify(layout.ops))
+  assert(layout.ops.rightW + layout.ops.leftMinW + ui.OPS.groupGap <= layout.ops.avail, s.name + ' 右区两按钮+左区最小宽须 ≤ innerW(扣除 nav padding)')
   return {
     name: s.name,
     inner: Math.round(layout.innerW) + 'x' + Math.round(layout.innerH),
     side: Math.round(layout.sideW),
     qareaH: Math.round(layout.qareaH),
     navH: layout.navH,
+    ops: 'right ' + layout.ops.rightW + ' + leftMin ' + layout.ops.leftMinW + ' = ' + layout.ops.needed + ' / avail ' + layout.ops.avail,
     ok: layout.complete
   }
 })
 
 console.log('UI layout OK')
 results.forEach((r) => {
-  console.log(' - ' + r.name + ': inner ' + r.inner + ', sidebar ' + r.side + 'px, qareaH ' + r.qareaH + 'px, navH ' + r.navH + ' => complete')
+  console.log(
+    ' - ' +
+      r.name +
+      ': inner ' +
+      r.inner +
+      ', sidebar ' +
+      r.side +
+      'px, qareaH ' +
+      r.qareaH +
+      'px, navH ' +
+      r.navH +
+      ', ops ' +
+      r.ops +
+      ' => complete'
+  )
 })
+
+console.log('Ops row innerW simulations')
+;[600, 667, 750].forEach((w) => {
+  const fit = ui.estimateOpsFit(w)
+  assert(fit.complete, 'innerW=' + w + ' 下一题无法完整落入可视区: ' + JSON.stringify(fit))
+  const layout = ui.computeLayout({
+    windowWidth: w,
+    windowHeight: 375,
+    safeArea: { left: 0, top: 0, right: w, bottom: 375 }
+  })
+  assert(layout.complete, 'innerW=' + w + ' 整页 complete 失败: ' + JSON.stringify(layout))
+  assert(layout.ops.nextComplete, 'innerW=' + w + ' 下一题须 complete')
+  console.log(
+    ' - innerW=' +
+      w +
+      ': nextW=' +
+      fit.nextW +
+      ' rightW=' +
+      fit.rightW +
+      ' leftMin=' +
+      fit.leftMinW +
+      ' needed=' +
+      fit.needed +
+      ' avail=' +
+      fit.avail +
+      ' rows=' +
+      fit.rows +
+      ' => next complete'
+  )
+})
+
+const legacy = ui.estimateLegacyFiveButtonRow(667, 184)
+assert(!legacy.fits, '回归：微信默认 min-width:184 的五按钮横排在 667 应装不下（否则检测失去意义）')
+console.log(' - legacy 5-btn min-width 184 @667: total ' + legacy.total + ' / avail ' + legacy.avail + ' => overflow (expected)')

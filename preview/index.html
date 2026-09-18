@@ -17,9 +17,14 @@
     .qarea { flex: 1; min-height: 0; overflow: auto; padding: 10px; }
     .opt { display: flex; gap: 8px; padding: 6px; margin-bottom: 4px; border: 2px solid transparent; }
     .opt.on { background: #ffff99; border-color: #1f4b99; }
-    .nav { flex-shrink: 0; background: #ece9e0; border-top: 1px solid #808080; padding: 6px 10px; }
-    .ops { display: flex; gap: 8px; margin-bottom: 6px; }
-    .win-btn { background: #e6e6e6; border: 2px solid #fff; border-right-color: #6e6e6e; border-bottom-color: #6e6e6e; height: 28px; padding: 0 12px; font-family: inherit; }
+    button { min-width: 0; width: auto; display: inline-flex; align-items: center; justify-content: center; }
+    .nav { flex-shrink: 0; width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; background: #ece9e0; border-top: 1px solid #808080; padding: 6px 10px; }
+    .ops { display: flex; flex-direction: row; align-items: flex-start; justify-content: space-between; width: 100%; min-width: 0; margin-bottom: 6px; }
+    .ops-left { flex: 1 1 auto; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; }
+    .ops-right { flex: 0 0 auto; flex-shrink: 0; display: flex; flex-wrap: nowrap; align-items: center; margin-left: 8px; }
+    .win-btn { background: #e6e6e6; border: 2px solid #fff; border-right-color: #6e6e6e; border-bottom-color: #6e6e6e; height: 26px; padding: 0 8px; font-size: 12px; font-family: inherit; min-width: 0; width: auto; margin: 0 6px 4px 0; }
+    .ops-right .win-btn { flex-shrink: 0; margin-bottom: 0; }
+    .ops-right .win-btn:last-child { margin-right: 0; }
     .grid { display: flex; flex-wrap: wrap; }
     .cell { min-width: 28px; height: 20px; margin: 0 4px 4px 0; background: #e00000; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; }
     .desk { flex: 1; background: #3a6ea5; display: flex; align-items: center; justify-content: center; padding: 8px; }
@@ -70,12 +75,15 @@
     </div>
     <div class="nav">
       <div class="ops">
-        <button class="win-btn">标疑</button>
-        <button class="win-btn">转到未答题</button>
-        <button class="win-btn">转到标疑题</button>
-        <span style="flex:1"></span>
-        <button class="win-btn">上一题</button>
-        <button class="win-btn">下一题</button>
+        <div class="ops-left">
+          <button class="win-btn">标疑</button>
+          <button class="win-btn">转到未答题</button>
+          <button class="win-btn">转到标疑题</button>
+        </div>
+        <div class="ops-right">
+          <button class="win-btn">上一题</button>
+          <button class="win-btn">下一题</button>
+        </div>
       </div>
       <div class="grid">
         <div class="cell">1</div><div class="cell">2</div><div class="cell">3</div><div class="cell">4</div><div class="cell">5</div>

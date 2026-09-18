@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>ops-fit measure</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: SimSun, "Songti SC", serif; background: #333; color: #fff; }
+    button {
+      margin: 0;
+      padding: 0;
+      background: none;
+      font-size: inherit;
+      line-height: inherit;
+      font-family: inherit;
+      min-width: 0;
+      width: auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .case { margin: 12px; background: #111; padding: 8px; }
+    .label { font-size: 12px; margin-bottom: 4px; }
+    .stage { background: #d4d0c8; color: #000; overflow: hidden; }
+    .nav {
+      flex-shrink: 0;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+      background: #ece9e0;
+      border-top: 1px solid #808080;
+      padding: 6px 10px 4px;
+    }
+    .ops {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: space-between;
+      width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+      margin-bottom: 6px;
+    }
+    .ops-left {
+      flex: 1 1 auto;
+      min-width: 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .ops-right {
+      flex: 0 0 auto;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      margin-left: 8px;
+    }
+    .win-btn {
+      background: #e6e6e6;
+      color: #000;
+      border-style: solid;
+      border-width: 2px;
+      border-color: #fff #6e6e6e #6e6e6e #fff;
+      min-width: 0;
+      width: auto;
+      padding: 0 8px;
+      font-size: 12px;
+      height: 26px;
+      line-height: 22px;
+      margin: 0 6px 4px 0;
+      border-radius: 0;
+      flex-shrink: 0;
+    }
+    .ops-right .win-btn { flex-shrink: 0; margin-bottom: 0; }
+    .ops-right .win-btn:last-child { margin-right: 0; }
+    .legacy .win-btn { min-width: 184px; padding: 0 12px; }
+    .legacy .ops { flex-wrap: nowrap; }
+    pre { white-space: pre-wrap; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div id="cases"></div>
+  <pre id="report">measuring…</pre>
+  <script>
+    function opsHtml(legacy) {
+      if (legacy) {
+        return '<div class="nav"><div class="ops">' +
+          '<button class="win-btn">标疑</button>' +
+          '<button class="win-btn">转到未答题</button>' +
+          '<button class="win-btn">转到标疑题</button>' +
+          '<span style="flex:1"></span>' +
+          '<button class="win-btn">上一题</button>' +
+          '<button class="win-btn" data-next>下一题</button></div></div>'
+      }
+      return '<div class="nav"><div class="ops">' +
+        '<div class="ops-left">' +
+        '<button class="win-btn">标疑</button>' +
+        '<button class="win-btn">转到未答题</button>' +
+        '<button class="win-btn">转到标疑题</button></div>' +
+        '<div class="ops-right">' +
+        '<button class="win-btn">上一题</button>' +
+        '<button class="win-btn" data-next>下一题</button></div></div></div>'
+    }
+
+    const cases = [
+      { id: 'w600', w: 600, legacy: false },
+      { id: 'w667', w: 667, legacy: false },
+      { id: 'w750', w: 750, legacy: false },
+      { id: 'legacy667', w: 667, legacy: true }
+    ]
+    const root = document.getElementById('cases')
+    cases.forEach(function (c) {
+      const wrap = document.createElement('div')
+      wrap.className = 'case'
+      wrap.innerHTML = '<div class="label">' + c.id + '</div><div class="stage' + (c.legacy ? ' legacy' : '') + '" id="' + c.id + '" style="width:' + c.w + 'px">' + opsHtml(c.legacy) + '</div>'
+      root.appendChild(wrap)
+    })
+
+    function measure() {
+      const results = cases.map(function (c) {
+        const box = document.getElementById(c.id)
+        const nav = box.querySelector('.nav')
+        const next = box.querySelector('[data-next]')
+        const nr = next.getBoundingClientRect()
+        const vr = nav.getBoundingClientRect()
+        const complete = nr.right <= vr.right + 1 && nr.left >= vr.left - 1 && nr.width > 20
+        return {
+          id: c.id,
+          w: c.w,
+          legacy: c.legacy,
+          nextLeft: Math.round(nr.left),
+          nextRight: Math.round(nr.right),
+          nextWidth: Math.round(nr.width),
+          navLeft: Math.round(vr.left),
+          navRight: Math.round(vr.right),
+          complete: complete
+        }
+      })
+      document.body.setAttribute('data-report', JSON.stringify(results))
+      document.getElementById('report').textContent = JSON.stringify(results, null, 2)
+    }
+    window.addEventListener('load', measure)
+  </script>
+</body>
+</html>

@@ -1,3 +1,4 @@
+<page-meta page-orientation="landscape" />
 <view class="viewport">
   <view class="stage exam-stage" style="{{stageStyle}}">
     <view class="titlebar">

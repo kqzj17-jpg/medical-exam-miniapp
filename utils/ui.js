@@ -28,7 +28,10 @@ function computeStage(sys) {
 }
 
 function applyStage(page) {
-  let sys = { windowWidth: 375, windowHeight: 667 }
+  if (typeof wx !== 'undefined' && wx.setPageOrientation) {
+    wx.setPageOrientation({ orientation: 'landscape' })
+  }
+  let sys = { windowWidth: 667, windowHeight: 375 }
   try {
     sys = wx.getSystemInfoSync() || sys
   } catch (e) {}
@@ -62,7 +65,7 @@ function unbindStage(page) {
 module.exports = {
   DESIGN_W,
   DESIGN_H,
-  DEFAULT_STAGE_STYLE: computeStage({ windowWidth: 375, windowHeight: 667 }).stageStyle,
+  DEFAULT_STAGE_STYLE: computeStage({ windowWidth: 667, windowHeight: 375 }).stageStyle,
   computeStage,
   applyStage,
   bindStage,

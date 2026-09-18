@@ -1,8 +1,21 @@
+const fs = require('fs')
+const path = require('path')
 const ui = require('../utils/ui.js')
 
 function assert(cond, msg) {
   if (!cond) throw new Error(msg)
 }
+
+const app = JSON.parse(fs.readFileSync(path.join(__dirname, '../app.json'), 'utf8'))
+assert(app.pageOrientation === 'landscape', 'app.json 顶层须 pageOrientation: landscape')
+assert(app.window && app.window.pageOrientation === 'landscape', 'app.json window 须 pageOrientation: landscape')
+
+;['index', 'login', 'exam', 'result'].forEach((name) => {
+  const json = JSON.parse(fs.readFileSync(path.join(__dirname, '../pages/' + name + '/' + name + '.json'), 'utf8'))
+  assert(json.pageOrientation === 'landscape', name + ' 页面 json 须横屏')
+  const wxml = fs.readFileSync(path.join(__dirname, '../pages/' + name + '/' + name + '.wxml'), 'utf8')
+  assert(wxml.indexOf('page-orientation="landscape"') !== -1, name + ' wxml 须含 page-meta landscape')
+})
 
 const phone = ui.computeStage({ windowWidth: 375, windowHeight: 667 })
 assert(Math.abs(phone.scale - 375 / 1280) < 1e-6, '竖屏应按宽度等比缩放')

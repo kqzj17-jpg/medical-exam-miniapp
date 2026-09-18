@@ -1,31 +1,29 @@
 <page-meta page-orientation="landscape" />
-<view class="viewport">
-  <view class="stage" style="{{stageStyle}}">
-    <view class="titlebar">
-      <text>国家医学考试系统</text>
-      <text class="demo">演示</text>
-    </view>
-    <view class="desk">
-      <view class="win notice-win">
-        <view class="titlebar">国家医学考试系统 - 考生须知（演示）</view>
-        <view class="notice-body">
-          <view class="col">
-            <view class="h">作答系统说明</view>
-            <view class="p">开始考试之后，考生进入作答系统。作答系统分为上下两个区域：上方为考生信息栏和作答区域，下方为试题导航列表。</view>
-            <view class="p">1. 登录：准考证号 + 证件号</view>
-            <view class="p">2. 左侧核对考生信息、剩余时间、未答题数、标疑题数</view>
-            <view class="p">3. 右侧按题型作答；底部题号红/灰/黄分别表示未答/已答/标疑</view>
-            <view class="p">4. 分段考试：进入下一段后本段不可回看、不可修改</view>
-            <view class="p">5. 完成考试后交卷，成功提示「交卷成功！祝您好运！」</view>
-          </view>
-          <view class="col">
-            <view class="h">重要说明</view>
-            <view class="p warn">本小程序为学员练习演示，不是国家医学考试中心官方产品。题目为本地假数据，不接后端或真实鉴权。</view>
-            <view class="p">界面按官方机考 1280×800 设计。任意模拟器尺寸都会整页缩放看全；建议自定义 1280×800 以 1:1 查看。</view>
-            <view class="p">默认体验时长 30 分钟，演示版可随时交卷；倒计时结束自动交卷。</view>
-            <view class="btns">
-              <button class="win-btn" bindtap="goLogin">进入登录</button>
-            </view>
+<view class="shell" style="{{shellStyle}}">
+  <view class="titlebar" style="{{titlebarStyle}}">
+    <text>国家医学考试系统</text>
+    <text class="demo">演示</text>
+  </view>
+  <view class="desk">
+    <view class="win notice-win">
+      <view class="titlebar">国家医学考试系统 - 考生须知（演示）</view>
+      <view class="notice-body">
+        <view class="col">
+          <view class="h">作答系统说明</view>
+          <view class="p">开始考试之后，考生进入作答系统。作答系统分为上下两个区域：上方为考生信息栏和作答区域，下方为试题导航列表。</view>
+          <view class="p">1. 登录：准考证号 + 证件号</view>
+          <view class="p">2. 左侧核对考生信息、剩余时间、未答题数、标疑题数</view>
+          <view class="p">3. 右侧按题型作答；底部题号红/灰/黄分别表示未答/已答/标疑</view>
+          <view class="p">4. 分段考试：进入下一段后本段不可回看、不可修改</view>
+          <view class="p">5. 完成考试后交卷，成功提示「交卷成功！祝您好运！」</view>
+        </view>
+        <view class="col">
+          <view class="h">重要说明</view>
+          <view class="p warn">本小程序为学员练习演示，不是国家医学考试中心官方产品。题目为本地假数据，不接后端或真实鉴权。</view>
+          <view class="p">界面为横屏流式布局，避开刘海与底部安全区。修改后请重新编译，真机请重新预览扫码。</view>
+          <view class="p">默认体验时长 30 分钟，演示版可随时交卷；倒计时结束自动交卷。</view>
+          <view class="btns">
+            <button class="win-btn" bindtap="goLogin">进入登录</button>
           </view>
         </view>
       </view>

@@ -1,37 +1,35 @@
 <page-meta page-orientation="landscape" />
-<view class="viewport">
-  <view class="stage" style="{{stageStyle}}">
-    <view class="titlebar">
-      <text>国家医学考试系统</text>
-      <text class="demo">演示</text>
-    </view>
-    <view class="desk">
-      <view class="win result-win">
-        <view class="titlebar">国家医学考试系统 - 考试成绩（演示）</view>
-        <view class="result-body">
-          <view class="hero">
-            <view class="ok">交卷成功！祝您好运！</view>
-            <view class="score">{{result.score}}</view>
-            <view class="score-lab">演示成绩（百分制）</view>
-          </view>
-          <view class="table">
-            <view class="row"><text class="k">姓名</text><text class="v">{{result.candidate.name}}</text></view>
-            <view class="row"><text class="k">准考证号</text><text class="v">{{result.candidate.ticketNo}}</text></view>
-            <view class="row"><text class="k">考试科目</text><text class="v">{{result.candidate.examName}}</text></view>
-            <view class="row"><text class="k">正确率</text><text class="v">{{result.correct}} / {{result.total}}（{{result.accuracyText}}）</text></view>
-            <view class="row"><text class="k">用时</text><text class="v">{{result.usedText}}</text></view>
-            <view class="row"><text class="k">未答题</text><text class="v">{{result.unanswered}} 道</text></view>
-            <view class="row" wx:if="{{result.autoSubmitted}}"><text class="k">交卷方式</text><text class="v">倒计时结束自动交卷</text></view>
-            <view class="row" wx:for="{{sectionStats}}" wx:key="id">
-              <text class="k">{{item.name}}</text>
-              <text class="v">{{item.correct}} / {{item.total}}</text>
-            </view>
+<view class="shell" style="{{shellStyle}}">
+  <view class="titlebar" style="{{titlebarStyle}}">
+    <text>国家医学考试系统</text>
+    <text class="demo">演示</text>
+  </view>
+  <view class="desk">
+    <view class="win result-win">
+      <view class="titlebar">国家医学考试系统 - 考试成绩（演示）</view>
+      <view class="result-body">
+        <view class="hero">
+          <view class="ok">交卷成功！祝您好运！</view>
+          <view class="score">{{result.score}}</view>
+          <view class="score-lab">演示成绩（百分制）</view>
+        </view>
+        <view class="table">
+          <view class="row"><text class="k">姓名</text><text class="v">{{result.candidate.name}}</text></view>
+          <view class="row"><text class="k">准考证号</text><text class="v">{{result.candidate.ticketNo}}</text></view>
+          <view class="row"><text class="k">考试科目</text><text class="v">{{result.candidate.examName}}</text></view>
+          <view class="row"><text class="k">正确率</text><text class="v">{{result.correct}} / {{result.total}}（{{result.accuracyText}}）</text></view>
+          <view class="row"><text class="k">用时</text><text class="v">{{result.usedText}}</text></view>
+          <view class="row"><text class="k">未答题</text><text class="v">{{result.unanswered}} 道</text></view>
+          <view class="row" wx:if="{{result.autoSubmitted}}"><text class="k">交卷方式</text><text class="v">倒计时结束自动交卷</text></view>
+          <view class="row" wx:for="{{sectionStats}}" wx:key="id">
+            <text class="k">{{item.name}}</text>
+            <text class="v">{{item.correct}} / {{item.total}}</text>
           </view>
         </view>
-        <view class="ops">
-          <button class="win-btn" bindtap="goHome">返回首页</button>
-          <button class="win-btn" bindtap="retry">再练一次</button>
-        </view>
+      </view>
+      <view class="ops">
+        <button class="win-btn" bindtap="goHome">返回首页</button>
+        <button class="win-btn" bindtap="retry">再练一次</button>
       </view>
     </view>
   </view>

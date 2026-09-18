@@ -14,27 +14,43 @@ assert(app.window && app.window.pageOrientation === 'landscape', 'app.json windo
   const json = JSON.parse(fs.readFileSync(path.join(__dirname, '../pages/' + name + '/' + name + '.json'), 'utf8'))
   assert(json.pageOrientation === 'landscape', name + ' 页面 json 须横屏')
   const wxml = fs.readFileSync(path.join(__dirname, '../pages/' + name + '/' + name + '.wxml'), 'utf8')
+  const wxss = fs.readFileSync(path.join(__dirname, '../pages/' + name + '/' + name + '.wxss'), 'utf8')
+  const js = fs.readFileSync(path.join(__dirname, '../pages/' + name + '/' + name + '.js'), 'utf8')
   assert(wxml.indexOf('page-orientation="landscape"') !== -1, name + ' wxml 须含 page-meta landscape')
-  assert(wxml.indexOf('fit-hint') === -1, name + ' 不应再显示缩放提示')
+  assert(wxml.indexOf('transform:scale') === -1, name + ' wxml 不应再 scale')
+  assert(wxss.indexOf('transform:scale') === -1, name + ' wxss 不应再 scale')
+  assert(js.indexOf('DEFAULT_STAGE_STYLE') === -1, name + ' 不应再使用固定舞台')
 })
 
-const phone = ui.computeStage({ windowWidth: 375, windowHeight: 667 })
-assert(phone.scale === Math.max(375 / 1280, 667 / 800), '竖屏应为 cover 统一 scale')
-assert(phone.stageStyle.indexOf('scale(' + phone.scale + ')') !== -1, 'scaleX 与 scaleY 必须相同')
-assert(phone.stageStyle.indexOf(',') === -1 || phone.stageStyle.indexOf('scale(') < phone.stageStyle.lastIndexOf('scale('), '不得使用分开的 scaleX,scaleY')
+const uiSrc = fs.readFileSync(path.join(__dirname, '../utils/ui.js'), 'utf8')
+assert(uiSrc.indexOf('Math.max(w / DESIGN_W') === -1, 'ui.js 不应再 cover scale')
+assert(uiSrc.indexOf('safe-area') !== -1 || uiSrc.indexOf('safeArea') !== -1, 'ui.js 须处理 safeArea')
+assert(fs.readFileSync(path.join(__dirname, '../app.wxss'), 'utf8').indexOf('safe-area-inset') !== -1, 'app.wxss 须含安全区 padding')
 
-const land = ui.computeStage({ windowWidth: 667, windowHeight: 375 })
-const expectedLand = Math.max(667 / 1280, 375 / 800)
-assert(Math.abs(land.scale - expectedLand) < 1e-9, '横屏应为 cover 统一 scale')
-assert(land.scale * 1280 >= 667 - 1e-6, 'cover 应盖住宽度')
-assert(land.scale * 800 >= 375 - 1e-6, 'cover 应盖住高度')
+const sizes = [
+  { name: 'iPhone14 横屏', windowWidth: 844, windowHeight: 390, safeArea: { left: 47, top: 0, right: 797, bottom: 369 } },
+  { name: 'iPhone14 Pro Max 横屏', windowWidth: 926, windowHeight: 428, safeArea: { left: 47, top: 0, right: 879, bottom: 407 } },
+  { name: 'iPhone SE 横屏', windowWidth: 667, windowHeight: 375, safeArea: { left: 0, top: 0, right: 667, bottom: 375 } },
+  { name: 'iPad/桌面', windowWidth: 1280, windowHeight: 800, safeArea: { left: 0, top: 0, right: 1280, bottom: 800 } }
+]
 
-const pc = ui.computeStage({ windowWidth: 1280, windowHeight: 800 })
-assert(pc.scale === 1, '1280×800 应为 1:1')
-assert(pc.left === 0 && pc.top === 0, '1:1 无偏移')
+const results = sizes.map((s) => {
+  const layout = ui.computeLayout(s)
+  assert(layout.complete, s.name + ' 关键区域无法完整排布: ' + JSON.stringify(layout))
+  assert(layout.workH + layout.titleH + layout.navH === layout.innerH, s.name + ' 高度应被标题+工作区+底栏分完')
+  assert(layout.qareaH > 0, s.name + ' 题干区高度须为正')
+  assert(layout.sideW / layout.innerW >= 0.2 && layout.sideW / layout.innerW <= 0.3, s.name + ' 左栏约 22%~26%')
+  return {
+    name: s.name,
+    inner: Math.round(layout.innerW) + 'x' + Math.round(layout.innerH),
+    side: Math.round(layout.sideW),
+    qareaH: Math.round(layout.qareaH),
+    navH: layout.navH,
+    ok: layout.complete
+  }
+})
 
-console.log('UI fit OK', {
-  phone: { scale: Number(phone.scale.toFixed(3)), left: phone.left, top: phone.top },
-  land: { scale: Number(land.scale.toFixed(3)), left: land.left, top: land.top },
-  pc: { scale: pc.scale }
+console.log('UI layout OK')
+results.forEach((r) => {
+  console.log(' - ' + r.name + ': inner ' + r.inner + ', sidebar ' + r.side + 'px, qareaH ' + r.qareaH + 'px, navH ' + r.navH + ' => complete')
 })

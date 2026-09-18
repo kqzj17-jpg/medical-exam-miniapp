@@ -1,62 +1,63 @@
-.exam-stage {
-  display: flex;
-  flex-direction: column;
-  background: #d4d0c8;
+.exam-shell {
+  position: relative;
 }
 
-.upper {
-  height: 616px;
+.workspace {
+  flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: row;
-  min-height: 0;
+  width: 100%;
 }
 
 .sidebar {
-  width: 248px;
-  height: 616px;
+  width: 24%;
+  min-width: 168px;
+  max-width: 280px;
+  height: 100%;
   flex-shrink: 0;
   background: #ece9e0;
   border-right: 1px solid #808080;
-  padding: 8px 10px;
-  overflow: hidden;
+  padding: 6px 8px;
+  overflow-y: auto;
 }
 
 .photo {
-  width: 92px;
-  height: 116px;
-  margin: 0 auto 8px;
+  width: 64px;
+  height: 80px;
+  margin: 0 auto 6px;
   background: #c8c8c8;
   border: 1px solid #666;
   position: relative;
 }
 
 .sil-head {
-  width: 28px;
-  height: 28px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   background: #8e97a0;
   position: absolute;
-  left: 32px;
-  top: 14px;
+  left: 21px;
+  top: 10px;
 }
 
 .sil-body {
-  width: 52px;
-  height: 40px;
-  border-radius: 22px 22px 0 0;
+  width: 40px;
+  height: 28px;
+  border-radius: 16px 16px 0 0;
   background: #8e97a0;
   position: absolute;
-  left: 20px;
-  top: 46px;
+  left: 12px;
+  top: 34px;
 }
 
 .photo-cap {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 2px;
+  bottom: 1px;
   text-align: center;
-  font-size: 11px;
+  font-size: 10px;
   color: #555;
 }
 
@@ -65,17 +66,18 @@
 }
 
 .lab {
-  font-size: 12px;
+  font-size: 11px;
   color: #333;
 }
 
 .val {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
+  word-break: break-all;
 }
 
 .val.num {
-  font-size: 16px;
+  font-size: 15px;
 }
 
 .remain {
@@ -83,7 +85,7 @@
   background: #ff9ec8;
   border: 1px solid #cc5a8a;
   text-align: center;
-  font-size: 22px;
+  font-size: 18px;
   font-weight: 700;
   letter-spacing: 1px;
   padding: 3px 0;
@@ -96,7 +98,7 @@
 
 .side-btns {
   display: flex;
-  margin: 8px 0 8px;
+  margin: 6px 0;
 }
 
 .side-btns .win-btn {
@@ -112,9 +114,9 @@
 
 .rule {
   color: #cc0000;
-  font-size: 12px;
+  font-size: 11px;
   line-height: 1.35;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .sec-list {
@@ -123,8 +125,8 @@
 }
 
 .sec {
-  font-size: 13px;
-  padding: 5px 8px;
+  font-size: 12px;
+  padding: 4px 8px;
 }
 
 .sec.on {
@@ -138,71 +140,75 @@
 
 .main {
   flex: 1;
-  width: 0;
-  height: 616px;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
   display: flex;
   flex-direction: column;
   background: #fff;
 }
 
 .typebar {
-  height: 46px;
-  padding: 6px 12px;
+  flex-shrink: 0;
+  padding: 4px 10px;
   background: #f3f3f3;
   border-bottom: 1px solid #b0b0b0;
   display: flex;
   align-items: flex-start;
-  flex-shrink: 0;
 }
 
 .type-name {
   flex-shrink: 0;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   color: #1f4b99;
-  margin-right: 12px;
+  margin-right: 10px;
 }
 
 .type-hint {
-  font-size: 13px;
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
   color: #333;
   line-height: 1.35;
 }
 
 .qarea {
-  height: 570px;
-  padding: 10px 16px;
+  flex: 1;
+  height: 0;
+  min-height: 0;
+  padding: 8px 12px;
 }
 
 .case {
-  margin-bottom: 10px;
-  padding: 8px 10px;
+  margin-bottom: 8px;
+  padding: 6px 8px;
   background: #f7f7f7;
   border: 1px solid #c8c8c8;
 }
 
 .case-title {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   margin-bottom: 4px;
 }
 
 .case-stem {
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.5;
 }
 
 .stem {
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.5;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .opt {
   display: flex;
   align-items: flex-start;
-  padding: 6px 8px;
-  margin-bottom: 6px;
+  padding: 5px 6px;
+  margin-bottom: 4px;
   border: 2px solid transparent;
 }
 
@@ -212,52 +218,51 @@
 }
 
 .chk {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   border: 1px solid #333;
   background: #fff;
   margin-right: 8px;
   margin-top: 2px;
   flex-shrink: 0;
   text-align: center;
-  font-size: 12px;
-  line-height: 14px;
+  font-size: 11px;
+  line-height: 12px;
 }
 
 .opt-text {
   flex: 1;
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.4;
 }
 
 .locked-box {
-  padding: 80px 20px;
+  padding: 40px 16px;
   text-align: center;
 }
 
 .lock-title {
-  font-size: 28px;
+  font-size: 22px;
   font-weight: 700;
   color: #cc0000;
 }
 
 .lock-desc {
-  margin-top: 10px;
-  font-size: 14px;
+  margin-top: 8px;
+  font-size: 13px;
 }
 
 .nav {
-  height: 152px;
+  flex-shrink: 0;
   background: #ece9e0;
   border-top: 1px solid #808080;
-  padding: 8px 12px;
-  flex-shrink: 0;
+  padding: 6px 10px 4px;
 }
 
 .ops {
   display: flex;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .ops .win-btn {
@@ -275,18 +280,17 @@
 .grid {
   display: flex;
   flex-wrap: wrap;
-  height: 78px;
-  overflow: hidden;
 }
 
 .cell {
-  width: 36px;
-  height: 22px;
+  min-width: 28px;
+  height: 20px;
+  padding: 0 4px;
   margin: 0 4px 4px 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 11px;
   color: #fff;
 }
 
@@ -308,7 +312,7 @@
 }
 
 .legend {
-  font-size: 12px;
+  font-size: 11px;
   color: #333;
 }
 
@@ -326,7 +330,8 @@
 }
 
 .dlg {
-  width: 460px;
+  width: 72%;
+  max-width: 460px;
   background: #d4d0c8;
   border-style: solid;
   border-width: 2px;
@@ -347,7 +352,7 @@
   background: #fff;
   font-size: 14px;
   line-height: 1.6;
-  min-height: 72px;
+  min-height: 64px;
 }
 
 .dlg-ops {

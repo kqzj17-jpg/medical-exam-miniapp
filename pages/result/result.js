@@ -14,11 +14,12 @@ Page({
       autoSubmitted: false
     },
     sectionStats: [],
-    stageStyle: ui.DEFAULT_STAGE_STYLE
+    shellStyle: '',
+    titlebarStyle: ''
   },
 
   onLoad() {
-    ui.bindStage(this)
+    ui.bindShell(this)
     const app = getApp()
     const result = app.globalData.result || exam.loadResult()
     if (!result) {
@@ -38,15 +39,15 @@ Page({
   },
 
   onShow() {
-    ui.applyStage(this)
+    ui.applyShell(this)
   },
 
   onResize() {
-    ui.applyStage(this)
+    ui.applyShell(this)
   },
 
   onUnload() {
-    ui.unbindStage(this)
+    ui.unbindShell(this)
   },
 
   retry() {

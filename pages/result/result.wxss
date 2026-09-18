@@ -1,5 +1,6 @@
 .result-win {
-  width: 860px;
+  width: 90%;
+  max-width: 860px;
 }
 
 .result-body {

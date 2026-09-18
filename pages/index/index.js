@@ -2,23 +2,24 @@ const ui = require('../../utils/ui.js')
 
 Page({
   data: {
-    stageStyle: ui.DEFAULT_STAGE_STYLE
+    shellStyle: '',
+    titlebarStyle: ''
   },
 
   onLoad() {
-    ui.bindStage(this)
+    ui.bindShell(this)
   },
 
   onShow() {
-    ui.applyStage(this)
+    ui.applyShell(this)
   },
 
   onResize() {
-    ui.applyStage(this)
+    ui.applyShell(this)
   },
 
   onUnload() {
-    ui.unbindStage(this)
+    ui.unbindShell(this)
   },
 
   goLogin() {

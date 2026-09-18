@@ -1,5 +1,6 @@
 .login-win {
-  width: 720px;
+  width: 86%;
+  max-width: 720px;
 }
 
 .login-body {

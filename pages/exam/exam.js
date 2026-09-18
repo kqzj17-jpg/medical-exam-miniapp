@@ -3,7 +3,8 @@ const ui = require('../../utils/ui.js')
 
 Page({
   data: {
-    stageStyle: ui.DEFAULT_STAGE_STYLE,
+    shellStyle: '',
+    titlebarStyle: '',
     remainingText: '00:30:00',
     timeUrgent: false,
     unansweredCount: 0,
@@ -38,7 +39,7 @@ Page({
   submitting: false,
 
   onLoad() {
-    ui.bindStage(this)
+    ui.bindShell(this)
     const app = getApp()
     const session = app.globalData.session || exam.loadSession()
     const candidate = app.globalData.candidate || exam.loadCandidate()
@@ -58,15 +59,15 @@ Page({
   },
 
   onShow() {
-    ui.applyStage(this)
+    ui.applyShell(this)
   },
 
   onResize() {
-    ui.applyStage(this)
+    ui.applyShell(this)
   },
 
   onUnload() {
-    ui.unbindStage(this)
+    ui.unbindShell(this)
     this.clearTimer()
   },
 

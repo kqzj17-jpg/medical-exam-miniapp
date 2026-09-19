@@ -1,0 +1,6 @@
+{
+  "description": "本地私有配置，可不提交。appid 可在此覆盖为你的测试号。",
+  "projectname": "medical-exam-miniapp",
+  "libVersion": "3.5.5",
+  "condition": {}
+}

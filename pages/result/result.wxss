@@ -1,0 +1,162 @@
+.result-shell {
+  font-family: "PingFang SC", -apple-system, "Noto Sans SC", sans-serif;
+}
+
+.result-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  padding: 12px 14px 4px;
+}
+
+.hero {
+  width: 260px;
+  flex-shrink: 0;
+  padding: 4px 14px 8px 2px;
+  overflow-y: auto;
+}
+
+.ok {
+  font-size: 13px;
+  color: #1b4f9c;
+  font-weight: 650;
+}
+
+.score {
+  font-size: 56px;
+  font-weight: 700;
+  color: #1b4f9c;
+  line-height: 1.05;
+  margin: 4px 0 2px;
+}
+
+.score-lab {
+  font-size: 11px;
+  color: #667085;
+  margin-bottom: 10px;
+}
+
+.table {
+  background: #fff;
+  border: 1px solid #e4e8f0;
+  border-radius: 12px;
+  padding: 4px 12px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  padding: 7px 0;
+  border-bottom: 1px solid #edf0f5;
+  font-size: 12px;
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.k {
+  color: #667085;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.v {
+  font-weight: 650;
+  text-align: right;
+  min-width: 0;
+  word-break: break-all;
+}
+
+.review-wrap {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid #e4e8f0;
+  border-radius: 12px;
+}
+
+.review-head {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  border-bottom: 1px solid #edf0f5;
+  background: #f7f9fc;
+  border-radius: 12px 12px 0 0;
+}
+
+.review-title {
+  font-size: 14px;
+  font-weight: 650;
+  color: #1b4f9c;
+}
+
+.review-meta {
+  margin-left: 10px;
+  font-size: 12px;
+  color: #667085;
+  flex: 1;
+}
+
+.review {
+  flex: 1;
+  height: 0;
+  min-height: 0;
+  padding: 8px 12px 10px;
+}
+
+.review-empty {
+  font-size: 13px;
+  color: #667085;
+  padding: 16px 6px;
+}
+
+.rev {
+  padding: 8px 0;
+  border-bottom: 1px solid #edf0f5;
+}
+
+.rev-no {
+  font-size: 13px;
+  line-height: 1.45;
+  margin-bottom: 4px;
+}
+
+.rev-line {
+  font-size: 12px;
+  color: #667085;
+}
+
+.rev-ans {
+  margin-left: 12px;
+  color: #1b4f9c;
+  font-weight: 650;
+}
+
+.rev.wrong .rev-line,
+.rev.miss .rev-line {
+  color: #b42318;
+}
+
+.rev-exp {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #5b6472;
+  line-height: 1.45;
+}
+
+.ops {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px 14px 12px;
+  flex-shrink: 0;
+}
+
+.ops .win-btn {
+  margin-left: 10px;
+  min-width: 88px;
+}

@@ -1,0 +1,49 @@
+<page-meta page-orientation="portrait" />
+<view class="shell portrait-shell" style="{{shellStyle}}">
+  <view class="titlebar" style="{{titlebarStyle}}">
+    <text>{{productName}}</text>
+    <text class="demo">{{productTag}}</text>
+  </view>
+  <scroll-view class="portrait-body" scroll-y enhanced show-scrollbar="{{false}}">
+    <view class="hero">
+      <view class="emblem">仿</view>
+      <view class="hero-name">{{productName}}</view>
+      <view class="hero-sub">本地仿真练习 · 演示数据</view>
+    </view>
+
+    <view class="card">
+      <view class="h">作答说明</view>
+      <view class="p lead">登录后进入横屏作答界面：上方为考生信息与题目，下方为试题导航。</view>
+      <view class="step">
+        <text class="n">1</text>
+        <text class="p">登录：授权微信头像、昵称与手机号（开发工具可用演示模式）</text>
+      </view>
+      <view class="step">
+        <text class="n">2</text>
+        <text class="p">左侧核对信息、剩余时间、未答题、标疑题</text>
+      </view>
+      <view class="step">
+        <text class="n">3</text>
+        <text class="p">底部题号红 / 灰 / 黄表示未答 / 已答 / 标疑</text>
+      </view>
+      <view class="step">
+        <text class="n">4</text>
+        <text class="p">分段练习：进入下一段后本段不可回看、不可修改</text>
+      </view>
+      <view class="step">
+        <text class="n">5</text>
+        <text class="p">交卷后可查看成绩与错题回顾</text>
+      </view>
+    </view>
+
+    <view class="card note">
+      <view class="h">使用说明</view>
+      <view class="p warn">题目、成绩与登录均为演示数据，不连接后端，也不用于真实考核。</view>
+      <view class="p">说明页与登录为竖屏。授权后进入作答自动横屏。默认 30 分钟，可随时交卷。</view>
+      <view class="p">改代码后请重新编译；真机请重新预览扫码。</view>
+    </view>
+  </scroll-view>
+  <view class="portrait-foot">
+    <button class="cta" bindtap="goLogin">进入登录</button>
+  </view>
+</view>

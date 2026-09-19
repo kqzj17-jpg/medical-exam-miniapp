@@ -1,0 +1,56 @@
+<page-meta page-orientation="portrait" />
+<view class="shell portrait-shell" style="{{shellStyle}}">
+  <view class="titlebar" style="{{titlebarStyle}}">
+    <text>{{productName}}</text>
+    <text class="demo">{{productTag}}</text>
+  </view>
+  <scroll-view class="portrait-body" scroll-y enhanced show-scrollbar="{{false}}">
+    <view class="hero">
+      <button class="avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+        <image wx:if="{{avatarUrl}}" class="avatar" src="{{avatarUrl}}" mode="aspectFill" />
+        <view wx:else class="emblem">仿</view>
+      </button>
+      <view class="avatar-tip">点击选择微信头像</view>
+      <view class="hero-name">{{productName}}</view>
+      <view class="hero-sub">授权头像、昵称与手机号后进入横屏作答</view>
+    </view>
+
+    <view class="card">
+      <view class="field">
+        <view class="lab">微信昵称</view>
+        <input
+          class="inp"
+          type="nickname"
+          value="{{nickname}}"
+          bindblur="onNickname"
+          bindinput="onNicknameInput"
+          bindnicknamereview="onNicknameReview"
+          adjust-position
+          placeholder="点击填写微信昵称"
+        />
+      </view>
+
+      <view class="field last">
+        <view class="lab">手机号</view>
+        <view class="phone-box">
+          <view class="phone-val">
+            <text>{{phoneMasked || '未授权'}}</text>
+            <text class="tag" wx:if="{{phone}}">{{phoneDemo ? '演示' : '已授权'}}</text>
+          </view>
+          <button
+            class="phone-btn"
+            open-type="getPhoneNumber|agreePrivacyAuthorization"
+            bindgetphonenumber="onGetPhoneNumber"
+          >{{phone ? '重新授权' : '授权手机号'}}</button>
+        </view>
+        <view class="hint" wx:if="{{phoneHint}}">{{phoneHint}}</view>
+      </view>
+    </view>
+
+    <view class="consent">头像、昵称与手机号仅保存在本机，用于仿真练习展示。无后端，真实手机号在开发工具/测试 AppID 下通常无法解密，请用演示模式继续。</view>
+  </scroll-view>
+  <view class="portrait-foot">
+    <button class="cta {{canStart ? '' : 'off'}}" bindtap="onStart">开始练习</button>
+    <button class="cta-ghost" bindtap="onDemoLogin">没有真机授权？点这里用演示账号</button>
+  </view>
+</view>

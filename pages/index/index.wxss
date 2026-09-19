@@ -1,0 +1,141 @@
+.portrait-body {
+  flex: 1;
+  height: 0;
+  min-height: 0;
+  padding: 24px 20px 12px;
+}
+
+.portrait-body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.emblem {
+  width: 72px;
+  height: 72px;
+  margin: 4px auto 14px;
+  background: #1b4f9c;
+  color: #fff;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  font-weight: 700;
+  box-shadow: 0 8px 20px rgba(27, 79, 156, 0.22);
+}
+
+.hero-name {
+  font-size: 22px;
+  font-weight: 650;
+  color: #12151c;
+  line-height: 1.35;
+}
+
+.hero-sub {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #667085;
+}
+
+.card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 18px 18px 10px;
+  margin-bottom: 14px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+.card.note {
+  background: #fffaf6;
+}
+
+.h {
+  font-size: 16px;
+  font-weight: 650;
+  color: #1b4f9c;
+  margin-bottom: 12px;
+}
+
+.p {
+  font-size: 14px;
+  margin-bottom: 8px;
+  line-height: 1.6;
+  color: #3a4150;
+}
+
+.p.lead {
+  margin-bottom: 12px;
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.step .n {
+  width: 22px;
+  height: 22px;
+  border-radius: 11px;
+  background: #e8eef8;
+  color: #1b4f9c;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 22px;
+  margin-right: 10px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.step .p {
+  flex: 1;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+.warn {
+  color: #b42318;
+}
+
+.portrait-foot {
+  flex-shrink: 0;
+  padding: 12px 20px 16px;
+  background: #fff;
+  box-shadow: 0 -8px 24px rgba(16, 24, 40, 0.04);
+}
+
+.portrait-foot button.cta {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  min-height: 48px !important;
+  height: auto !important;
+  padding: 12px 16px !important;
+  line-height: 1.45 !important;
+  white-space: normal !important;
+  font-size: 17px;
+  font-weight: 650;
+  background: #1b4f9c;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.cta::after {
+  border: none;
+}
+
+.cta:active {
+  background: #163f7c;
+}

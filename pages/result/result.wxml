@@ -1,0 +1,49 @@
+<page-meta page-orientation="landscape" />
+<view class="shell result-shell" style="{{shellStyle}}">
+  <view class="titlebar" style="{{titlebarStyle}}">
+    <text>{{productName}}</text>
+    <text class="demo">{{productTag}}</text>
+  </view>
+  <view class="result-body">
+    <view class="hero">
+      <view class="ok">{{result.autoSubmitted ? '时间到，已自动交卷' : '本次仿真练习已交卷'}}</view>
+      <view class="score">{{result.score}}</view>
+      <view class="score-lab">演示成绩（百分制）</view>
+      <view class="table">
+        <view class="row"><text class="k">姓名</text><text class="v">{{result.candidate.nickname || result.candidate.name}}</text></view>
+        <view class="row"><text class="k">手机号</text><text class="v">{{result.candidate.phoneMasked || result.candidate.phone}}</text></view>
+        <view class="row"><text class="k">练习科目</text><text class="v">{{result.candidate.examName}}</text></view>
+        <view class="row"><text class="k">正确率</text><text class="v">{{result.correct}} / {{result.total}}（{{result.accuracyText}}）</text></view>
+        <view class="row"><text class="k">用时</text><text class="v">{{result.usedText}}</text></view>
+        <view class="row"><text class="k">错题</text><text class="v">{{wrongCount}} 道</text></view>
+        <view class="row"><text class="k">未答题</text><text class="v">{{missCount}} 道</text></view>
+        <view class="row" wx:for="{{sectionStats}}" wx:key="id">
+          <text class="k">{{item.name}}</text>
+          <text class="v">{{item.correct}} / {{item.total}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="review-wrap">
+      <view class="review-head">
+        <view class="review-title">错题回顾</view>
+        <view class="review-meta">错 {{wrongCount}} · 未答 {{missCount}}</view>
+        <button class="win-btn mini" bindtap="toggleReview">{{showAll ? '只看错题' : '查看全部'}}</button>
+      </view>
+      <scroll-view class="review" scroll-y>
+        <view wx:if="{{!review.length}}" class="review-empty">{{showAll ? '暂无作答记录' : '没有错题或未答题，可再练一次巩固。'}}</view>
+        <view class="rev {{item.unanswered ? 'miss' : 'wrong'}}" wx:for="{{review}}" wx:key="id">
+          <view class="rev-no">{{item.no}}. {{item.stem}}</view>
+          <view class="rev-line">
+            <text>作答 {{item.selected || '未答'}}</text>
+            <text class="rev-ans">参考 {{item.answer}}</text>
+          </view>
+          <view class="rev-exp" wx:if="{{item.explanation}}">{{item.explanation}}</view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+  <view class="ops">
+    <button class="win-btn" bindtap="goHome">返回首页</button>
+    <button class="win-btn primary" bindtap="retry">再练一次</button>
+  </view>
+</view>

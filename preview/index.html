@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>模拟仿真考试系统（桌面预览）</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; }
+    button { min-width: 0; width: auto; display: inline-flex; align-items: center; justify-content: center; font-family: inherit; border: none; }
+    .hidden { display: none !important; }
+    body.phone-mode { background: #1a1d24; display: flex; align-items: center; justify-content: center; }
+    .phone {
+      width: 390px; height: 100%; max-height: 844px;
+      background: #f3f5f8; display: flex; flex-direction: column;
+      font-family: "PingFang SC", "Noto Sans SC", sans-serif; color: #1a1d24;
+    }
+    .titlebar {
+      min-height: 54px; background: #1b4f9c; color: #fff;
+      display: flex; align-items: center; padding: 12px 16px 10px;
+      font-size: 17px; font-weight: 600; flex-shrink: 0;
+    }
+    .titlebar .demo {
+      margin-left: 8px; font-size: 11px; font-weight: 400;
+      border: 1px solid rgba(255,255,255,.4); border-radius: 10px;
+      padding: 0 7px; height: 18px; line-height: 16px;
+    }
+    .p-body { flex: 1; overflow: auto; padding: 24px 20px 12px; scrollbar-width: none; }
+    .p-body::-webkit-scrollbar { width: 0; height: 0; display: none; }
+    .hero { text-align: center; margin-bottom: 24px; }
+    .emblem {
+      width: 72px; height: 72px; margin: 4px auto 14px; background: #1b4f9c; color: #fff;
+      border-radius: 24px; display: flex; align-items: center; justify-content: center;
+      font-size: 30px; font-weight: 700; box-shadow: 0 8px 20px rgba(27,79,156,.22);
+    }
+    .avatar { width: 80px; height: 80px; margin: 0 auto 8px; border-radius: 40px; background: #1b4f9c; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 700; }
+    .hero-name { font-size: 22px; font-weight: 650; }
+    .hero-sub { margin-top: 8px; font-size: 13px; color: #667085; }
+    .card { background: #fff; border-radius: 16px; padding: 18px; margin-bottom: 14px; box-shadow: 0 1px 2px rgba(16,24,40,.04); }
+    .card.note { background: #fffaf6; }
+    .card h3 { margin: 0 0 12px; color: #1b4f9c; font-size: 16px; }
+    .step { display: flex; gap: 10px; margin-bottom: 10px; font-size: 14px; line-height: 1.55; color: #3a4150; }
+    .n { width: 22px; height: 22px; border-radius: 11px; background: #e8eef8; color: #1b4f9c; font-size: 12px; font-weight: 700; text-align: center; line-height: 22px; flex-shrink: 0; }
+    .field { margin-bottom: 16px; }
+    .lab { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: #3a4150; }
+    .inp { width: 100%; height: 48px; padding: 0 14px; border: 1px solid #e4e8f0; border-radius: 12px; font-size: 16px; background: #f5f7fb; }
+    .hint { font-size: 12px; color: #8a93a3; line-height: 1.55; margin-top: 12px; }
+    .foot { padding: 12px 20px 16px; flex-shrink: 0; background: #fff; box-shadow: 0 -8px 24px rgba(16,24,40,.04); }
+    .cta, .cta-ghost {
+      display: block !important; width: 100% !important; max-width: 100%; min-height: 48px; height: auto;
+      padding: 12px 16px; line-height: 1.45; white-space: normal; text-align: center; border-radius: 12px; box-sizing: border-box;
+    }
+    .cta-ghost { margin-top: 10px; font-size: 15px; background: #fff; color: #1b4f9c; border: 1px solid #1b4f9c; }
+    .cta { font-size: 17px; font-weight: 650; background: #1b4f9c; color: #fff; }
+    .phone-mini { width: auto !important; min-height: 36px; height: 36px; padding: 0 12px; font-size: 13px; border-radius: 10px; background: #1b4f9c; color: #fff; }
+    .warn { color: #b42318; font-size: 14px; margin-bottom: 8px; }
+
+    .exam-shell { width: 100%; height: 100%; display: flex; flex-direction: column; background: #e8edf4; font-family: "PingFang SC", "Noto Sans SC", sans-serif; }
+    .exam-shell .titlebar { min-height: 28px; padding: 0 12px; font-size: 13px; }
+    .workspace { flex: 1; min-height: 0; display: flex; gap: 16px; padding-right: 8px; }
+    .sidebar { width: 18%; min-width: 140px; max-width: 180px; background: #f4f6fa; border-right: 1px solid #d5dce6; padding: 6px 8px; overflow: auto; }
+    .remain { background: #f8d0df; border: 1px solid #e39ab4; border-radius: 6px; text-align: center; font-weight: 700; padding: 3px 0; margin: 4px 0; letter-spacing: 1px; }
+    .main { flex: 1; min-width: 0; display: flex; flex-direction: column; background: #fff; }
+    .typebar { width: 100%; padding: 4px 20px; background: #f7f9fc; border-bottom: 1px solid #e4e8f0; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; box-sizing: border-box; }
+    .qarea { flex: 1; min-height: 0; overflow: auto; padding: 0; scrollbar-width: none; }
+    .q-col { width: 100%; max-width: 720px; margin: 0 auto; padding: 10px 28px 12px; box-sizing: border-box; }
+    .qarea::-webkit-scrollbar { width: 0; }
+    .opt { display: flex; gap: 8px; padding: 5px 8px; margin-bottom: 4px; border: 1px solid #edf0f5; border-radius: 6px; }
+    .opt.on { background: #fff8d6; border-color: #1b4f9c; }
+    .nav { flex-shrink: 0; width: 100%; box-sizing: border-box; background: #f4f6fa; border-top: 1px solid #d5dce6; padding: 4px 8px 2px; }
+    .ops { display: flex; justify-content: space-between; width: 100%; min-width: 0; margin-bottom: 4px; }
+    .ops-left { flex: 1 1 auto; min-width: 0; display: flex; flex-wrap: wrap; }
+    .ops-right { flex: 0 0 auto; flex-shrink: 0; display: flex; margin-left: 8px; }
+    .win-btn { background: #f4f6f9; border: 1px solid #c5cedb; border-radius: 4px; height: 24px; padding: 0 6px; font-size: 11px; min-width: 0; margin: 0 6px 2px 0; }
+    .win-btn.primary { background: #1b4f9c; color: #fff; border-color: #163f7c; }
+    .ops-right .win-btn { flex-shrink: 0; margin-bottom: 0; }
+    .grid-scroll { width: 100%; max-height: 32px; height: 32px; overflow: auto; scrollbar-width: none; }
+    .grid { display: flex; flex-wrap: wrap; align-content: flex-start; }
+    .cell { min-width: 22px; width: 22px; height: 16px; margin: 0 2px 2px 0; background: #cc2f2f; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 10px; border-radius: 3px; }
+    .sec { font-size: 12px; padding: 6px 8px; background: #fff; }
+    .sec.on { background: #1b4f9c; color: #fff; }
+    .sec.locked { color: #98a2b3; }
+    .lab2 { font-size: 11px; color: #667085; } .val { font-weight: 650; font-size: 13px; }
+  </style>
+</head>
+<body class="phone-mode" id="body">
+  <div class="phone" id="index">
+    <div class="titlebar">模拟仿真考试系统<span class="demo">仿真练习</span></div>
+    <div class="p-body">
+      <div class="hero">
+        <div class="emblem">仿</div>
+        <div class="hero-name">模拟仿真考试系统</div>
+        <div class="hero-sub">本地仿真练习 · 演示数据</div>
+      </div>
+      <div class="card">
+        <h3>作答说明</h3>
+        <div class="step"><span class="n">1</span>登录：授权微信头像、昵称与手机号（开发工具可用演示模式）</div>
+        <div class="step"><span class="n">2</span>左侧核对信息、剩余时间、未答题、标疑题</div>
+        <div class="step"><span class="n">3</span>底部题号红 / 灰 / 黄表示未答 / 已答 / 标疑</div>
+        <div class="step"><span class="n">4</span>分段练习：进入下一段后本段不可回看、不可修改</div>
+        <div class="step"><span class="n">5</span>交卷后可查看成绩与错题回顾</div>
+      </div>
+      <div class="card note">
+        <h3>使用说明</h3>
+        <div class="warn">题目、成绩与登录均为演示数据，不连接后端，也不用于真实考核。</div>
+        说明页与登录为竖屏。授权后进入作答自动横屏。开发工具可用演示模式。
+      </div>
+    </div>
+    <div class="foot"><button class="cta" id="toLogin">进入登录</button></div>
+  </div>
+  <div class="phone hidden" id="login">
+    <div class="titlebar">模拟仿真考试系统<span class="demo">仿真练习</span></div>
+    <div class="p-body">
+      <div class="hero">
+        <div class="avatar">仿</div>
+        <div class="hero-sub" style="margin-bottom:8px">点击选择微信头像</div>
+        <div class="hero-name">模拟仿真考试系统</div>
+        <div class="hero-sub">授权头像、昵称与手机号后进入横屏作答</div>
+      </div>
+      <div class="card">
+        <div class="field"><span class="lab">微信昵称</span><input class="inp" id="nickname" placeholder="点击填写微信昵称" /></div>
+        <div class="field">
+          <span class="lab">手机号</span>
+          <div class="inp" id="phoneBox" style="display:flex;align-items:center;justify-content:space-between">
+            <span id="phone">未授权</span>
+            <button class="phone-mini" id="authPhone">授权手机号</button>
+          </div>
+        </div>
+      </div>
+      <div class="hint">无后端无法解密真实手机号。开发工具请用演示模式。</div>
+    </div>
+    <div class="foot">
+      <button class="cta" id="enter">开始练习</button>
+      <button class="cta-ghost" id="fill">没有真机授权？点这里用演示账号</button>
+    </div>
+  </div>
+  <div class="exam-shell hidden" id="notice">
+    <div class="titlebar">模拟仿真考试系统<span class="demo">仿真练习</span></div>
+    <div class="workspace">
+      <div class="sidebar">
+        <div class="lab2">进场流程</div>
+        <div class="val">仿真练习 · 演示文案</div>
+        <div style="margin-top:10px;background:#eaf1fb;border:1px solid #1b4f9c;border-radius:8px;padding:8px">1 仿真练习须知</div>
+        <div style="margin-top:6px;background:#fff;border-radius:8px;padding:8px">2 仿真练习规则</div>
+        <div style="margin-top:6px;background:#fff;border-radius:8px;padding:8px">3 练习承诺</div>
+        <div style="margin-top:6px;background:#fff;border-radius:8px;padding:8px">4 进场前提醒</div>
+        <div style="color:#b42318;font-size:11px;margin-top:10px">题目、计时与成绩均为本地演示，非正式考核。</div>
+      </div>
+      <div class="main">
+        <div class="typebar"><b>仿真练习须知</b> 请阅读后确认。文案为仿真说明，非官方文件摘录。</div>
+        <div class="qarea">
+          <div style="background:#fff;border:1px solid #d5dce6;border-radius:8px;padding:12px;font-size:13px;line-height:1.65">
+            本页是「模拟仿真考试系统」的仿真练习须知，只用来熟悉机考交互。题目与成绩都是本机演示数据，不连接评测平台。<br /><br />
+            进入作答前请核对微信昵称与脱敏手机号。点「开始作答」后倒计时才启动。分段锁定、标疑与交卷规则见下一步。
+          </div>
+        </div>
+        <div class="nav">
+          <div class="ops">
+            <div class="ops-left"><button class="win-btn" id="noticeBack">返回登录</button> <button class="win-btn" id="noticeRead">我已读完</button></div>
+            <div class="ops-right"><button class="win-btn primary" id="noticeGo">已阅读确认</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="exam-shell hidden" id="exam">
+    <div class="titlebar">模拟仿真考试系统<span class="demo">仿真练习</span></div>
+    <div class="workspace">
+      <div class="sidebar">
+        <div class="lab2">姓名</div><div class="val">演示考生</div>
+        <div class="lab2">手机号</div><div class="val">138****8000</div>
+        <div class="lab2">练习时间</div><div class="val">09:00-09:30</div>
+        <div class="lab2">剩余时间</div><div class="remain">00:29:12</div>
+        <div class="lab2">未答题</div><div class="val">5</div>
+        <div class="lab2">标疑题</div><div class="val">0</div>
+        <div style="margin-top:8px"><button class="win-btn">刷新</button> <button class="win-btn primary">交卷</button></div>
+        <div style="color:#b42318;font-size:11px;margin-top:8px">注意：练习分若干段进行。进入下一段后，本段试题将不能回看和修改。</div>
+        <div style="margin-top:8px;border:1px solid #d5dce6;border-radius:8px;overflow:hidden">
+          <div class="sec on">A1 : 1~30</div>
+          <div class="sec">A2 : 31~38</div>
+          <div class="sec">A3·A4 : 39~50</div>
+          <div class="sec">B1 : 51~58</div>
+        </div>
+      </div>
+      <div class="main">
+        <div class="typebar"><b>题型 A1</b> 每一道练习题下面有A、B、C、D、E五个备选答案。请从中选择一个最佳答案。</div>
+        <div class="qarea">
+          <div class="q-col">
+            <div style="font-size:15px;margin-bottom:8px">1. 釉质厚度最大的部位通常是</div>
+            <div class="opt"><span>□</span> A. 牙颈部</div>
+            <div class="opt"><span>□</span> B. 窝沟底部</div>
+            <div class="opt on"><span>✓</span> C. 牙尖或切缘处</div>
+            <div class="opt"><span>□</span> D. 邻面接触区</div>
+            <div class="opt"><span>□</span> E. 釉牙本质界</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="nav">
+      <div class="ops">
+        <div class="ops-left">
+          <button class="win-btn">标疑</button>
+          <button class="win-btn">转到未答题</button>
+          <button class="win-btn">转到标疑题</button>
+        </div>
+        <div class="ops-right">
+          <button class="win-btn">上一题</button>
+          <button class="win-btn">下一题</button>
+        </div>
+      </div>
+      <div class="grid-scroll">
+        <div class="grid">
+          <div class="cell">1</div><div class="cell">2</div><div class="cell">3</div><div class="cell">4</div><div class="cell">5</div>
+          <div class="cell">6</div><div class="cell">7</div><div class="cell">8</div><div class="cell">9</div><div class="cell">10</div>
+          <div class="cell">11</div><div class="cell">12</div><div class="cell">13</div><div class="cell">14</div><div class="cell">15</div>
+          <div class="cell">16</div><div class="cell">17</div><div class="cell">18</div><div class="cell">19</div><div class="cell">20</div>
+          <div class="cell">21</div><div class="cell">22</div><div class="cell">23</div><div class="cell">24</div><div class="cell">25</div>
+          <div class="cell">26</div><div class="cell">27</div><div class="cell">28</div><div class="cell">29</div><div class="cell">30</div>
+        </div>
+      </div>
+      <div style="font-size:11px;color:#5b6472">标疑 · 未答 · 已答</div>
+    </div>
+  </div>
+  <script>
+    function show(id) {
+      ;['index', 'login', 'notice', 'exam'].forEach(function (n) {
+        document.getElementById(n).classList.toggle('hidden', n !== id)
+      })
+      document.getElementById('body').className = id === 'exam' || id === 'notice' ? '' : 'phone-mode'
+    }
+    document.getElementById('toLogin').onclick = function () { show('login') }
+    document.getElementById('enter').onclick = function () { show('notice') }
+    document.getElementById('noticeBack').onclick = function () { show('login') }
+    document.getElementById('noticeRead').onclick = function () { document.getElementById('noticeGo').click() }
+    document.getElementById('noticeGo').onclick = function () { show('exam') }
+    document.getElementById('fill').onclick = function () {
+      document.getElementById('nickname').value = '演示考生'
+      document.getElementById('phone').textContent = '138****8000 演示'
+    }
+    document.getElementById('authPhone').onclick = function () {
+      document.getElementById('phone').textContent = '138****8000 演示'
+    }
+    if (/exam=1/.test(location.search)) show('exam')
+    else if (/notice=1/.test(location.search)) show('notice')
+    else if (/login=1/.test(location.search)) show('login')
+  </script>
+</body>
+</html>

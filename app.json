@@ -1,0 +1,20 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/login/login",
+    "pages/notice/notice",
+    "pages/exam/exam",
+    "pages/result/result"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#1B4F9C",
+    "navigationBarTitleText": "模拟仿真考试系统",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#F3F5F8",
+    "backgroundTextStyle": "light",
+    "pageOrientation": "portrait"
+  },
+  "pageOrientation": "auto",
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

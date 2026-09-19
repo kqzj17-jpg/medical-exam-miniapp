@@ -154,11 +154,17 @@ function toggleFlag(session, qid) {
   return session
 }
 
-function goTo(session, qid) {
+function canGoTo(session, qid) {
   const q = getQuestion(qid)
-  if (!q) return session
+  if (!q) return false
+  if (q.section !== session.currentSection) return false
+  if (isLocked(session, q.section)) return false
+  return true
+}
+
+function goTo(session, qid) {
+  if (!canGoTo(session, qid)) return session
   session.currentQid = qid
-  session.currentSection = q.section
   return session
 }
 
@@ -198,15 +204,17 @@ function nextFlagged(session) {
 function canEnterSection(session, targetId) {
   const from = sectionIndex(session.currentSection)
   const to = sectionIndex(targetId)
-  if (to < 0) return false
-  if (to <= from) return true
+  if (to < 0 || from < 0) return false
+  if (isLocked(session, targetId)) return false
+  if (to === from) return true
+  if (to < from) return false
   return to === from + 1
 }
 
 function enterSection(session, targetId) {
+  if (!canEnterSection(session, targetId)) return session
   const from = sectionIndex(session.currentSection)
   const to = sectionIndex(targetId)
-  if (to < 0) return session
   if (to > from) {
     for (let i = from; i < to; i++) {
       const sid = bank.SECTIONS[i].id
@@ -349,6 +357,7 @@ module.exports = {
   formatDuration,
   selectAnswer,
   toggleFlag,
+  canGoTo,
   goTo,
   moveInSection,
   nextUnanswered,

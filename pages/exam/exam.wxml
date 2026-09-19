@@ -75,27 +75,29 @@
         scroll-into-view="{{qareaInto}}"
       >
         <view id="q-start" class="q-start"></view>
-        <view wx:if="{{isLocked}}" class="locked-box">
-          <view class="lock-title">本段已锁定</view>
-          <view class="lock-desc">进入下一段后，本段试题将无法再查看或修改。</view>
+        <view class="q-col">
+          <view wx:if="{{isLocked}}" class="locked-box">
+            <view class="lock-title">本段已锁定</view>
+            <view class="lock-desc">进入下一段后，本段试题将无法再查看或修改。</view>
+          </view>
+          <block wx:else>
+            <view class="case" wx:if="{{question.caseStem}}">
+              <view class="case-title">{{question.caseTitle}}</view>
+              <view class="case-stem">{{question.caseStem}}</view>
+            </view>
+            <view class="stem">{{displayNo}}. {{question.stem}}</view>
+            <view
+              wx:for="{{question.options}}"
+              wx:key="key"
+              class="opt {{selected === item.key ? 'on' : ''}}"
+              data-key="{{item.key}}"
+              bindtap="onSelect"
+            >
+              <view class="chk"><text wx:if="{{selected === item.key}}">✓</text></view>
+              <view class="opt-text">{{item.key}}. {{item.text}}</view>
+            </view>
+          </block>
         </view>
-        <block wx:else>
-          <view class="case" wx:if="{{question.caseStem}}">
-            <view class="case-title">{{question.caseTitle}}</view>
-            <view class="case-stem">{{question.caseStem}}</view>
-          </view>
-          <view class="stem">{{displayNo}}. {{question.stem}}</view>
-          <view
-            wx:for="{{question.options}}"
-            wx:key="key"
-            class="opt {{selected === item.key ? 'on' : ''}}"
-            data-key="{{item.key}}"
-            bindtap="onSelect"
-          >
-            <view class="chk"><text wx:if="{{selected === item.key}}">✓</text></view>
-            <view class="opt-text">{{item.key}}. {{item.text}}</view>
-          </view>
-        </block>
       </scroll-view>
     </view>
   </view>
@@ -112,15 +114,17 @@
         <button class="win-btn" bindtap="onNext">下一题</button>
       </view>
     </view>
-    <view class="grid">
-      <view
-        wx:for="{{grid}}"
-        wx:key="id"
-        class="cell {{item.status}} {{item.current ? 'current' : ''}}"
-        data-id="{{item.id}}"
-        bindtap="onTapGrid"
-      >{{item.no}}</view>
-    </view>
+    <scroll-view class="grid-scroll" scroll-y enhanced show-scrollbar="{{false}}">
+      <view class="grid">
+        <view
+          wx:for="{{grid}}"
+          wx:key="id"
+          class="cell {{item.status}} {{item.current ? 'current' : ''}}"
+          data-id="{{item.id}}"
+          bindtap="onTapGrid"
+        >{{item.no}}</view>
+      </view>
+    </scroll-view>
     <view class="legend">
       <view class="lg lg-flag">标疑</view>
       <view class="lg lg-miss">未答</view>

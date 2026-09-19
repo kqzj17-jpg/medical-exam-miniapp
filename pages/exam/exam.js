@@ -182,7 +182,7 @@ Page({
     if (type === 'nextSection') {
       const target = this.pendingSection || exam.nextSectionId(this.session)
       this.hideDialog()
-      if (target) {
+      if (target && exam.canEnterSection(this.session, target)) {
         exam.enterSection(this.session, target)
         this.syncView()
       }
@@ -203,10 +203,15 @@ Page({
 
   askEnterSection(targetId) {
     this.pendingSection = targetId
+    const n = exam.unansweredCount(this.session, this.session.currentSection)
+    const leave =
+      n > 0
+        ? '本段还有 ' + n + ' 道未答题。进入下一段后本段将锁定，不能再查看或修改。确认离开本段吗？'
+        : '进入下一段后，本段将锁定，不能再查看或修改。确认进入下一段练习吗？'
     this.showDialog({
       type: 'nextSection',
       title: '提示',
-      content: '进入下一段后，本段将锁定，不能再查看或修改。确认进入下一段练习吗?',
+      content: leave,
       confirmText: '进入下一段',
       cancelText: '继续作答'
     })
@@ -215,14 +220,11 @@ Page({
   onTapSection(e) {
     const id = e.currentTarget.dataset.id
     if (!id || id === this.session.currentSection) return
-    const currentIdx = exam.getSections().findIndex((s) => s.id === this.session.currentSection)
-    const targetIdx = exam.getSections().findIndex((s) => s.id === id)
-    if (targetIdx > currentIdx && !exam.isLocked(this.session, this.session.currentSection)) {
-      this.askEnterSection(id)
+    if (!exam.canEnterSection(this.session, id)) {
+      wx.showToast({ title: '跨题型不可回看', icon: 'none' })
       return
     }
-    exam.enterSection(this.session, id)
-    this.syncView()
+    this.askEnterSection(id)
   },
 
   onSelect(e) {
@@ -293,6 +295,10 @@ Page({
 
   onTapGrid(e) {
     const id = e.currentTarget.dataset.id
+    if (!exam.canGoTo(this.session, id)) {
+      wx.showToast({ title: '只能在本段内跳转', icon: 'none' })
+      return
+    }
     exam.goTo(this.session, id)
     this.syncView()
   },

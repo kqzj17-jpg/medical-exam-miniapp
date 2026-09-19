@@ -24,11 +24,25 @@ const SECTIONS = [
     hintLong: '每一道练习题下面有A、B、C、D、E五个备选答案。请从中选择一个最佳答案。'
   },
   {
-    id: 'A3',
-    name: 'A3',
-    title: 'A3 型题',
-    hint: '病例组型最佳选择题',
-    hintLong: '以下提供若干个案例，每个案例下设若干道练习题。请根据案例所提供的信息，在每一道练习题下面的A、B、C、D、E五个备选答案中选择一个最佳答案。'
+    id: 'A2',
+    name: 'A2',
+    title: 'A2 型题',
+    hint: '病例摘要型最佳选择题',
+    hintLong: '每一道练习题先给出一段简短病例摘要，下面有A、B、C、D、E五个备选答案。请根据摘要选择一个最佳答案。'
+  },
+  {
+    id: 'A3A4',
+    name: 'A3·A4',
+    title: 'A3/A4 型题',
+    hint: '病例组 / 病例串型最佳选择题',
+    hintLong: '以下提供若干个案例，每个案例下设若干道练习题。请根据案例信息，在每一道题的A、B、C、D、E五个备选答案中选择一个最佳答案。进入本段后，前面题型将锁定不可回看。'
+  },
+  {
+    id: 'B1',
+    name: 'B1',
+    title: 'B1 型题',
+    hint: '标准配伍题',
+    hintLong: '每组练习共用同一组A、B、C、D、E备选答案。请根据各小题题干，从该组备选答案中选择一个最合适的选项。每项可选用一次、多次或不选用。'
   }
 ]
 
@@ -256,6 +270,88 @@ const A1 = [
   ...q
 }))
 
+const A2 = [
+  {
+    caseTitle: '病例摘要（演示）',
+    caseStem:
+      '患者，女，34 岁。右下后牙遇冷一过性敏感 2 周，刺激去除后疼痛立即消失，无自发痛、无夜间痛。检查：46 颊面颈部楔状缺损，探诊敏感，冷测一过性敏感，叩诊（-），牙髓活力存在。',
+    stem: '目前最可能的诊断是',
+    options: opt('急性牙髓炎', '慢性根尖周炎', '牙本质敏感 / 楔状缺损', '三叉神经痛', '干槽症'),
+    answer: 'C',
+    explanation: '无自发痛、刺激去除后立即缓解，结合楔状缺损，符合牙本质敏感。演示解析。'
+  },
+  {
+    caseTitle: '病例摘要（演示）',
+    caseStem:
+      '患者，男，46 岁。左下后牙区肿痛 3 天，咬合不适。检查：36 远中牙周袋深约 7mm，牙龈红肿，轻压溢脓，叩诊（+），冷测活力存在，牙齿松动 I 度。体温正常。',
+    stem: '最可能的诊断是',
+    options: opt('急性牙髓炎', '牙周脓肿', '智齿冠周炎', '腮腺炎', '颌骨囊肿继发感染'),
+    answer: 'B',
+    explanation: '深牙周袋、龈缘红肿溢脓且牙髓活力存在，更符合牙周脓肿。演示解析。'
+  },
+  {
+    caseTitle: '病例摘要（演示）',
+    caseStem:
+      '患者，女，51 岁。双侧颊黏膜白色网纹 1 年，轻度刺激痛。检查：双侧颊黏膜见白色网状条纹，周围黏膜轻度充血，无厚的均质白斑斑块，无溃疡。不吸烟。',
+    stem: '更符合的临床印象是',
+    options: opt('白斑', '口腔扁平苔藓', '急性假膜型念珠菌病', '盘状红斑狼疮皮肤损害', '地图舌'),
+    answer: 'B',
+    explanation: '双侧颊黏膜白色网纹是扁平苔藓常见表现。演示解析。'
+  },
+  {
+    caseTitle: '病例摘要（演示）',
+    caseStem:
+      '患者，男，29 岁。拳击伤后面下部肿胀、咬合错乱 2 小时。检查：下颌体部压痛，骨摩擦感可疑，前牙开始，后牙早接触。张口轻度受限，无昏迷。',
+    stem: '急诊首先应重点排除并处理的是',
+    options: opt('立即全口烤瓷修复', '气道通畅与骨折固定评估', '仅给维生素', '即刻正畸排齐', '拔除全部松动牙'),
+    answer: 'B',
+    explanation: '颌面外伤先保证气道与止血，再评估骨折固定。演示解析。'
+  },
+  {
+    caseTitle: '病例摘要（演示）',
+    caseStem:
+      '患儿，4 岁。上前牙区多数牙面龋坏、残冠。夜间可安睡，无肿胀瘘管。家长诉喜含奶瓶入睡。检查：51、52、61、62 广泛龋坏，乳磨牙窝沟着色。',
+    stem: '更符合的诊断倾向是',
+    options: opt('年轻恒牙外伤', '低龄儿童龋', '遗传性牙本质发育不全唯一表现', '氟牙症', '坏死性龈口炎'),
+    answer: 'B',
+    explanation: '含奶瓶入睡、上前牙广泛龋，符合低龄儿童龋常见模式。演示解析。'
+  },
+  {
+    caseTitle: '病例摘要（演示）',
+    caseStem:
+      '患者，女，27 岁。开闭口弹响 6 个月，近 2 周开口末疼痛。检查：开口型偏斜，关节区轻压痛，开口度约 38mm，咬合关系基本正常，夜磨牙史。',
+    stem: '初期处理更合适的是',
+    options: opt('立即髁突切除', '可逆性保守治疗（宣教、软食、夜垫等）', '全口牙一次性调磨成平面', '拔除全部第三磨牙', '长期大剂量抗生素'),
+    answer: 'B',
+    explanation: '颞下颌关节紊乱病多数先采用可逆保守治疗。演示解析。'
+  },
+  {
+    caseTitle: '病例摘要（演示）',
+    caseStem:
+      '患者，男，62 岁。下颌无牙颌，旧义齿戴用 10 年，固位差、黏膜压痛。检查：牙槽嵴中度吸收，黏膜无明显溃疡，唾液量尚可。要求重做全口义齿。',
+    stem: '重做时最应强调的是',
+    options: opt('尽量缩小基托以减轻重量', '恢复边缘封闭与咬合平衡', '改做可摘局部义齿卡环固位', '不必取印模', '只加厚前牙以改善美观'),
+    answer: 'B',
+    explanation: '全口义齿固位依赖边缘封闭和平衡咬合。演示解析。'
+  },
+  {
+    caseTitle: '病例摘要（演示）',
+    caseStem:
+      '患者，女，19 岁。上前牙拥挤、侧貌较突。检查：磨牙远中关系，覆盖 8mm，覆𬌗深，上牙弓狭窄，开口呼吸习惯。头影测量示上颌相对前突。',
+    stem: '错𬌗类型更接近',
+    options: opt('安氏 I 类伴对刃', '安氏 II 类 1 分类', '安氏 III 类骨性反𬌗', '仅个别牙扭转', '开𬌗不伴拥挤'),
+    answer: 'B',
+    explanation: '远中磨牙关系、上前牙唇倾深覆盖，接近安氏 II 类 1 分类。演示解析。'
+  }
+].map((q, i) => ({
+  id: 'A2-' + String(i + 1).padStart(2, '0'),
+  section: 'A2',
+  type: 'A2',
+  typeLabel: 'A2',
+  demo: true,
+  ...q
+}))
+
 const A3_CASES = [
   {
     caseId: 'C1',
@@ -369,14 +465,14 @@ const A3_CASES = [
   }
 ]
 
-const A3 = []
+const A3A4 = []
 A3_CASES.forEach((c) => {
   c.questions.forEach((q, i) => {
-    A3.push({
+    A3A4.push({
       id: c.caseId + '-' + String(i + 1).padStart(2, '0'),
-      section: 'A3',
-      type: 'A3',
-      typeLabel: 'A3',
+      section: 'A3A4',
+      type: 'A3A4',
+      typeLabel: 'A3·A4',
       demo: true,
       caseId: c.caseId,
       caseTitle: c.caseTitle,
@@ -389,7 +485,86 @@ A3_CASES.forEach((c) => {
   })
 })
 
-const QUESTIONS = A1.concat(A3)
+const B1_GROUPS = [
+  {
+    groupId: 'B1G1',
+    groupTitle: 'B1 配伍（演示组一）',
+    groupStem: '下列各题共用同一组备选答案。请为每一小题选择最合适的一项。每项可选用一次、多次或不选用。',
+    options: opt('釉质', '牙本质', '牙骨质', '牙髓', '牙周膜'),
+    questions: [
+      {
+        stem: '唯一能在一生中持续形成、并覆盖牙根表面的硬组织是',
+        answer: 'C',
+        explanation: '牙骨质可终身沉积于根面。演示解析。'
+      },
+      {
+        stem: '贯穿全层、内含突起的小管结构主要存在于',
+        answer: 'B',
+        explanation: '牙本质小管是牙本质的特征结构。演示解析。'
+      },
+      {
+        stem: '无细胞、无神经、萌出后不再形成的牙冠表面组织是',
+        answer: 'A',
+        explanation: '釉质萌出后不再形成。演示解析。'
+      },
+      {
+        stem: '提供本体感觉、连接牙骨质与牙槽骨的是',
+        answer: 'E',
+        explanation: '牙周膜连接牙骨质与牙槽骨并传导感觉。演示解析。'
+      }
+    ]
+  },
+  {
+    groupId: 'B1G2',
+    groupTitle: 'B1 配伍（演示组二）',
+    groupStem: '下列各题共用同一组备选答案。请为每一小题选择最合适的处理或措施。每项可选用一次、多次或不选用。',
+    options: opt('直接盖髓', '根管治疗', '牙周基础治疗', '拔除患牙', '定期观察随访'),
+    questions: [
+      {
+        stem: '慢性牙周炎、牙髓活力正常，首选应采取',
+        answer: 'C',
+        explanation: '牙周炎先做菌斑控制与洁刮治。演示解析。'
+      },
+      {
+        stem: '急性牙髓炎、根尖孔已形成的恒牙，应急后需完成',
+        answer: 'B',
+        explanation: '不可复性牙髓炎需根管治疗。演示解析。'
+      },
+      {
+        stem: '年轻恒牙机械性露髓、污染轻、就诊及时，可考虑',
+        answer: 'A',
+        explanation: '条件合适时可直接盖髓保存活髓。演示解析。'
+      },
+      {
+        stem: '残根残冠无法修复且无保留价值时，通常选择',
+        answer: 'D',
+        explanation: '无保留价值的残根残冠常拔除。演示解析。'
+      }
+    ]
+  }
+]
+
+const B1 = []
+B1_GROUPS.forEach((g) => {
+  g.questions.forEach((q, i) => {
+    B1.push({
+      id: g.groupId + '-' + String(i + 1).padStart(2, '0'),
+      section: 'B1',
+      type: 'B1',
+      typeLabel: 'B1',
+      demo: true,
+      caseId: g.groupId,
+      caseTitle: g.groupTitle,
+      caseStem: g.groupStem,
+      stem: q.stem,
+      options: g.options,
+      answer: q.answer,
+      explanation: q.explanation
+    })
+  })
+})
+
+const QUESTIONS = A1.concat(A2, A3A4, B1)
 QUESTIONS.forEach((q, i) => {
   q.no = i + 1
 })
@@ -399,5 +574,7 @@ module.exports = {
   DURATION_SECONDS,
   SECTIONS,
   QUESTIONS,
-  A3_CASES
+  A3_CASES,
+  A3A4_CASES: A3_CASES,
+  B1_GROUPS
 }

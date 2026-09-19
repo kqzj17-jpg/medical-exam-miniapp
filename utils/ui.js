@@ -42,8 +42,11 @@ function readCapsulePad(info) {
 }
 
 const TITLE_H = 28
-const NAV_H = 72
-const SIDE_RATIO = 0.2
+const NAV_H = 76
+const SIDE_RATIO = 0.18
+const SIDE_MIN = 140
+const SIDE_MAX = 180
+const SIDE_GAP = 16
 const TYPEBAR_H = 28
 
 /** 与 pages/exam/exam.wxss 压缩后的底栏对齐，把垂直空间让给题干 */
@@ -58,8 +61,8 @@ const OPS = {
   navPadY: 6,
   wrapGap: 2,
   opsMarginBottom: 4,
-  gridH: 20,
-  legendH: 14
+  gridH: 32,
+  legendH: 12
 }
 
 function measureOpsBtn(chars) {
@@ -117,9 +120,9 @@ function computeLayout(info) {
   const navH = ops.navH
   const workH = innerH - TITLE_H - navH
   let sideW = innerW * SIDE_RATIO
-  if (sideW < 140) sideW = Math.min(140, innerW * 0.3)
-  if (sideW > 200) sideW = 200
-  const mainW = innerW - sideW
+  if (sideW < SIDE_MIN) sideW = Math.min(SIDE_MIN, innerW * 0.3)
+  if (sideW > SIDE_MAX) sideW = SIDE_MAX
+  const mainW = Math.max(0, innerW - sideW - SIDE_GAP)
   const qareaH = workH - TYPEBAR_H
   const verticalOk =
     innerW >= 300 &&
@@ -137,6 +140,7 @@ function computeLayout(info) {
     typebarH: TYPEBAR_H,
     workH,
     sideW,
+    sideGap: SIDE_GAP,
     mainW,
     qareaH,
     ops,
@@ -256,6 +260,9 @@ module.exports = {
   TITLE_H,
   NAV_H,
   SIDE_RATIO,
+  SIDE_MIN,
+  SIDE_MAX,
+  SIDE_GAP,
   TYPEBAR_H,
   OPS,
   measureOpsBtn,

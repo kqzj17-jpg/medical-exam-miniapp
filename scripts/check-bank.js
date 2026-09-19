@@ -40,6 +40,7 @@ assert(exam.formatClock(90) === '00:01:30', '剩余时间应为时:分:秒')
 
 const candidate = bank.DEMO_CANDIDATE
 const session = exam.createSession(candidate)
+assert(session.briefingDone === false, '新建会话须先走须知流程')
 assert(session.currentSection === 'A1', '默认从 A1 开始')
 assert(exam.maskPhone('13800138000') === '138****8000', '手机号应脱敏展示')
 assert(session.candidate.phoneMasked === '138****8000', '会话考生应带脱敏手机号')

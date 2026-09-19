@@ -45,7 +45,8 @@ function createSession(candidate) {
     currentQid: first.id,
     startAt: Date.now(),
     duration: bank.DURATION_SECONDS,
-    submitted: false
+    submitted: false,
+    briefingDone: false
   }
 }
 

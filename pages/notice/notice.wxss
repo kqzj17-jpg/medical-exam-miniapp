@@ -1,0 +1,300 @@
+.notice-shell {
+  position: relative;
+}
+
+.workspace {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.sidebar {
+  width: 24%;
+  min-width: 168px;
+  max-width: 260px;
+  height: 100%;
+  flex-shrink: 0;
+  background: #f4f6fa;
+  border-right: 1px solid #d5dce6;
+  padding: 10px 10px 8px;
+  overflow-y: auto;
+}
+
+.side-h {
+  font-size: 14px;
+  font-weight: 650;
+  color: #1b4f9c;
+}
+
+.side-sub {
+  font-size: 11px;
+  color: #667085;
+  margin: 4px 0 12px;
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  padding: 8px 8px;
+  margin-bottom: 6px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: #fff;
+}
+
+.step.on {
+  border-color: #1b4f9c;
+  background: #eaf1fb;
+}
+
+.step.done:not(.on) {
+  opacity: 0.72;
+}
+
+.step-no {
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  background: #e8eef8;
+  color: #1b4f9c;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 20px;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.step.on .step-no {
+  background: #1b4f9c;
+  color: #fff;
+}
+
+.step-k {
+  font-size: 10px;
+  color: #667085;
+}
+
+.step-t {
+  font-size: 12px;
+  font-weight: 650;
+  color: #1a1d24;
+  line-height: 1.35;
+}
+
+.disclaimer {
+  margin-top: 10px;
+  font-size: 11px;
+  color: #b42318;
+  line-height: 1.45;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #ece9e0;
+}
+
+.typebar {
+  flex-shrink: 0;
+  padding: 6px 12px;
+  background: #f7f9fc;
+  border-bottom: 1px solid #d5dce6;
+  display: flex;
+  align-items: center;
+}
+
+.type-name {
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 650;
+  color: #1b4f9c;
+  margin-right: 10px;
+}
+
+.type-hint {
+  flex: 1;
+  min-width: 0;
+  font-size: 11px;
+  color: #5b6472;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.qarea {
+  flex: 1;
+  height: 0;
+  min-height: 0;
+  padding: 10px 12px;
+}
+
+.qarea::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.paper {
+  background: #fff;
+  border: 1px solid #d5dce6;
+  border-radius: 8px;
+  padding: 12px 14px 8px;
+  position: relative;
+}
+
+.paper-tag {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  font-size: 10px;
+  color: #1b4f9c;
+  border: 1px solid #1b4f9c;
+  border-radius: 8px;
+  padding: 0 6px;
+  height: 18px;
+  line-height: 16px;
+}
+
+.p.hint {
+  color: #667085;
+  font-size: 12px;
+  padding-right: 0;
+}
+
+.agree-box {
+  margin-top: 10px;
+  display: flex;
+  align-items: flex-start;
+  background: #fff;
+  border: 1px solid #d5dce6;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.chk {
+  width: 16px;
+  height: 16px;
+  border: 1px solid #667085;
+  border-radius: 3px;
+  background: #fff;
+  margin-right: 8px;
+  margin-top: 2px;
+  flex-shrink: 0;
+  text-align: center;
+  font-size: 11px;
+  line-height: 14px;
+}
+
+.chk.on {
+  background: #1b4f9c;
+  border-color: #1b4f9c;
+  color: #fff;
+}
+
+.agree-txt {
+  flex: 1;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.nav {
+  flex-shrink: 0;
+  width: 100%;
+  box-sizing: border-box;
+  background: #f4f6fa;
+  border-top: 1px solid #d5dce6;
+  padding: 6px 10px;
+}
+
+.ops {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+}
+
+.ops-left {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.ops-right {
+  flex: 0 0 auto;
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+
+.ops .win-btn {
+  min-width: 0 !important;
+  height: 28px;
+  line-height: 26px;
+  padding: 0 14px;
+}
+
+.ops-right .win-btn {
+  flex-shrink: 0;
+  min-width: 120px;
+}
+
+.win-btn.off {
+  opacity: 0.4;
+}
+
+.mask {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(16, 24, 40, 0.36);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dlg {
+  width: 72%;
+  max-width: 480px;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.dlg-bar {
+  background: #1b4f9c;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 650;
+  padding: 10px 14px;
+}
+
+.dlg-body {
+  padding: 12px 16px;
+  height: 120px;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.dlg-p {
+  margin-bottom: 8px;
+}
+
+.dlg-ops {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 14px 14px;
+}
+
+.dlg-ops .win-btn {
+  margin-left: 8px;
+  min-width: 88px;
+}

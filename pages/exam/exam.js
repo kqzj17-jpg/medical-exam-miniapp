@@ -60,6 +60,14 @@ Page({
       wx.redirectTo({ url: '/pages/result/result' })
       return
     }
+    if (!session.briefingDone) {
+      const answering =
+        Object.keys(session.answers || {}).length > 0 || Object.keys(session.flagged || {}).length > 0
+      if (!answering) {
+        wx.redirectTo({ url: '/pages/notice/notice' })
+        return
+      }
+    }
     if (!candidate.examTime) candidate.examTime = exam.DEMO_CANDIDATE.examTime
     this.session = session
     this.setData({ candidate })

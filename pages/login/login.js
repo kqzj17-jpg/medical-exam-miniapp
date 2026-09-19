@@ -182,6 +182,6 @@ Page({
     exam.persistCandidate(candidate)
     exam.persistSession(session)
     auth.persistUser(app.globalData.user)
-    wx.redirectTo({ url: '/pages/exam/exam' })
+    wx.redirectTo({ url: '/pages/notice/notice' })
   }
 })

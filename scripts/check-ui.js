@@ -49,11 +49,12 @@ collectFiles(path.join(__dirname, '..'), []).forEach((file) => {
 const ORIENT = {
   index: 'portrait',
   login: 'portrait',
+  notice: 'landscape',
   exam: 'landscape',
   result: 'landscape'
 }
 
-;['index', 'login', 'exam', 'result'].forEach((name) => {
+;['index', 'login', 'notice', 'exam', 'result'].forEach((name) => {
   const json = JSON.parse(fs.readFileSync(path.join(__dirname, '../pages/' + name + '/' + name + '.json'), 'utf8'))
   assert(json.pageOrientation === ORIENT[name], name + ' 页面 json 须 ' + ORIENT[name])
   const wxml = fs.readFileSync(path.join(__dirname, '../pages/' + name + '/' + name + '.wxml'), 'utf8')
@@ -187,7 +188,28 @@ const rightChunk = examWxml.match(/class="ops-right"[\s\S]*?<\/view>/)
 assert(rightChunk, '找不到 ops-right 闭合')
 assert(rightChunk[0].indexOf('上一题') !== -1 && rightChunk[0].indexOf('下一题') !== -1, '上一题/下一题必须写在 ops-right 内')
 assert(examWxml.indexOf('bindtap="onPrev"') !== -1 && examWxml.indexOf('bindtap="onNext"') !== -1, '上一题/下一题须可点')
-assert(examWxml.indexOf('未答汇总') !== -1, '交卷对话框须有未答汇总')
+const loginJs = fs.readFileSync(path.join(__dirname, '../pages/login/login.js'), 'utf8')
+assert(loginJs.indexOf('/pages/notice/notice') !== -1, '开始练习须先进入须知流程')
+assert(loginJs.indexOf('/pages/exam/exam') === -1, '登录不得直达作答，须经过须知/规则/承诺')
+
+const briefing = require('../utils/briefing.js')
+assert(briefing.NOTICE_TITLE === '仿真练习须知', '须知标题须为仿真练习须知')
+assert(briefing.RULES_TITLE === '仿真练习规则', '规则标题须为仿真练习规则')
+assert(briefing.PROMISE_TITLE === '练习承诺', '承诺标题须为练习承诺')
+assert(briefing.NOTICE.join('').length > 180 && briefing.RULES.join('').length > 160, '须知/规则须有完整原创段落')
+assert(briefing.NOTICE.join('').indexOf('演示') !== -1 && briefing.NOTICE.join('').indexOf('非正式') !== -1, '须知须标明演示、非正式考核')
+assert(briefing.RULES.join('').indexOf('锁定') !== -1 && briefing.RULES.join('').indexOf('标疑') !== -1, '规则须覆盖分段锁定与标疑')
+assert(briefing.REMINDER.join('').indexOf('倒计时') !== -1 || briefing.REMINDER.join('').indexOf('剩余时间') !== -1, '提醒须说明计时从进场后开始')
+
+const noticeWxml = fs.readFileSync(path.join(__dirname, '../pages/notice/notice.wxml'), 'utf8')
+assert(noticeWxml.indexOf('已阅读确认') !== -1, '须知页须有已阅读确认')
+assert(noticeWxml.indexOf('练习承诺') !== -1, '须有练习承诺步骤')
+assert(noticeWxml.indexOf('onEnterExam') !== -1, '提醒对话框须能进入作答')
+assert(noticeWxml.indexOf('show-scrollbar') !== -1, '须知页滚动条须隐藏')
+
+const examJsGate = fs.readFileSync(path.join(__dirname, '../pages/exam/exam.js'), 'utf8')
+assert(examJsGate.indexOf('briefingDone') !== -1, '未完成须知不得直接进作答')
+assert(app.pages.indexOf('pages/notice/notice') !== -1, 'app.json 须注册须知页')
 assert(examWxml.indexOf('show-scrollbar') !== -1, '作答题干区须隐藏滚动条，避免右侧竖线')
 assert(examWxml.indexOf('qareaScrollTop') !== -1, '换题须把题干滚回顶部')
 const examJs = fs.readFileSync(path.join(__dirname, '../pages/exam/exam.js'), 'utf8')

@@ -129,6 +129,35 @@
       <button class="cta-ghost" id="fill">没有真机授权？点这里用演示账号</button>
     </div>
   </div>
+  <div class="exam-shell hidden" id="notice">
+    <div class="titlebar">模拟仿真考试系统<span class="demo">仿真练习</span></div>
+    <div class="workspace">
+      <div class="sidebar">
+        <div class="lab2">进场流程</div>
+        <div class="val">仿真练习 · 演示文案</div>
+        <div style="margin-top:10px;background:#eaf1fb;border:1px solid #1b4f9c;border-radius:8px;padding:8px">1 仿真练习须知</div>
+        <div style="margin-top:6px;background:#fff;border-radius:8px;padding:8px">2 仿真练习规则</div>
+        <div style="margin-top:6px;background:#fff;border-radius:8px;padding:8px">3 练习承诺</div>
+        <div style="margin-top:6px;background:#fff;border-radius:8px;padding:8px">4 进场前提醒</div>
+        <div style="color:#b42318;font-size:11px;margin-top:10px">题目、计时与成绩均为本地演示，非正式考核。</div>
+      </div>
+      <div class="main">
+        <div class="typebar"><b>仿真练习须知</b> 请阅读后确认。文案为仿真说明，非官方文件摘录。</div>
+        <div class="qarea">
+          <div style="background:#fff;border:1px solid #d5dce6;border-radius:8px;padding:12px;font-size:13px;line-height:1.65">
+            本页是「模拟仿真考试系统」的仿真练习须知，只用来熟悉机考交互。题目与成绩都是本机演示数据，不连接评测平台。<br /><br />
+            进入作答前请核对微信昵称与脱敏手机号。点「开始作答」后倒计时才启动。分段锁定、标疑与交卷规则见下一步。
+          </div>
+        </div>
+        <div class="nav">
+          <div class="ops">
+            <div class="ops-left"><button class="win-btn" id="noticeBack">返回登录</button></div>
+            <div class="ops-right"><button class="win-btn primary" id="noticeGo">已阅读确认</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="exam-shell hidden" id="exam">
     <div class="titlebar">模拟仿真考试系统<span class="demo">仿真练习</span></div>
     <div class="workspace">
@@ -175,13 +204,15 @@
   </div>
   <script>
     function show(id) {
-      ;['index', 'login', 'exam'].forEach(function (n) {
+      ;['index', 'login', 'notice', 'exam'].forEach(function (n) {
         document.getElementById(n).classList.toggle('hidden', n !== id)
       })
-      document.getElementById('body').className = id === 'exam' ? '' : 'phone-mode'
+      document.getElementById('body').className = id === 'exam' || id === 'notice' ? '' : 'phone-mode'
     }
     document.getElementById('toLogin').onclick = function () { show('login') }
-    document.getElementById('enter').onclick = function () { show('exam') }
+    document.getElementById('enter').onclick = function () { show('notice') }
+    document.getElementById('noticeBack').onclick = function () { show('login') }
+    document.getElementById('noticeGo').onclick = function () { show('exam') }
     document.getElementById('fill').onclick = function () {
       document.getElementById('nickname').value = '演示考生'
       document.getElementById('phone').textContent = '138****8000 演示'
@@ -190,6 +221,7 @@
       document.getElementById('phone').textContent = '138****8000 演示'
     }
     if (/exam=1/.test(location.search)) show('exam')
+    else if (/notice=1/.test(location.search)) show('notice')
     else if (/login=1/.test(location.search)) show('login')
   </script>
 </body>

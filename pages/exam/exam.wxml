@@ -8,18 +8,21 @@
   <view class="workspace">
     <view class="sidebar">
       <view class="photo">
-        <view class="sil-head"></view>
-        <view class="sil-body"></view>
-        <view class="photo-cap">照片</view>
+        <image wx:if="{{candidate.avatarUrl}}" class="photo-img" src="{{candidate.avatarUrl}}" mode="aspectFill" />
+        <block wx:else>
+          <view class="sil-head"></view>
+          <view class="sil-body"></view>
+        </block>
+        <view class="photo-cap">{{candidate.demo ? '演示' : '头像'}}</view>
       </view>
 
       <view class="field">
         <view class="lab">姓名</view>
-        <view class="val">{{candidate.name}}</view>
+        <view class="val">{{candidate.nickname || candidate.name}}</view>
       </view>
       <view class="field">
-        <view class="lab">准考证号</view>
-        <view class="val">{{candidate.ticketNo}}</view>
+        <view class="lab">手机号</view>
+        <view class="val">{{candidate.phoneMasked || '—'}}</view>
       </view>
       <view class="field">
         <view class="lab">练习时间</view>

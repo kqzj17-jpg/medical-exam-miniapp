@@ -29,6 +29,12 @@
   background: #c8c8c8;
   border: 1px solid #666;
   position: relative;
+  overflow: hidden;
+}
+
+.photo-img {
+  width: 64px;
+  height: 80px;
 }
 
 .sil-head {

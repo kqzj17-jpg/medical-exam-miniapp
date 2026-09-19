@@ -5,12 +5,12 @@
 
 const DEMO_CANDIDATE = {
   name: '演示考生',
-  ticketNo: '202509180010016',
-  idNo: '110101199001011234',
-  gender: '男',
+  nickname: '演示考生',
+  phone: '13800138000',
   examName: '口腔医学仿真练习（演示）',
   site: '演示考站',
-  examTime: '09:00-09:30'
+  examTime: '09:00-09:30',
+  demo: true
 }
 
 const DURATION_SECONDS = 30 * 60

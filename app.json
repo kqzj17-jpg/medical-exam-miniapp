@@ -14,6 +14,7 @@
     "pageOrientation": "portrait"
   },
   "pageOrientation": "auto",
+  "requiredPrivateInfos": ["getPhoneNumber"],
   "style": "v2",
   "sitemapLocation": "sitemap.json"
 }

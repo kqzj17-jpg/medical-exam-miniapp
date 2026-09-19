@@ -77,7 +77,12 @@ assert(uiSrc.indexOf("wx.setPageOrientation({ orientation: 'landscape' })") === 
 
 const loginWxss = fs.readFileSync(path.join(__dirname, '../pages/login/login.wxss'), 'utf8')
 assert(/height:\s*48px/.test(loginWxss) && loginWxss.indexOf('.inp') !== -1, '登录输入框须足够高，方便竖屏点按输入')
-assert(fs.readFileSync(path.join(__dirname, '../pages/login/login.wxml'), 'utf8').indexOf('演示填入') !== -1, '登录须保留演示填入')
+const loginWxml = fs.readFileSync(path.join(__dirname, '../pages/login/login.wxml'), 'utf8')
+assert(loginWxml.indexOf('chooseAvatar') !== -1, '登录须支持选择微信头像')
+assert(loginWxml.indexOf('type="nickname"') !== -1, '登录须用 nickname 输入框')
+assert(loginWxml.indexOf('getPhoneNumber') !== -1, '登录须有授权手机号按钮')
+assert(loginWxml.indexOf('演示模式') !== -1, '登录须提供演示模式兜底')
+assert(loginWxml.indexOf('准考证号') === -1, '登录主流程不应再要求准考证号')
 
 const appWxss = fs.readFileSync(path.join(__dirname, '../app.wxss'), 'utf8')
 assert(appWxss.indexOf('safe-area-inset') !== -1, 'app.wxss 须含安全区 padding')
@@ -85,6 +90,8 @@ assert(/button\s*\{[^}]*min-width:\s*0/.test(flatten(appWxss)), 'app.wxss button
 assert(/\.win-btn\s*\{[^}]*min-width:\s*0/.test(flatten(appWxss)), 'app.wxss .win-btn 须 min-width:0')
 
 const examWxml = fs.readFileSync(path.join(__dirname, '../pages/exam/exam.wxml'), 'utf8')
+assert(examWxml.indexOf('phoneMasked') !== -1, '作答页须展示手机号（可脱敏）')
+assert(examWxml.indexOf('准考证号') === -1, '作答页主信息不应再以准考证为主')
 assert(examWxml.indexOf('class="ops-left"') !== -1, 'exam 底栏须分 ops-left（标疑等可换行）')
 assert(examWxml.indexOf('class="ops-right"') !== -1, 'exam 底栏须分 ops-right（上一题/下一题）')
 assert(examWxml.indexOf('ops-spacer') === -1, '不应再用 spacer 把下一题顶出屏幕')

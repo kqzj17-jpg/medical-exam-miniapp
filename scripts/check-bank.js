@@ -41,6 +41,8 @@ assert(exam.formatClock(90) === '00:01:30', '剩余时间应为时:分:秒')
 const candidate = bank.DEMO_CANDIDATE
 const session = exam.createSession(candidate)
 assert(session.currentSection === 'A1', '默认从 A1 开始')
+assert(exam.maskPhone('13800138000') === '138****8000', '手机号应脱敏展示')
+assert(session.candidate.phoneMasked === '138****8000', '会话考生应带脱敏手机号')
 const secList = exam.getSectionList(session)
 assert(secList[0].label.indexOf('1~') !== -1, '分段列表应含题号范围')
 assert(secList[1].label.indexOf('A3') !== -1, '应列出 A3 分段')

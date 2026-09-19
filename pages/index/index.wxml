@@ -14,7 +14,7 @@
     <view class="card">
       <view class="h">作答说明</view>
       <view class="p">登录后进入横屏作答界面：上方为考生信息与题目，下方为试题导航。</view>
-      <view class="p">1. 登录：准考证号 + 证件号（可一键填入演示账号）</view>
+      <view class="p">1. 登录：授权微信头像、昵称与手机号（开发工具可用演示模式）</view>
       <view class="p">2. 左侧核对信息、剩余时间、未答题、标疑题</view>
       <view class="p">3. 底部题号红 / 灰 / 黄表示未答 / 已答 / 标疑</view>
       <view class="p">4. 分段练习：进入下一段后本段不可回看、不可修改</view>
@@ -24,7 +24,7 @@
     <view class="card">
       <view class="h">使用说明</view>
       <view class="p warn">题目、成绩与登录均为演示数据，不连接后端，也不用于真实考核。</view>
-      <view class="p">说明页与登录为竖屏，方便输入。进入作答后自动横屏。默认 30 分钟，可随时交卷。</view>
+      <view class="p">说明页与登录为竖屏。授权后进入作答自动横屏。默认 30 分钟，可随时交卷。</view>
       <view class="p">改代码后请重新编译；真机请重新预览扫码。</view>
     </view>
   </scroll-view>

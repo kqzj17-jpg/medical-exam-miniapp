@@ -12,13 +12,35 @@
 
 .hero {
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
+}
+
+.avatar-btn {
+  width: 72px;
+  height: 72px;
+  padding: 0;
+  margin: 4px auto 8px;
+  background: transparent;
+  border: none;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.avatar-btn::after {
+  border: none;
+}
+
+.avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 8px;
+  background: #ddd;
 }
 
 .emblem {
-  width: 64px;
-  height: 64px;
-  margin: 4px auto 12px;
+  width: 72px;
+  height: 72px;
+  margin: 0 auto;
   background: #1f4b99;
   color: #fff;
   display: flex;
@@ -26,6 +48,12 @@
   justify-content: center;
   font-size: 28px;
   font-weight: 700;
+}
+
+.avatar-tip {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 10px;
 }
 
 .hero-name {
@@ -64,9 +92,60 @@
   line-height: 48px;
 }
 
-.hint {
+.phone-box {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #c8c3ba;
+  min-height: 48px;
+  padding: 4px 8px 4px 14px;
+}
+
+.phone-val {
+  flex: 1;
+  min-width: 0;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.tag {
+  margin-left: 8px;
+  font-size: 11px;
+  color: #1f4b99;
+  border: 1px solid #1f4b99;
+  padding: 0 5px;
+  height: 18px;
+  line-height: 16px;
+}
+
+.phone-btn {
+  flex-shrink: 0;
+  height: 36px;
+  line-height: 34px;
+  padding: 0 10px;
+  margin: 0;
   font-size: 13px;
-  color: #666;
+  color: #fff;
+  background: #1f4b99;
+  border: none;
+  min-width: 0;
+}
+
+.phone-btn::after {
+  border: none;
+}
+
+.hint {
+  font-size: 12px;
+  color: #8a5a12;
+  line-height: 1.5;
+  margin-top: 8px;
+}
+
+.consent {
+  font-size: 12px;
+  color: #777;
   line-height: 1.5;
   margin-top: 4px;
 }
@@ -89,7 +168,7 @@
 .cta-ghost {
   height: 44px;
   line-height: 42px;
-  font-size: 16px;
+  font-size: 15px;
   background: #fff;
   color: #1f4b99;
   border: 1px solid #1f4b99;
@@ -104,6 +183,10 @@
   background: #1f4b99;
   color: #fff;
   border: none;
+}
+
+.cta.off {
+  opacity: 0.42;
 }
 
 .cta::after,

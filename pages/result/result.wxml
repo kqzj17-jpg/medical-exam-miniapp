@@ -13,8 +13,8 @@
           <view class="score">{{result.score}}</view>
           <view class="score-lab">演示成绩（百分制）</view>
           <view class="table">
-            <view class="row"><text class="k">姓名</text><text class="v">{{result.candidate.name}}</text></view>
-            <view class="row"><text class="k">准考证号</text><text class="v">{{result.candidate.ticketNo}}</text></view>
+            <view class="row"><text class="k">姓名</text><text class="v">{{result.candidate.nickname || result.candidate.name}}</text></view>
+            <view class="row"><text class="k">手机号</text><text class="v">{{result.candidate.phoneMasked || result.candidate.phone}}</text></view>
             <view class="row"><text class="k">练习科目</text><text class="v">{{result.candidate.examName}}</text></view>
             <view class="row"><text class="k">正确率</text><text class="v">{{result.correct}} / {{result.total}}（{{result.accuracyText}}）</text></view>
             <view class="row"><text class="k">用时</text><text class="v">{{result.usedText}}</text></view>

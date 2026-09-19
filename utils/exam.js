@@ -1,4 +1,5 @@
 const bank = require('../data/questions.js')
+const auth = require('./auth.js')
 
 const STORAGE = {
   candidate: 'sim_exam_candidate',
@@ -32,8 +33,11 @@ function sectionIndex(sectionId) {
 
 function createSession(candidate) {
   const first = bank.QUESTIONS[0]
+  const c = clone(candidate || {})
+  if (!c.nickname) c.nickname = c.name || ''
+  if (c.phone && !c.phoneMasked) c.phoneMasked = auth.maskPhone(c.phone)
   return {
-    candidate: clone(candidate),
+    candidate: c,
     answers: {},
     flagged: {},
     lockedSections: [],
@@ -360,5 +364,6 @@ module.exports = {
   loadCandidate,
   loadResult,
   clearExamStorage,
-  maskIdNo
+  maskIdNo,
+  maskPhone: auth.maskPhone
 }

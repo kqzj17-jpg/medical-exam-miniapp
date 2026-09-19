@@ -6,39 +6,49 @@
   </view>
   <scroll-view class="portrait-body" scroll-y>
     <view class="hero">
-      <view class="emblem">仿</view>
+      <button class="avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+        <image wx:if="{{avatarUrl}}" class="avatar" src="{{avatarUrl}}" mode="aspectFill" />
+        <view wx:else class="emblem">仿</view>
+      </button>
+      <view class="avatar-tip">点击选择微信头像</view>
       <view class="hero-name">{{productName}}</view>
-      <view class="hero-sub">{{demo.examName}}</view>
+      <view class="hero-sub">授权头像、昵称与手机号后进入横屏作答</view>
     </view>
 
     <view class="field">
-      <view class="lab">准考证号</view>
+      <view class="lab">微信昵称</view>
       <input
         class="inp"
-        maxlength="20"
-        value="{{ticketNo}}"
-        bindinput="onTicket"
+        type="nickname"
+        value="{{nickname}}"
+        bindblur="onNickname"
+        bindinput="onNicknameInput"
+        bindnicknamereview="onNicknameReview"
         adjust-position
-        confirm-type="next"
-        placeholder="请输入准考证号"
+        placeholder="点击填写微信昵称"
       />
     </view>
+
     <view class="field">
-      <view class="lab">证件号</view>
-      <input
-        class="inp"
-        maxlength="18"
-        value="{{idNo}}"
-        bindinput="onId"
-        adjust-position
-        confirm-type="done"
-        placeholder="请输入证件号"
-      />
+      <view class="lab">手机号</view>
+      <view class="phone-box">
+        <view class="phone-val">
+          <text>{{phoneMasked || '未授权'}}</text>
+          <text class="tag" wx:if="{{phone}}">{{phoneDemo ? '演示' : '已授权'}}</text>
+        </view>
+        <button
+          class="phone-btn"
+          open-type="getPhoneNumber|agreePrivacyAuthorization"
+          bindgetphonenumber="onGetPhoneNumber"
+        >{{phone ? '重新授权' : '授权手机号'}}</button>
+      </view>
+      <view class="hint" wx:if="{{phoneHint}}">{{phoneHint}}</view>
     </view>
-    <view class="hint">演示模式不校验真实考籍。可一键填入示例账号后进入横屏作答。</view>
+
+    <view class="consent">头像、昵称与手机号仅保存在本机，用于仿真练习展示。无后端，真实手机号在开发工具/测试 AppID 下通常无法解密，请用演示模式继续。</view>
   </scroll-view>
   <view class="portrait-foot">
-    <button class="cta-ghost" bindtap="onFillDemo">演示填入</button>
-    <button class="cta" bindtap="onLogin">登录并开始练习</button>
+    <button class="cta-ghost" bindtap="onDemoLogin">演示模式（开发工具/测试号）</button>
+    <button class="cta {{canStart ? '' : 'off'}}" bindtap="onStart">开始练习</button>
   </view>
 </view>

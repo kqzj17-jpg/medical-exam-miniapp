@@ -63,8 +63,8 @@
         <div class="hero-name">模拟仿真考试系统</div>
         <div class="hero-sub">本地仿真练习 · 演示数据</div>
       </div>
-      <div class="card"><h3>作答说明</h3>登录后进入横屏作答。准考证号 + 证件号即可开始；底部题号红/灰/黄表示未答/已答/标疑。</div>
-      <div class="card"><h3>使用说明</h3>题目与成绩均为演示数据。说明页与登录为竖屏，进入作答后自动横屏。</div>
+      <div class="card"><h3>作答说明</h3>授权微信头像、昵称与手机号后进入横屏作答。底部题号红/灰/黄表示未答/已答/标疑。</div>
+      <div class="card"><h3>使用说明</h3>题目与成绩均为演示数据。说明页与登录为竖屏，进入作答后自动横屏。开发工具可用演示模式。</div>
     </div>
     <div class="foot"><button class="cta" id="toLogin">进入登录</button></div>
   </div>
@@ -73,16 +73,23 @@
     <div class="p-body">
       <div class="hero">
         <div class="emblem">仿</div>
+        <div class="avatar-tip" style="font-size:12px;color:#888;margin-bottom:10px">点击选择微信头像</div>
         <div class="hero-name">模拟仿真考试系统</div>
-        <div class="hero-sub">口腔医学仿真练习（演示）</div>
+        <div class="hero-sub">授权头像、昵称与手机号后进入横屏作答</div>
       </div>
-      <div class="field"><span class="lab">准考证号</span><input class="inp" id="ticket" value="202509180010016" /></div>
-      <div class="field"><span class="lab">证件号</span><input class="inp" id="idno" value="110101199001011234" /></div>
-      <div class="hint">演示模式不校验真实考籍。可一键填入示例账号后进入横屏作答。</div>
+      <div class="field"><span class="lab">微信昵称</span><input class="inp" id="nickname" placeholder="点击填写微信昵称" /></div>
+      <div class="field">
+        <span class="lab">手机号</span>
+        <div class="inp" id="phoneBox" style="display:flex;align-items:center;justify-content:space-between">
+          <span id="phone">未授权</span>
+          <button class="cta" id="authPhone" style="width:auto;height:36px;padding:0 10px;font-size:13px;margin:0">授权手机号</button>
+        </div>
+      </div>
+      <div class="hint">无后端无法解密真实手机号。开发工具请用演示模式。</div>
     </div>
     <div class="foot">
-      <button class="cta-ghost" id="fill">演示填入</button>
-      <button class="cta" id="enter">登录并开始练习</button>
+      <button class="cta-ghost" id="fill">演示模式（开发工具/测试号）</button>
+      <button class="cta" id="enter">开始练习</button>
     </div>
   </div>
   <div class="exam-shell hidden" id="exam">
@@ -90,7 +97,7 @@
     <div class="workspace">
       <div class="sidebar">
         <div class="lab2">姓名</div><div class="val">演示考生</div>
-        <div class="lab2">准考证号</div><div class="val">202509180010016</div>
+        <div class="lab2">手机号</div><div class="val">138****8000</div>
         <div class="lab2">练习时间</div><div class="val">09:00-09:30</div>
         <div class="lab2">剩余时间</div><div class="remain">00:29:12</div>
         <div class="lab2">未答题</div><div class="val">5</div>
@@ -139,8 +146,11 @@
     document.getElementById('toLogin').onclick = function () { show('login') }
     document.getElementById('enter').onclick = function () { show('exam') }
     document.getElementById('fill').onclick = function () {
-      document.getElementById('ticket').value = '202509180010016'
-      document.getElementById('idno').value = '110101199001011234'
+      document.getElementById('nickname').value = '演示考生'
+      document.getElementById('phone').textContent = '138****8000 演示'
+    }
+    document.getElementById('authPhone').onclick = function () {
+      document.getElementById('phone').textContent = '138****8000 演示'
     }
     if (/exam=1/.test(location.search)) show('exam')
     else if (/login=1/.test(location.search)) show('login')

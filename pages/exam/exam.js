@@ -15,8 +15,11 @@ Page({
     sections: [],
     candidate: {
       name: '',
-      ticketNo: '',
-      examTime: '09:00-09:30'
+      nickname: '',
+      avatarUrl: '',
+      phoneMasked: '',
+      examTime: '09:00-09:30',
+      demo: false
     },
     typeLabel: 'A1',
     typeHint: '',

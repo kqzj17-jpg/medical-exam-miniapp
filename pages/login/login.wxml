@@ -4,7 +4,7 @@
     <text>{{productName}}</text>
     <text class="demo">{{productTag}}</text>
   </view>
-  <scroll-view class="portrait-body" scroll-y>
+  <scroll-view class="portrait-body" scroll-y enhanced show-scrollbar="{{false}}">
     <view class="hero">
       <button class="avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
         <image wx:if="{{avatarUrl}}" class="avatar" src="{{avatarUrl}}" mode="aspectFill" />

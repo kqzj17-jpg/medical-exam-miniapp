@@ -5,6 +5,12 @@
   padding: 20px 20px 12px;
 }
 
+.portrait-body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
 .hero {
   text-align: center;
   margin-bottom: 20px;

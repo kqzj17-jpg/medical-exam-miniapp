@@ -152,7 +152,9 @@ function buildShellStyle(info, orientation) {
   // Portrait: titlebar consumes status-bar + capsule. Shell must NOT also pad-top
   // (env(safe-area) + JS inset + titlebar height stacked = 页面被顶歪).
   let padTop = landscape ? inset.top : 0
-  let padRight = landscape ? Math.max(inset.right, cap) : inset.right
+  // Portrait: never pad the shell on the right (titlebar already clears the capsule).
+  // env(safe-area-inset-right) + JS padRight stacked looks like a full-height vertical line.
+  let padRight = landscape ? Math.max(inset.right, cap) : 0
   const padBottom = inset.bottom
   const padLeft = inset.left
 

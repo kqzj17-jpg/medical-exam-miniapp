@@ -76,6 +76,7 @@ const ORIENT = {
     assert(wxml.indexOf('portrait-shell') !== -1, name + ' 须用竖屏壳，不得套横屏机考 chrome')
     assert(wxml.indexOf('exam-shell') === -1, name + ' 竖屏页不得渲染横屏机考壳')
     assert(js.indexOf("'landscape'") === -1 && js.indexOf('"landscape"') === -1, name + ' 竖屏页不得 setPageOrientation landscape')
+    assert(wxml.indexOf('show-scrollbar') !== -1, name + ' 竖屏 scroll-view 须隐藏滚动条，避免内容区右侧竖线')
   }
   if (ORIENT[name] === 'landscape') {
     assert(js.indexOf("'portrait'") === -1 && js.indexOf('"portrait"') === -1, name + ' 横屏页不得卡在 portrait')
@@ -110,6 +111,22 @@ const portraitShell = ui.buildShellStyle(
 assert(
   /padding-top:0px/.test(portraitShell.shellStyle.replace(/\s/g, '')),
   '竖屏 shell 顶 padding 须为 0，避免与 titlebar 叠出双倍安全区把页面顶歪'
+)
+assert(
+  /padding-right:0px/.test(portraitShell.shellStyle.replace(/\s/g, '')),
+  '竖屏 shell 右 padding 须为 0，避免与滚动条叠成全高竖线'
+)
+const portraitShellRight = ui.buildShellStyle(
+  {
+    windowWidth: 393,
+    windowHeight: 852,
+    safeArea: { left: 0, top: 59, right: 380, bottom: 818 }
+  },
+  'portrait'
+)
+assert(
+  /padding-right:0px/.test(portraitShellRight.shellStyle.replace(/\s/g, '')),
+  '竖屏即使 safeArea.right 非满宽，shell 也不得再 padRight'
 )
 assert(
   /padding-top:59px/.test(portraitShell.titlebarStyle.replace(/\s/g, '')),
@@ -153,6 +170,12 @@ const appWxss = fs.readFileSync(path.join(__dirname, '../app.wxss'), 'utf8')
 assert(appWxss.indexOf('safe-area-inset') !== -1, 'app.wxss 须含安全区 padding')
 assert(/button\s*\{[^}]*min-width:\s*0/.test(flatten(appWxss)), 'app.wxss button 须 min-width:0 覆盖微信默认')
 assert(/\.win-btn\s*\{[^}]*min-width:\s*0/.test(flatten(appWxss)), 'app.wxss .win-btn 须 min-width:0')
+const portraitShellCss = appWxss.match(/\.portrait-shell\s*\{[^}]+\}/)
+assert(
+  portraitShellCss && portraitShellCss[0].indexOf('padding-right') === -1,
+  '竖屏壳 CSS 不得 padding-right，避免与滚动条叠成全高竖线'
+)
+assert(appWxss.indexOf('::-webkit-scrollbar') !== -1, '须隐藏 portrait-body 滚动条')
 
 const examWxml = fs.readFileSync(path.join(__dirname, '../pages/exam/exam.wxml'), 'utf8')
 assert(examWxml.indexOf('phoneMasked') !== -1, '作答页须展示手机号（可脱敏）')

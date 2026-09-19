@@ -4,7 +4,7 @@
     <text>{{productName}}</text>
     <text class="demo">{{productTag}}</text>
   </view>
-  <scroll-view class="portrait-body" scroll-y>
+  <scroll-view class="portrait-body" scroll-y enhanced show-scrollbar="{{false}}">
     <view class="hero">
       <view class="emblem">仿</view>
       <view class="hero-name">{{productName}}</view>

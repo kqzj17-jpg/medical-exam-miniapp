@@ -1,11 +1,14 @@
 const exam = require('../../utils/exam.js')
 const ui = require('../../utils/ui.js')
+const brand = require('../../utils/brand.js')
 
 Page({
   data: {
     ticketNo: '',
     idNo: '',
     demo: exam.DEMO_CANDIDATE,
+    productName: brand.PRODUCT_NAME,
+    productTag: brand.PRODUCT_TAG,
     shellStyle: '',
     titlebarStyle: ''
   },

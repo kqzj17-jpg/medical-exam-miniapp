@@ -72,6 +72,18 @@ const result = exam.grade(session)
 assert(result.total === bank.QUESTIONS.length, '成绩题目总数应一致')
 assert(result.correct === bank.QUESTIONS.length, '两段均正确作答应满分')
 assert(result.score === 100, '应给出百分制成绩')
+assert(result.details && result.details[0] && result.details[0].stem, '成绩明细须含题干，供错题回顾')
+assert(result.wrong === 0, '全对时错题数应为 0')
+
+const missSession = exam.createSession(candidate)
+const missItems = exam.unansweredItems(missSession)
+assert(missItems.length === bank.SECTIONS.length, '未答汇总应按分段列出')
+assert(missItems[0].nosText.indexOf('1') !== -1, '未答汇总须含题号')
+exam.selectAnswer(missSession, a1[0].id, a1[0].answer === 'A' ? 'B' : 'A')
+const graded = exam.grade(missSession)
+assert(graded.wrong === 1, '答错一题应计入错题')
+assert(graded.unanswered === bank.QUESTIONS.length - 1, '其余应计未答')
+assert(graded.details.filter((d) => !d.ok).length === bank.QUESTIONS.length, '错题回顾应包含错题与未答')
 
 console.log('OK', {
   total: bank.QUESTIONS.length,

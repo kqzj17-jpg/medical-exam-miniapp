@@ -10,9 +10,36 @@ function flatten(src) {
   return src.replace(/\s+/g, ' ')
 }
 
+const brand = require('../utils/brand.js')
+
 const app = JSON.parse(fs.readFileSync(path.join(__dirname, '../app.json'), 'utf8'))
 assert(app.pageOrientation === 'landscape', 'app.json 顶层须 pageOrientation: landscape')
 assert(app.window && app.window.pageOrientation === 'landscape', 'app.json window 须 pageOrientation: landscape')
+assert(brand.PRODUCT_NAME === '模拟仿真考试系统', '产品名须为模拟仿真考试系统')
+assert(app.window.navigationBarTitleText === brand.PRODUCT_NAME, 'app.json 标题须为产品名')
+
+const project = JSON.parse(fs.readFileSync(path.join(__dirname, '../project.config.json'), 'utf8'))
+assert(String(project.description).indexOf(brand.PRODUCT_NAME) !== -1, 'project 描述须含产品名')
+
+function collectFiles(dir, acc) {
+  fs.readdirSync(dir).forEach((name) => {
+    if (name === '.git' || name === 'node_modules') return
+    const p = path.join(dir, name)
+    if (fs.statSync(p).isDirectory()) collectFiles(p, acc)
+    else if (/\.(js|json|wxml|wxss|md|html)$/.test(name)) acc.push(p)
+  })
+  return acc
+}
+
+const selfPath = path.normalize(__filename)
+const needles = ['国家' + '医学考试', '考试' + '中心', '考试' + '网', 'NM' + 'EC', 'nm' + 'ec']
+collectFiles(path.join(__dirname, '..'), []).forEach((file) => {
+  if (path.normalize(file) === selfPath) return
+  const src = fs.readFileSync(file, 'utf8')
+  needles.forEach((n) => {
+    assert(src.toLowerCase().indexOf(n.toLowerCase()) === -1, file + ' 含禁用字眼: ' + n)
+  })
+})
 
 ;['index', 'login', 'exam', 'result'].forEach((name) => {
   const json = JSON.parse(fs.readFileSync(path.join(__dirname, '../pages/' + name + '/' + name + '.json'), 'utf8'))
@@ -24,6 +51,7 @@ assert(app.window && app.window.pageOrientation === 'landscape', 'app.json windo
   assert(wxml.indexOf('transform:scale') === -1, name + ' wxml 不应再 scale')
   assert(wxss.indexOf('transform:scale') === -1, name + ' wxss 不应再 scale')
   assert(js.indexOf('DEFAULT_STAGE_STYLE') === -1, name + ' 不应再使用固定舞台')
+  assert(wxml.indexOf('{{productName}}') !== -1, name + ' 须使用产品名绑定')
 })
 
 const uiSrc = fs.readFileSync(path.join(__dirname, '../utils/ui.js'), 'utf8')
@@ -44,6 +72,9 @@ const rightChunk = examWxml.match(/class="ops-right"[\s\S]*?<\/view>/)
 assert(rightChunk, '找不到 ops-right 闭合')
 assert(rightChunk[0].indexOf('上一题') !== -1 && rightChunk[0].indexOf('下一题') !== -1, '上一题/下一题必须写在 ops-right 内')
 assert(examWxml.indexOf('bindtap="onPrev"') !== -1 && examWxml.indexOf('bindtap="onNext"') !== -1, '上一题/下一题须可点')
+assert(examWxml.indexOf('未答汇总') !== -1, '交卷对话框须有未答汇总')
+const resultWxml = fs.readFileSync(path.join(__dirname, '../pages/result/result.wxml'), 'utf8')
+assert(resultWxml.indexOf('错题回顾') !== -1, '成绩页须有错题回顾')
 
 const examWxss = fs.readFileSync(path.join(__dirname, '../pages/exam/exam.wxss'), 'utf8')
 const examFlat = flatten(examWxss)

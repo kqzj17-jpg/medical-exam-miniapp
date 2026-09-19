@@ -1,8 +1,8 @@
 <page-meta page-orientation="landscape" />
 <view class="shell exam-shell" style="{{shellStyle}}">
   <view class="titlebar" style="{{titlebarStyle}}">
-    <text>国家医学考试系统</text>
-    <text class="demo">演示</text>
+    <text>{{productName}}</text>
+    <text class="demo">{{productTag}}</text>
   </view>
 
   <view class="workspace">
@@ -22,28 +22,30 @@
         <view class="val">{{candidate.ticketNo}}</view>
       </view>
       <view class="field">
-        <view class="lab">考试时间</view>
+        <view class="lab">练习时间</view>
         <view class="val">{{candidate.examTime}}</view>
       </view>
       <view class="field">
         <view class="lab">剩余时间</view>
         <view class="remain {{timeUrgent ? 'urgent' : ''}}">{{remainingText}}</view>
       </view>
-      <view class="field tap" bindtap="onJumpUnanswered">
-        <view class="lab">未答题数</view>
-        <view class="val num">{{unansweredCount}}</view>
-      </view>
-      <view class="field tap" bindtap="onJumpFlagged">
-        <view class="lab">标疑题数</view>
-        <view class="val num">{{flaggedCount}}</view>
+      <view class="stats">
+        <view class="stat tap" bindtap="onJumpUnanswered">
+          <view class="lab">未答题</view>
+          <view class="val num">{{unansweredCount}}</view>
+        </view>
+        <view class="stat tap" bindtap="onJumpFlagged">
+          <view class="lab">标疑题</view>
+          <view class="val num">{{flaggedCount}}</view>
+        </view>
       </view>
 
       <view class="side-btns">
         <button class="win-btn" bindtap="onRefresh">刷新</button>
-        <button class="win-btn" bindtap="onAskSubmit">完成考试</button>
+        <button class="win-btn primary" bindtap="onAskSubmit">交卷</button>
       </view>
 
-      <view class="rule">注意：考试分若干段进行。进入下一段后，本段试题将不能回看和修改。</view>
+      <view class="rule">注意：练习分若干段进行。进入下一段后，本段试题将不能回看和修改。</view>
 
       <view class="sec-list">
         <view
@@ -58,13 +60,13 @@
 
     <view class="main">
       <view class="typebar">
-        <text class="type-name">题型: {{typeLabel}}</text>
+        <text class="type-name">题型 {{typeLabel}}</text>
         <text class="type-hint">{{typeHint}}</text>
       </view>
       <scroll-view class="qarea" scroll-y>
         <view wx:if="{{isLocked}}" class="locked-box">
-          <view class="lock-title">此题不可回看</view>
-          <view class="lock-desc">本分段已锁定。进入下一段后，本段试题将无法再查看或修改。</view>
+          <view class="lock-title">本段已锁定</view>
+          <view class="lock-desc">进入下一段后，本段试题将无法再查看或修改。</view>
         </view>
         <block wx:else>
           <view class="case" wx:if="{{question.caseStem}}">
@@ -108,16 +110,29 @@
         bindtap="onTapGrid"
       >{{item.no}}</view>
     </view>
-    <view class="legend">颜色说明：黄色表示标疑，红色表示未答，灰色表示已答。</view>
+    <view class="legend">
+      <view class="lg lg-flag">标疑</view>
+      <view class="lg lg-miss">未答</view>
+      <view class="lg lg-ok">已答</view>
+    </view>
   </view>
 
   <view class="mask" wx:if="{{dialog.show}}" catchtouchmove="noop">
     <view class="dlg">
       <view class="dlg-bar">{{dialog.title}}</view>
-      <view class="dlg-body">{{dialog.content}}</view>
+      <scroll-view class="dlg-body" scroll-y>
+        <view class="dlg-p">{{dialog.content}}</view>
+        <view class="dlg-sum" wx:if="{{dialog.summary.length}}">
+          <view class="dlg-sum-h">未答汇总</view>
+          <view class="dlg-sum-row" wx:for="{{dialog.summary}}" wx:key="id">
+            <text class="dlg-sum-k">{{item.name}}{{item.locked ? '（已锁定）' : ''}}</text>
+            <text class="dlg-sum-v">{{item.count}} 题：{{item.nosText}}</text>
+          </view>
+        </view>
+      </scroll-view>
       <view class="dlg-ops">
         <button wx:if="{{dialog.cancelText}}" class="win-btn" bindtap="onDialogCancel">{{dialog.cancelText}}</button>
-        <button class="win-btn" bindtap="onDialogConfirm">{{dialog.confirmText}}</button>
+        <button class="win-btn primary" bindtap="onDialogConfirm">{{dialog.confirmText}}</button>
       </view>
     </view>
   </view>

@@ -1,3 +1,5 @@
+const brand = require('./brand.js')
+
 function readWindowInfo() {
   let info = {
     windowWidth: 667,
@@ -171,7 +173,9 @@ function applyShell(page) {
   const styles = buildShellStyle(info)
   page.setData({
     shellStyle: styles.shellStyle,
-    titlebarStyle: styles.titlebarStyle
+    titlebarStyle: styles.titlebarStyle,
+    productName: brand.PRODUCT_NAME,
+    productTag: brand.PRODUCT_TAG
   })
 }
 
@@ -195,6 +199,8 @@ function unbindShell(page) {
 }
 
 module.exports = {
+  PRODUCT_NAME: brand.PRODUCT_NAME,
+  PRODUCT_TAG: brand.PRODUCT_TAG,
   TITLE_H,
   NAV_H,
   SIDE_RATIO,

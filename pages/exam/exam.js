@@ -1,8 +1,11 @@
 const exam = require('../../utils/exam.js')
 const ui = require('../../utils/ui.js')
+const brand = require('../../utils/brand.js')
 
 Page({
   data: {
+    productName: brand.PRODUCT_NAME,
+    productTag: brand.PRODUCT_TAG,
     shellStyle: '',
     titlebarStyle: '',
     remainingText: '00:30:00',
@@ -28,6 +31,7 @@ Page({
       type: '',
       title: '',
       content: '',
+      summary: [],
       confirmText: '',
       cancelText: ''
     }
@@ -136,6 +140,7 @@ Page({
         type: cfg.type,
         title: cfg.title || '提示',
         content: cfg.content || '',
+        summary: cfg.summary || [],
         confirmText: cfg.confirmText || '确定',
         cancelText: cfg.cancelText || ''
       }
@@ -183,7 +188,7 @@ Page({
     this.showDialog({
       type: 'nextSection',
       title: '提示',
-      content: '考试将进入下一分段. 进入后本段试题将无法再作修改. 确认要进入下一段考试吗?',
+      content: '进入下一段后，本段将锁定，不能再查看或修改。确认进入下一段练习吗?',
       confirmText: '进入下一段',
       cancelText: '继续作答'
     })
@@ -211,7 +216,7 @@ Page({
 
   onFlag() {
     if (this.data.isLocked) {
-      wx.showToast({ title: '此题不可回看', icon: 'none' })
+      wx.showToast({ title: '本段已锁定，不可回看', icon: 'none' })
       return
     }
     exam.toggleFlag(this.session, this.session.currentQid)
@@ -276,14 +281,16 @@ Page({
 
   onAskSubmit() {
     const n = exam.unansweredCount(this.session)
+    const summary = exam.unansweredItems(this.session)
     const content =
       n > 0
-        ? '您还有 ' + n + ' 道试题未答. 确认要完成考试吗?'
-        : '全部试题已作答. 确认要完成考试吗?'
+        ? '还有 ' + n + ' 道未答题，交卷后未答计为错误。确认结束本次仿真练习吗？'
+        : '全部试题已作答。确认结束本次仿真练习吗？'
     this.showDialog({
       type: 'submit',
-      title: '提示',
+      title: '交卷确认',
       content,
+      summary,
       confirmText: '确认交卷',
       cancelText: '继续作答'
     })
@@ -306,8 +313,8 @@ Page({
       type: 'submitted',
       title: '提示',
       content: autoSubmitted
-        ? '考试时间已到，系统已自动交卷。交卷成功！祝您好运！'
-        : '交卷成功！祝您好运！',
+        ? '练习时间已到，已自动交卷。本次仿真练习已提交。'
+        : '本次仿真练习已交卷。',
       confirmText: '确定',
       cancelText: ''
     })

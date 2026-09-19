@@ -50,11 +50,11 @@ button::after {
 }
 
 .win-btn {
-  background: #e6e6e6;
-  color: #000;
+  background: #ececec;
+  color: #111;
   border-style: solid;
   border-width: 2px;
-  border-color: #fff #6e6e6e #6e6e6e #fff;
+  border-color: #fff #6a6a6a #6a6a6a #fff;
   font-size: 13px;
   height: 28px;
   line-height: 24px;
@@ -66,7 +66,26 @@ button::after {
 }
 
 .win-btn:active {
-  border-color: #6e6e6e #fff #fff #6e6e6e;
+  border-color: #6a6a6a #fff #fff #6a6a6a;
+  background: #e0e0e0;
+}
+
+.win-btn.primary {
+  background: #3a63a8;
+  color: #fff;
+  border-color: #7ea0d4 #1d3c73 #1d3c73 #7ea0d4;
+}
+
+.win-btn.primary:active {
+  border-color: #1d3c73 #7ea0d4 #7ea0d4 #1d3c73;
+  background: #335892;
+}
+
+.win-btn.mini {
+  height: 22px;
+  line-height: 18px;
+  padding: 0 8px;
+  font-size: 11px;
 }
 
 .titlebar {
@@ -76,17 +95,22 @@ button::after {
   color: #fff;
   display: flex;
   align-items: center;
-  padding: 0 10px;
+  padding: 0 12px;
   font-size: 14px;
   font-weight: 700;
   flex-shrink: 0;
+  letter-spacing: 0.2px;
 }
 
 .titlebar .demo {
   margin-left: 10px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 400;
-  opacity: 0.9;
+  opacity: 0.95;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  padding: 0 6px;
+  height: 18px;
+  line-height: 16px;
 }
 
 .desk {
@@ -97,7 +121,7 @@ button::after {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px;
+  padding: 10px 12px;
 }
 
 .win {
@@ -107,5 +131,7 @@ button::after {
   border-color: #fff #404040 #404040 #fff;
   max-width: 100%;
   max-height: 100%;
-  overflow: auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }

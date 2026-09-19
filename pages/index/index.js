@@ -1,7 +1,10 @@
 const ui = require('../../utils/ui.js')
+const brand = require('../../utils/brand.js')
 
 Page({
   data: {
+    productName: brand.PRODUCT_NAME,
+    productTag: brand.PRODUCT_TAG,
     shellStyle: '',
     titlebarStyle: ''
   },

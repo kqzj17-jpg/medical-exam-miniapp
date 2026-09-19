@@ -1,8 +1,11 @@
 const exam = require('../../utils/exam.js')
 const ui = require('../../utils/ui.js')
+const brand = require('../../utils/brand.js')
 
 Page({
   data: {
+    productName: brand.PRODUCT_NAME,
+    productTag: brand.PRODUCT_TAG,
     result: {
       candidate: {},
       score: 0,
@@ -11,9 +14,15 @@ Page({
       accuracyText: '0%',
       usedText: '',
       unanswered: 0,
-      autoSubmitted: false
+      autoSubmitted: false,
+      details: []
     },
     sectionStats: [],
+    review: [],
+    details: [],
+    showAll: false,
+    wrongCount: 0,
+    missCount: 0,
     shellStyle: '',
     titlebarStyle: ''
   },
@@ -26,6 +35,7 @@ Page({
       wx.redirectTo({ url: '/pages/index/index' })
       return
     }
+    const details = result.details || []
     const sectionStats = exam.getSections().map((s) => {
       const stat = (result.bySection && result.bySection[s.id]) || { correct: 0, total: 0 }
       return {
@@ -35,7 +45,17 @@ Page({
         total: stat.total
       }
     })
-    this.setData({ result, sectionStats })
+    const wrongCount = details.filter((d) => d.selected && !d.ok).length
+    const missCount = details.filter((d) => !d.selected).length
+    this.setData({
+      result,
+      details,
+      sectionStats,
+      wrongCount,
+      missCount,
+      showAll: false,
+      review: details.filter((d) => !d.ok)
+    })
   },
 
   onShow() {
@@ -48,6 +68,12 @@ Page({
 
   onUnload() {
     ui.unbindShell(this)
+  },
+
+  toggleReview() {
+    const showAll = !this.data.showAll
+    const review = showAll ? this.data.details : this.data.details.filter((d) => !d.ok)
+    this.setData({ showAll, review })
   },
 
   retry() {

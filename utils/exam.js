@@ -1,9 +1,9 @@
 const bank = require('../data/questions.js')
 
 const STORAGE = {
-  candidate: 'nmec_candidate',
-  session: 'nmec_session',
-  result: 'nmec_result'
+  candidate: 'sim_exam_candidate',
+  session: 'sim_exam_session',
+  result: 'sim_exam_result'
 }
 
 function clone(obj) {
@@ -52,6 +52,19 @@ function isLocked(session, sectionId) {
 function unansweredCount(session, sectionId) {
   const list = sectionId ? getQuestionsBySection(sectionId) : bank.QUESTIONS
   return list.filter((q) => !session.answers[q.id]).length
+}
+
+function unansweredItems(session) {
+  return bank.SECTIONS.map((s) => {
+    const qs = getQuestionsBySection(s.id).filter((q) => !session.answers[q.id])
+    return {
+      id: s.id,
+      name: s.title || s.name,
+      count: qs.length,
+      nosText: qs.map((q) => q.no).join('、'),
+      locked: isLocked(session, s.id)
+    }
+  }).filter((item) => item.count > 0)
 }
 
 function flaggedCount(session, sectionId) {
@@ -228,10 +241,14 @@ function grade(session) {
     if (ok) bySection[q.section].correct++
     return {
       id: q.id,
+      no: q.no,
       section: q.section,
+      stem: q.stem,
       selected,
       answer: q.answer,
-      ok
+      ok,
+      unanswered: !selected,
+      explanation: q.explanation || ''
     }
   })
   const total = bank.QUESTIONS.length
@@ -250,6 +267,7 @@ function grade(session) {
     usedText: formatDuration(used),
     unanswered: unansweredCount(session),
     flagged: flaggedCount(session),
+    wrong: details.filter((d) => d.selected && !d.ok).length,
     bySection,
     details,
     finishedAt: Date.now(),
@@ -315,6 +333,7 @@ module.exports = {
   createSession,
   isLocked,
   unansweredCount,
+  unansweredItems,
   flaggedCount,
   gridForSection,
   displayNo,

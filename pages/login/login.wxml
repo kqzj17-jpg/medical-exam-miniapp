@@ -1,18 +1,18 @@
 <page-meta page-orientation="landscape" />
 <view class="shell" style="{{shellStyle}}">
   <view class="titlebar" style="{{titlebarStyle}}">
-    <text>国家医学考试系统</text>
-    <text class="demo">演示</text>
+    <text>{{productName}}</text>
+    <text class="demo">{{productTag}}</text>
   </view>
   <view class="desk">
     <view class="win login-win">
-      <view class="titlebar">国家医学考试系统 - 考生登录</view>
+      <view class="titlebar">{{productName}} · 登录</view>
       <view class="login-body">
         <view class="login-left">
-          <view class="emblem">医</view>
-          <view class="sys">国家医学考试系统</view>
+          <view class="emblem">仿</view>
+          <view class="sys">{{productName}}</view>
           <view class="paper">{{demo.examName}}</view>
-          <view class="note">演示练习 · 非官方</view>
+          <view class="note">本地仿真练习 · 演示数据</view>
         </view>
         <view class="login-right">
           <view class="row">
@@ -26,7 +26,7 @@
           <view class="hint">演示模式不校验真实考籍。可直接登录，或一键填入示例账号。</view>
           <view class="btns">
             <button class="win-btn" bindtap="onFillDemo">演示填入</button>
-            <button class="win-btn" bindtap="onLogin">登录</button>
+            <button class="win-btn primary" bindtap="onLogin">登录</button>
           </view>
         </view>
       </view>

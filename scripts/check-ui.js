@@ -188,6 +188,11 @@ assert(rightChunk, '找不到 ops-right 闭合')
 assert(rightChunk[0].indexOf('上一题') !== -1 && rightChunk[0].indexOf('下一题') !== -1, '上一题/下一题必须写在 ops-right 内')
 assert(examWxml.indexOf('bindtap="onPrev"') !== -1 && examWxml.indexOf('bindtap="onNext"') !== -1, '上一题/下一题须可点')
 assert(examWxml.indexOf('未答汇总') !== -1, '交卷对话框须有未答汇总')
+assert(examWxml.indexOf('show-scrollbar') !== -1, '作答题干区须隐藏滚动条，避免右侧竖线')
+assert(examWxml.indexOf('qareaScrollTop') !== -1, '换题须把题干滚回顶部')
+const examJs = fs.readFileSync(path.join(__dirname, '../pages/exam/exam.js'), 'utf8')
+assert(examJs.indexOf('qareaScrollTop') !== -1 && examJs.indexOf('q-start') !== -1, '换题须重置 qarea 滚动到题干')
+assert(ui.NAV_H <= 76 && ui.TITLE_H <= 28 && ui.TYPEBAR_H <= 28, '作答 chrome 须压缩，把高度让给题干')
 const resultWxml = fs.readFileSync(path.join(__dirname, '../pages/result/result.wxml'), 'utf8')
 assert(resultWxml.indexOf('错题回顾') !== -1, '成绩页须有错题回顾')
 
@@ -206,6 +211,8 @@ const sizes = [
   { name: 'iPhone14 横屏', windowWidth: 844, windowHeight: 390, safeArea: { left: 47, top: 0, right: 797, bottom: 369 } },
   { name: 'iPhone14 Pro Max 横屏', windowWidth: 926, windowHeight: 428, safeArea: { left: 47, top: 0, right: 879, bottom: 407 } },
   { name: 'iPhone SE 横屏', windowWidth: 667, windowHeight: 375, safeArea: { left: 0, top: 0, right: 667, bottom: 375 } },
+  { name: 'iPhone15 Pro 横屏', windowWidth: 852, windowHeight: 393, safeArea: { left: 59, top: 0, right: 818, bottom: 393 } },
+  { name: '矮横屏 320', windowWidth: 844, windowHeight: 320, safeArea: { left: 0, top: 0, right: 844, bottom: 320 } },
   { name: '窄横屏扣除刘海 inner600', windowWidth: 667, windowHeight: 375, safeArea: { left: 44, top: 0, right: 644, bottom: 375 } },
   { name: 'iPad/桌面', windowWidth: 1280, windowHeight: 800, safeArea: { left: 0, top: 0, right: 1280, bottom: 800 } }
 ]

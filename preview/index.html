@@ -56,24 +56,25 @@
     .warn { color: #b42318; font-size: 14px; margin-bottom: 8px; }
 
     .exam-shell { width: 100%; height: 100%; display: flex; flex-direction: column; background: #e8edf4; font-family: "PingFang SC", "Noto Sans SC", sans-serif; }
-    .exam-shell .titlebar { min-height: 32px; padding: 0 12px; font-size: 14px; }
+    .exam-shell .titlebar { min-height: 28px; padding: 0 12px; font-size: 13px; }
     .workspace { flex: 1; min-height: 0; display: flex; }
-    .sidebar { width: 24%; min-width: 168px; max-width: 280px; background: #f4f6fa; border-right: 1px solid #d5dce6; padding: 10px 12px; overflow: auto; }
-    .remain { background: #f8d0df; border: 1px solid #e39ab4; border-radius: 6px; text-align: center; font-weight: 700; padding: 5px 0; margin: 6px 0; letter-spacing: 1px; }
+    .sidebar { width: 24%; min-width: 168px; max-width: 280px; background: #f4f6fa; border-right: 1px solid #d5dce6; padding: 6px 8px; overflow: auto; }
+    .remain { background: #f8d0df; border: 1px solid #e39ab4; border-radius: 6px; text-align: center; font-weight: 700; padding: 3px 0; margin: 4px 0; letter-spacing: 1px; }
     .main { flex: 1; min-width: 0; display: flex; flex-direction: column; background: #fff; }
-    .typebar { padding: 8px 14px; background: #f7f9fc; border-bottom: 1px solid #e4e8f0; flex-shrink: 0; }
-    .qarea { flex: 1; min-height: 0; overflow: auto; padding: 12px 16px; }
-    .opt { display: flex; gap: 8px; padding: 8px 10px; margin-bottom: 6px; border: 1px solid #edf0f5; border-radius: 8px; }
+    .typebar { padding: 4px 10px; background: #f7f9fc; border-bottom: 1px solid #e4e8f0; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .qarea { flex: 1; min-height: 0; overflow: auto; padding: 6px 10px 8px; scrollbar-width: none; }
+    .qarea::-webkit-scrollbar { width: 0; }
+    .opt { display: flex; gap: 8px; padding: 5px 8px; margin-bottom: 4px; border: 1px solid #edf0f5; border-radius: 6px; }
     .opt.on { background: #fff8d6; border-color: #1b4f9c; }
-    .nav { flex-shrink: 0; width: 100%; box-sizing: border-box; background: #f4f6fa; border-top: 1px solid #d5dce6; padding: 6px 10px; }
-    .ops { display: flex; justify-content: space-between; width: 100%; min-width: 0; margin-bottom: 6px; }
+    .nav { flex-shrink: 0; width: 100%; box-sizing: border-box; background: #f4f6fa; border-top: 1px solid #d5dce6; padding: 4px 8px 2px; }
+    .ops { display: flex; justify-content: space-between; width: 100%; min-width: 0; margin-bottom: 4px; }
     .ops-left { flex: 1 1 auto; min-width: 0; display: flex; flex-wrap: wrap; }
     .ops-right { flex: 0 0 auto; flex-shrink: 0; display: flex; margin-left: 8px; }
-    .win-btn { background: #f4f6f9; border: 1px solid #c5cedb; border-radius: 4px; height: 26px; padding: 0 8px; font-size: 12px; min-width: 0; margin: 0 6px 4px 0; }
+    .win-btn { background: #f4f6f9; border: 1px solid #c5cedb; border-radius: 4px; height: 24px; padding: 0 6px; font-size: 11px; min-width: 0; margin: 0 6px 2px 0; }
     .win-btn.primary { background: #1b4f9c; color: #fff; border-color: #163f7c; }
     .ops-right .win-btn { flex-shrink: 0; margin-bottom: 0; }
     .grid { display: flex; flex-wrap: wrap; }
-    .cell { min-width: 28px; height: 20px; margin: 0 4px 4px 0; background: #cc2f2f; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; border-radius: 3px; }
+    .cell { min-width: 24px; height: 18px; margin: 0 3px 3px 0; background: #cc2f2f; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 10px; border-radius: 3px; }
     .lab2 { font-size: 11px; color: #667085; } .val { font-weight: 650; font-size: 13px; }
   </style>
 </head>

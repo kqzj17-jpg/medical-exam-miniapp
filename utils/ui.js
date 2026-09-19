@@ -41,25 +41,25 @@ function readCapsulePad(info) {
   }
 }
 
-const TITLE_H = 32
-const NAV_H = 92
+const TITLE_H = 28
+const NAV_H = 72
 const SIDE_RATIO = 0.24
-const TYPEBAR_H = 36
+const TYPEBAR_H = 28
 
-/** 与 pages/exam/exam.wxss 底栏按钮尺寸对齐，供横向装得下估算 */
+/** 与 pages/exam/exam.wxss 压缩后的底栏对齐，把垂直空间让给题干 */
 const OPS = {
-  fontSize: 12,
-  padX: 8,
-  borderX: 4,
-  height: 26,
+  fontSize: 11,
+  padX: 6,
+  borderX: 2,
+  height: 24,
   btnGap: 6,
   groupGap: 8,
-  navPadX: 10,
-  navPadY: 10,
-  wrapGap: 4,
-  opsMarginBottom: 6,
-  gridH: 24,
-  legendH: 16
+  navPadX: 8,
+  navPadY: 6,
+  wrapGap: 2,
+  opsMarginBottom: 4,
+  gridH: 20,
+  legendH: 14
 }
 
 function measureOpsBtn(chars) {

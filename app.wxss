@@ -78,9 +78,14 @@ button::after {
 .result-shell {
   background: #e8edf4;
   padding-top: env(safe-area-inset-top);
-  padding-right: env(safe-area-inset-right);
   padding-bottom: env(safe-area-inset-bottom);
   padding-left: env(safe-area-inset-left);
+}
+
+.exam-shell .titlebar {
+  height: 28px;
+  min-height: 28px;
+  font-size: 13px;
 }
 
 .titlebar {

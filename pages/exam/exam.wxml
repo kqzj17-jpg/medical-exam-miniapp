@@ -66,7 +66,15 @@
         <text class="type-name">题型 {{typeLabel}}</text>
         <text class="type-hint">{{typeHint}}</text>
       </view>
-      <scroll-view class="qarea" scroll-y>
+      <scroll-view
+        class="qarea"
+        scroll-y
+        enhanced
+        show-scrollbar="{{false}}"
+        scroll-top="{{qareaScrollTop}}"
+        scroll-into-view="{{qareaInto}}"
+      >
+        <view id="q-start" class="q-start"></view>
         <view wx:if="{{isLocked}}" class="locked-box">
           <view class="lock-title">本段已锁定</view>
           <view class="lock-desc">进入下一段后，本段试题将无法再查看或修改。</view>

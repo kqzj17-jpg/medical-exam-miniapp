@@ -29,6 +29,8 @@ Page({
     selected: '',
     flagged: false,
     grid: [],
+    qareaScrollTop: 0,
+    qareaInto: '',
     dialog: {
       show: false,
       type: '',
@@ -120,6 +122,7 @@ Page({
     const q = exam.getQuestion(session.currentQid)
     const sections = exam.getSectionList(session)
     const current = sections.find((s) => s.id === session.currentSection) || sections[0]
+    this._qareaFlip = !this._qareaFlip
     this.setData({
       unansweredCount: exam.unansweredCount(session),
       flaggedCount: exam.flaggedCount(session),
@@ -131,7 +134,11 @@ Page({
       displayNo: exam.displayNo(session.currentQid),
       selected: session.answers[session.currentQid] || '',
       flagged: !!session.flagged[session.currentQid],
-      grid: exam.gridForSection(session, session.currentSection)
+      grid: exam.gridForSection(session, session.currentSection),
+      qareaInto: '',
+      qareaScrollTop: this._qareaFlip ? 0 : 0.1
+    }, () => {
+      this.setData({ qareaInto: 'q-start' })
     })
     this.save()
   },

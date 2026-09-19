@@ -18,6 +18,10 @@ assert(app.pageOrientation === 'auto' || app.pageOrientation === 'portrait', 'ap
 assert(app.window && (app.window.pageOrientation === 'portrait' || app.window.pageOrientation === 'auto'), 'window 默认应为 portrait 或 auto')
 assert(brand.PRODUCT_NAME === '模拟仿真考试系统', '产品名须为模拟仿真考试系统')
 assert(app.window.navigationBarTitleText === brand.PRODUCT_NAME, 'app.json 标题须为产品名')
+assert(
+  !Object.prototype.hasOwnProperty.call(app, 'requiredPrivateInfos'),
+  'app.json 不应含 requiredPrivateInfos：getPhoneNumber 不是该字段合法值，模拟器会无法启动'
+)
 
 const project = JSON.parse(fs.readFileSync(path.join(__dirname, '../project.config.json'), 'utf8'))
 assert(String(project.description).indexOf(brand.PRODUCT_NAME) !== -1, 'project 描述须含产品名')

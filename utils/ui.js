@@ -43,7 +43,7 @@ function readCapsulePad(info) {
 
 const TITLE_H = 28
 const NAV_H = 72
-const SIDE_RATIO = 0.24
+const SIDE_RATIO = 0.2
 const TYPEBAR_H = 28
 
 /** 与 pages/exam/exam.wxss 压缩后的底栏对齐，把垂直空间让给题干 */
@@ -117,8 +117,8 @@ function computeLayout(info) {
   const navH = ops.navH
   const workH = innerH - TITLE_H - navH
   let sideW = innerW * SIDE_RATIO
-  if (sideW < 168) sideW = Math.min(168, innerW * 0.3)
-  if (sideW > 280) sideW = 280
+  if (sideW < 140) sideW = Math.min(140, innerW * 0.3)
+  if (sideW > 200) sideW = 200
   const mainW = innerW - sideW
   const qareaH = workH - TYPEBAR_H
   const verticalOk =

@@ -231,6 +231,8 @@ assert(/\.ops-left\s*\{[^}]*min-width:\s*0/.test(examFlat), 'ops-left 须 min-wi
 assert(/\.ops-right\s*\{[^}]*flex-shrink:\s*0/.test(examFlat), 'ops-right 须 flex-shrink:0')
 assert(/\.ops\s+\.win-btn\s*\{[^}]*min-width:\s*0/.test(examFlat), '底栏按钮须 min-width:0')
 assert(/\.ops-right\s+\.win-btn\s*\{[^}]*flex-shrink:\s*0/.test(examFlat), '上一题/下一题按钮须 flex-shrink:0')
+assert(ui.SIDE_RATIO === 0.2, '左栏比例须约 20%')
+assert(/max-width:\s*880px/.test(examWxss), '题干栏须限宽并居中，避免贴在侧栏边上')
 
 const sizes = [
   { name: 'iPhone14 横屏', windowWidth: 844, windowHeight: 390, safeArea: { left: 47, top: 0, right: 797, bottom: 369 } },
@@ -247,7 +249,9 @@ const results = sizes.map((s) => {
   assert(layout.complete, s.name + ' 关键区域无法完整排布: ' + JSON.stringify(layout))
   assert(layout.workH + layout.titleH + layout.navH === layout.innerH, s.name + ' 高度应被标题+工作区+底栏分完')
   assert(layout.qareaH > 0, s.name + ' 题干区高度须为正')
-  assert(layout.sideW / layout.innerW >= 0.2 && layout.sideW / layout.innerW <= 0.3, s.name + ' 左栏约 22%~26%')
+  assert(layout.sideW <= 200, s.name + ' 左栏不得宽于 200，避免挡住题干')
+  assert(layout.sideW >= Math.min(140, layout.innerW * 0.2) - 1, s.name + ' 左栏过窄')
+  assert(layout.sideW / layout.innerW <= 0.28, s.name + ' 左栏占比应约 20%')
   assert(layout.ops && layout.ops.complete, s.name + ' 底栏「下一题」横向装不下: ' + JSON.stringify(layout.ops))
   assert(layout.ops.rightW + layout.ops.leftMinW + ui.OPS.groupGap <= layout.ops.avail, s.name + ' 右区两按钮+左区最小宽须 ≤ innerW(扣除 nav padding)')
   return {

@@ -136,8 +136,18 @@ const loginWxml = fs.readFileSync(path.join(__dirname, '../pages/login/login.wxm
 assert(loginWxml.indexOf('chooseAvatar') !== -1, '登录须支持选择微信头像')
 assert(loginWxml.indexOf('type="nickname"') !== -1, '登录须用 nickname 输入框')
 assert(loginWxml.indexOf('getPhoneNumber') !== -1, '登录须有授权手机号按钮')
-assert(loginWxml.indexOf('演示模式') !== -1, '登录须提供演示模式兜底')
+assert(loginWxml.indexOf('onDemoLogin') !== -1, '登录须提供演示账号兜底')
+assert(loginWxml.indexOf('演示账号') !== -1 || loginWxml.indexOf('演示模式') !== -1, '登录须提供演示模式兜底')
+assert(loginWxml.indexOf('没有真机授权') !== -1, '演示按钮文案须完整可读，不能是挤扁的「演示模式（开发工具/测试号）」')
+assert(loginWxml.indexOf('开始练习') !== -1 && loginWxml.indexOf('开始练习') < loginWxml.indexOf('onDemoLogin'), '登录底栏须先「开始练习」再演示入口')
 assert(loginWxml.indexOf('准考证号') === -1, '登录主流程不应再要求准考证号')
+assert(
+  /button\.cta[\s\S]*display:\s*block/.test(flatten(loginWxss)) || /display:\s*block\s*!important/.test(loginWxss),
+  '登录 CTA 须 display:block 覆盖全局 inline-flex，避免按钮被挤成碎块'
+)
+assert(/width:\s*100%\s*!important/.test(loginWxss), '登录 CTA 须 width:100% !important')
+assert(/white-space:\s*normal/.test(loginWxss), '登录 CTA 文案须允许换行而不是裁切')
+assert(/min-height:\s*48px/.test(loginWxss), '登录 CTA 须有固定最小高度')
 
 const appWxss = fs.readFileSync(path.join(__dirname, '../app.wxss'), 'utf8')
 assert(appWxss.indexOf('safe-area-inset') !== -1, 'app.wxss 须含安全区 padding')

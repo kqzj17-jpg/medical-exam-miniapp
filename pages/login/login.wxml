@@ -50,7 +50,7 @@
     <view class="consent">头像、昵称与手机号仅保存在本机，用于仿真练习展示。无后端，真实手机号在开发工具/测试 AppID 下通常无法解密，请用演示模式继续。</view>
   </scroll-view>
   <view class="portrait-foot">
-    <button class="cta-ghost" bindtap="onDemoLogin">演示模式（开发工具/测试号）</button>
     <button class="cta {{canStart ? '' : 'off'}}" bindtap="onStart">开始练习</button>
+    <button class="cta-ghost" bindtap="onDemoLogin">没有真机授权？点这里用演示账号</button>
   </view>
 </view>

@@ -53,6 +53,22 @@ button::after {
   padding-right: env(safe-area-inset-right);
 }
 
+/* WeChat button 默认 + 全局 inline-flex/width:auto 会把竖屏主按钮挤成小碎块 */
+.portrait-shell button.cta,
+.portrait-shell button.cta-ghost {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  min-height: 48px !important;
+  height: auto !important;
+  padding: 12px 16px !important;
+  line-height: 1.45 !important;
+  white-space: normal !important;
+  text-align: center;
+  box-sizing: border-box;
+}
+
 .exam-shell,
 .result-shell {
   background: #e8edf4;

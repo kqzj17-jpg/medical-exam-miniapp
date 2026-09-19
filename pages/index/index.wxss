@@ -106,17 +106,24 @@
   box-shadow: 0 -8px 24px rgba(16, 24, 40, 0.04);
 }
 
-.cta {
-  width: 100%;
-  height: 48px;
-  line-height: 48px;
+.portrait-foot button.cta {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  min-height: 48px !important;
+  height: auto !important;
+  padding: 12px 16px !important;
+  line-height: 1.45 !important;
+  white-space: normal !important;
   font-size: 17px;
   font-weight: 650;
   background: #1b4f9c;
   color: #fff;
   border: none;
   border-radius: 12px;
-  min-width: 0;
+  text-align: center;
+  box-sizing: border-box;
 }
 
 .cta::after {

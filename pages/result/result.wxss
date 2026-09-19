@@ -1,54 +1,53 @@
-.result-win {
-  width: 94%;
-  max-width: 1040px;
-  max-height: 100%;
+.result-shell {
+  font-family: "PingFang SC", -apple-system, "Noto Sans SC", sans-serif;
 }
 
 .result-body {
   display: flex;
   flex: 1;
   min-height: 0;
-  padding: 10px 12px 4px;
+  padding: 12px 14px 4px;
 }
 
 .hero {
-  width: 250px;
+  width: 260px;
   flex-shrink: 0;
-  padding: 4px 12px 8px 4px;
+  padding: 4px 14px 8px 2px;
   overflow-y: auto;
 }
 
 .ok {
   font-size: 13px;
-  color: #1f4b99;
-  font-weight: 700;
+  color: #1b4f9c;
+  font-weight: 650;
 }
 
 .score {
   font-size: 56px;
   font-weight: 700;
-  color: #1f4b99;
+  color: #1b4f9c;
   line-height: 1.05;
   margin: 4px 0 2px;
 }
 
 .score-lab {
   font-size: 11px;
-  color: #666;
-  margin-bottom: 8px;
+  color: #667085;
+  margin-bottom: 10px;
 }
 
 .table {
   background: #fff;
-  border: 1px solid #d0ccc4;
-  padding: 2px 10px;
+  border: 1px solid #e4e8f0;
+  border-radius: 12px;
+  padding: 4px 12px;
 }
 
 .row {
   display: flex;
   justify-content: space-between;
-  padding: 5px 0;
-  border-bottom: 1px solid #ece9e2;
+  padding: 7px 0;
+  border-bottom: 1px solid #edf0f5;
   font-size: 12px;
 }
 
@@ -57,13 +56,13 @@
 }
 
 .k {
-  color: #666;
+  color: #667085;
   margin-right: 8px;
   flex-shrink: 0;
 }
 
 .v {
-  font-weight: 700;
+  font-weight: 650;
   text-align: right;
   min-width: 0;
   word-break: break-all;
@@ -76,28 +75,30 @@
   display: flex;
   flex-direction: column;
   background: #fff;
-  border: 1px solid #d0ccc4;
+  border: 1px solid #e4e8f0;
+  border-radius: 12px;
 }
 
 .review-head {
   flex-shrink: 0;
   display: flex;
   align-items: center;
-  padding: 8px 10px;
-  border-bottom: 1px solid #e4e0d8;
-  background: #f7f5ef;
+  padding: 10px 12px;
+  border-bottom: 1px solid #edf0f5;
+  background: #f7f9fc;
+  border-radius: 12px 12px 0 0;
 }
 
 .review-title {
   font-size: 14px;
-  font-weight: 700;
-  color: #1f4b99;
+  font-weight: 650;
+  color: #1b4f9c;
 }
 
 .review-meta {
   margin-left: 10px;
   font-size: 12px;
-  color: #555;
+  color: #667085;
   flex: 1;
 }
 
@@ -105,18 +106,18 @@
   flex: 1;
   height: 0;
   min-height: 0;
-  padding: 8px 10px 10px;
+  padding: 8px 12px 10px;
 }
 
 .review-empty {
   font-size: 13px;
-  color: #666;
+  color: #667085;
   padding: 16px 6px;
 }
 
 .rev {
   padding: 8px 0;
-  border-bottom: 1px solid #eeeae3;
+  border-bottom: 1px solid #edf0f5;
 }
 
 .rev-no {
@@ -127,31 +128,31 @@
 
 .rev-line {
   font-size: 12px;
-  color: #555;
+  color: #667085;
 }
 
 .rev-ans {
   margin-left: 12px;
-  color: #1f4b99;
-  font-weight: 700;
+  color: #1b4f9c;
+  font-weight: 650;
 }
 
 .rev.wrong .rev-line,
 .rev.miss .rev-line {
-  color: #8a3030;
+  color: #b42318;
 }
 
 .rev-exp {
   margin-top: 4px;
   font-size: 12px;
-  color: #444;
+  color: #5b6472;
   line-height: 1.45;
 }
 
 .ops {
   display: flex;
   justify-content: flex-end;
-  padding: 8px 12px 10px;
+  padding: 8px 14px 12px;
   flex-shrink: 0;
 }
 

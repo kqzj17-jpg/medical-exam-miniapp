@@ -15,34 +15,36 @@
       <view class="hero-sub">授权头像、昵称与手机号后进入横屏作答</view>
     </view>
 
-    <view class="field">
-      <view class="lab">微信昵称</view>
-      <input
-        class="inp"
-        type="nickname"
-        value="{{nickname}}"
-        bindblur="onNickname"
-        bindinput="onNicknameInput"
-        bindnicknamereview="onNicknameReview"
-        adjust-position
-        placeholder="点击填写微信昵称"
-      />
-    </view>
-
-    <view class="field">
-      <view class="lab">手机号</view>
-      <view class="phone-box">
-        <view class="phone-val">
-          <text>{{phoneMasked || '未授权'}}</text>
-          <text class="tag" wx:if="{{phone}}">{{phoneDemo ? '演示' : '已授权'}}</text>
-        </view>
-        <button
-          class="phone-btn"
-          open-type="getPhoneNumber|agreePrivacyAuthorization"
-          bindgetphonenumber="onGetPhoneNumber"
-        >{{phone ? '重新授权' : '授权手机号'}}</button>
+    <view class="card">
+      <view class="field">
+        <view class="lab">微信昵称</view>
+        <input
+          class="inp"
+          type="nickname"
+          value="{{nickname}}"
+          bindblur="onNickname"
+          bindinput="onNicknameInput"
+          bindnicknamereview="onNicknameReview"
+          adjust-position
+          placeholder="点击填写微信昵称"
+        />
       </view>
-      <view class="hint" wx:if="{{phoneHint}}">{{phoneHint}}</view>
+
+      <view class="field last">
+        <view class="lab">手机号</view>
+        <view class="phone-box">
+          <view class="phone-val">
+            <text>{{phoneMasked || '未授权'}}</text>
+            <text class="tag" wx:if="{{phone}}">{{phoneDemo ? '演示' : '已授权'}}</text>
+          </view>
+          <button
+            class="phone-btn"
+            open-type="getPhoneNumber|agreePrivacyAuthorization"
+            bindgetphonenumber="onGetPhoneNumber"
+          >{{phone ? '重新授权' : '授权手机号'}}</button>
+        </view>
+        <view class="hint" wx:if="{{phoneHint}}">{{phoneHint}}</view>
+      </view>
     </view>
 
     <view class="consent">头像、昵称与手机号仅保存在本机，用于仿真练习展示。无后端，真实手机号在开发工具/测试 AppID 下通常无法解密，请用演示模式继续。</view>

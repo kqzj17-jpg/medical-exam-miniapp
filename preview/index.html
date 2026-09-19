@@ -7,51 +7,69 @@
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; height: 100%; }
-    button { min-width: 0; width: auto; display: inline-flex; align-items: center; justify-content: center; font-family: inherit; }
+    button { min-width: 0; width: auto; display: inline-flex; align-items: center; justify-content: center; font-family: inherit; border: none; }
     .hidden { display: none !important; }
-    body.phone-mode { background: #2b2b2b; display: flex; align-items: center; justify-content: center; }
+    body.phone-mode { background: #1a1d24; display: flex; align-items: center; justify-content: center; }
     .phone {
       width: 390px; height: 100%; max-height: 844px;
-      background: #f3f1ea; display: flex; flex-direction: column;
-      font-family: "PingFang SC", "Noto Sans SC", sans-serif;
+      background: #f3f5f8; display: flex; flex-direction: column;
+      font-family: "PingFang SC", "Noto Sans SC", sans-serif; color: #1a1d24;
     }
-    .titlebar { min-height: 44px; background: #1f4b99; color: #fff; display: flex; align-items: center; padding: 0 12px; font-size: 15px; font-weight: 700; flex-shrink: 0; }
-    .titlebar .demo { margin-left: 10px; font-size: 11px; font-weight: 400; border: 1px solid rgba(255,255,255,.45); padding: 0 6px; height: 18px; line-height: 16px; }
-    .p-body { flex: 1; overflow: auto; padding: 20px 20px 8px; }
-    .hero { text-align: center; margin-bottom: 20px; }
-    .emblem { width: 64px; height: 64px; margin: 8px auto 12px; background: #1f4b99; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 700; }
-    .hero-name { font-size: 20px; font-weight: 700; }
-    .hero-sub { margin-top: 6px; font-size: 13px; color: #666; }
+    .titlebar {
+      min-height: 54px; background: #1b4f9c; color: #fff;
+      display: flex; align-items: center; padding: 12px 16px 10px;
+      font-size: 17px; font-weight: 600; flex-shrink: 0;
+    }
+    .titlebar .demo {
+      margin-left: 8px; font-size: 11px; font-weight: 400;
+      border: 1px solid rgba(255,255,255,.4); border-radius: 10px;
+      padding: 0 7px; height: 18px; line-height: 16px;
+    }
+    .p-body { flex: 1; overflow: auto; padding: 24px 20px 12px; }
+    .hero { text-align: center; margin-bottom: 24px; }
+    .emblem {
+      width: 72px; height: 72px; margin: 4px auto 14px; background: #1b4f9c; color: #fff;
+      border-radius: 24px; display: flex; align-items: center; justify-content: center;
+      font-size: 30px; font-weight: 700; box-shadow: 0 8px 20px rgba(27,79,156,.22);
+    }
+    .avatar { width: 80px; height: 80px; margin: 0 auto 8px; border-radius: 40px; background: #1b4f9c; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: 700; }
+    .hero-name { font-size: 22px; font-weight: 650; }
+    .hero-sub { margin-top: 8px; font-size: 13px; color: #667085; }
+    .card { background: #fff; border-radius: 16px; padding: 18px; margin-bottom: 14px; box-shadow: 0 1px 2px rgba(16,24,40,.04); }
+    .card.note { background: #fffaf6; }
+    .card h3 { margin: 0 0 12px; color: #1b4f9c; font-size: 16px; }
+    .step { display: flex; gap: 10px; margin-bottom: 10px; font-size: 14px; line-height: 1.55; color: #3a4150; }
+    .n { width: 22px; height: 22px; border-radius: 11px; background: #e8eef8; color: #1b4f9c; font-size: 12px; font-weight: 700; text-align: center; line-height: 22px; flex-shrink: 0; }
     .field { margin-bottom: 16px; }
-    .lab { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; }
-    .inp { width: 100%; height: 48px; padding: 0 14px; border: 1px solid #c8c3ba; font-size: 16px; }
-    .hint { font-size: 13px; color: #666; line-height: 1.5; }
-    .foot { padding: 10px 20px 16px; flex-shrink: 0; }
-    .cta, .cta-ghost { width: 100%; border: none; }
-    .cta-ghost { height: 44px; font-size: 16px; background: #fff; color: #1f4b99; border: 1px solid #1f4b99; margin-bottom: 10px; }
-    .cta { height: 48px; font-size: 17px; font-weight: 700; background: #1f4b99; color: #fff; }
-    .card { background: #fff; border: 1px solid #e2ddd4; padding: 16px; margin-bottom: 12px; font-size: 14px; line-height: 1.55; }
-    .card h3 { margin: 0 0 8px; color: #1f4b99; font-size: 16px; }
+    .lab { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: #3a4150; }
+    .inp { width: 100%; height: 48px; padding: 0 14px; border: 1px solid #e4e8f0; border-radius: 12px; font-size: 16px; background: #f5f7fb; }
+    .hint { font-size: 12px; color: #8a93a3; line-height: 1.55; margin-top: 12px; }
+    .foot { padding: 12px 20px 16px; flex-shrink: 0; background: #fff; box-shadow: 0 -8px 24px rgba(16,24,40,.04); }
+    .cta, .cta-ghost { width: 100%; border-radius: 12px; }
+    .cta-ghost { height: 44px; font-size: 15px; background: #fff; color: #1b4f9c; border: 1px solid #1b4f9c; margin-bottom: 10px; }
+    .cta { height: 48px; font-size: 17px; font-weight: 650; background: #1b4f9c; color: #fff; }
+    .warn { color: #b42318; font-size: 14px; margin-bottom: 8px; }
 
-    .exam-shell { width: 100%; height: 100%; display: flex; flex-direction: column; background: #d4d0c8; font-family: SimSun, "Songti SC", serif; }
+    .exam-shell { width: 100%; height: 100%; display: flex; flex-direction: column; background: #e8edf4; font-family: "PingFang SC", "Noto Sans SC", sans-serif; }
+    .exam-shell .titlebar { min-height: 32px; padding: 0 12px; font-size: 14px; }
     .workspace { flex: 1; min-height: 0; display: flex; }
-    .sidebar { width: 24%; min-width: 168px; max-width: 280px; background: #ece9e0; border-right: 1px solid #808080; padding: 8px 10px; overflow: auto; }
-    .remain { background: #f3b0cc; border: 1px solid #c45a86; text-align: center; font-weight: 700; padding: 5px 0; margin: 6px 0; letter-spacing: 1px; }
+    .sidebar { width: 24%; min-width: 168px; max-width: 280px; background: #f4f6fa; border-right: 1px solid #d5dce6; padding: 10px 12px; overflow: auto; }
+    .remain { background: #f8d0df; border: 1px solid #e39ab4; border-radius: 6px; text-align: center; font-weight: 700; padding: 5px 0; margin: 6px 0; letter-spacing: 1px; }
     .main { flex: 1; min-width: 0; display: flex; flex-direction: column; background: #fff; }
-    .typebar { padding: 6px 12px; background: #f4f4f4; border-bottom: 1px solid #b0b0b0; flex-shrink: 0; }
-    .qarea { flex: 1; min-height: 0; overflow: auto; padding: 10px 14px; }
-    .opt { display: flex; gap: 8px; padding: 6px 8px; margin-bottom: 4px; border: 1px solid transparent; }
-    .opt.on { background: #fff6b3; border-color: #1f4b99; }
-    .nav { flex-shrink: 0; width: 100%; box-sizing: border-box; background: #ece9e0; border-top: 1px solid #808080; padding: 6px 10px; }
+    .typebar { padding: 8px 14px; background: #f7f9fc; border-bottom: 1px solid #e4e8f0; flex-shrink: 0; }
+    .qarea { flex: 1; min-height: 0; overflow: auto; padding: 12px 16px; }
+    .opt { display: flex; gap: 8px; padding: 8px 10px; margin-bottom: 6px; border: 1px solid #edf0f5; border-radius: 8px; }
+    .opt.on { background: #fff8d6; border-color: #1b4f9c; }
+    .nav { flex-shrink: 0; width: 100%; box-sizing: border-box; background: #f4f6fa; border-top: 1px solid #d5dce6; padding: 6px 10px; }
     .ops { display: flex; justify-content: space-between; width: 100%; min-width: 0; margin-bottom: 6px; }
     .ops-left { flex: 1 1 auto; min-width: 0; display: flex; flex-wrap: wrap; }
     .ops-right { flex: 0 0 auto; flex-shrink: 0; display: flex; margin-left: 8px; }
-    .win-btn { background: #ececec; border: 2px solid #fff; border-right-color: #6a6a6a; border-bottom-color: #6a6a6a; height: 26px; padding: 0 8px; font-size: 12px; min-width: 0; margin: 0 6px 4px 0; }
-    .win-btn.primary { background: #3a63a8; color: #fff; }
+    .win-btn { background: #f4f6f9; border: 1px solid #c5cedb; border-radius: 4px; height: 26px; padding: 0 8px; font-size: 12px; min-width: 0; margin: 0 6px 4px 0; }
+    .win-btn.primary { background: #1b4f9c; color: #fff; border-color: #163f7c; }
     .ops-right .win-btn { flex-shrink: 0; margin-bottom: 0; }
     .grid { display: flex; flex-wrap: wrap; }
-    .cell { min-width: 28px; height: 20px; margin: 0 4px 4px 0; background: #cc2f2f; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; }
-    .lab2 { font-size: 11px; color: #555; } .val { font-weight: 700; font-size: 13px; }
+    .cell { min-width: 28px; height: 20px; margin: 0 4px 4px 0; background: #cc2f2f; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; border-radius: 3px; }
+    .lab2 { font-size: 11px; color: #667085; } .val { font-weight: 650; font-size: 13px; }
   </style>
 </head>
 <body class="phone-mode" id="body">
@@ -63,8 +81,19 @@
         <div class="hero-name">模拟仿真考试系统</div>
         <div class="hero-sub">本地仿真练习 · 演示数据</div>
       </div>
-      <div class="card"><h3>作答说明</h3>授权微信头像、昵称与手机号后进入横屏作答。底部题号红/灰/黄表示未答/已答/标疑。</div>
-      <div class="card"><h3>使用说明</h3>题目与成绩均为演示数据。说明页与登录为竖屏，进入作答后自动横屏。开发工具可用演示模式。</div>
+      <div class="card">
+        <h3>作答说明</h3>
+        <div class="step"><span class="n">1</span>登录：授权微信头像、昵称与手机号（开发工具可用演示模式）</div>
+        <div class="step"><span class="n">2</span>左侧核对信息、剩余时间、未答题、标疑题</div>
+        <div class="step"><span class="n">3</span>底部题号红 / 灰 / 黄表示未答 / 已答 / 标疑</div>
+        <div class="step"><span class="n">4</span>分段练习：进入下一段后本段不可回看、不可修改</div>
+        <div class="step"><span class="n">5</span>交卷后可查看成绩与错题回顾</div>
+      </div>
+      <div class="card note">
+        <h3>使用说明</h3>
+        <div class="warn">题目、成绩与登录均为演示数据，不连接后端，也不用于真实考核。</div>
+        说明页与登录为竖屏。授权后进入作答自动横屏。开发工具可用演示模式。
+      </div>
     </div>
     <div class="foot"><button class="cta" id="toLogin">进入登录</button></div>
   </div>
@@ -72,17 +101,19 @@
     <div class="titlebar">模拟仿真考试系统<span class="demo">仿真练习</span></div>
     <div class="p-body">
       <div class="hero">
-        <div class="emblem">仿</div>
-        <div class="avatar-tip" style="font-size:12px;color:#888;margin-bottom:10px">点击选择微信头像</div>
+        <div class="avatar">仿</div>
+        <div class="hero-sub" style="margin-bottom:8px">点击选择微信头像</div>
         <div class="hero-name">模拟仿真考试系统</div>
         <div class="hero-sub">授权头像、昵称与手机号后进入横屏作答</div>
       </div>
-      <div class="field"><span class="lab">微信昵称</span><input class="inp" id="nickname" placeholder="点击填写微信昵称" /></div>
-      <div class="field">
-        <span class="lab">手机号</span>
-        <div class="inp" id="phoneBox" style="display:flex;align-items:center;justify-content:space-between">
-          <span id="phone">未授权</span>
-          <button class="cta" id="authPhone" style="width:auto;height:36px;padding:0 10px;font-size:13px;margin:0">授权手机号</button>
+      <div class="card">
+        <div class="field"><span class="lab">微信昵称</span><input class="inp" id="nickname" placeholder="点击填写微信昵称" /></div>
+        <div class="field">
+          <span class="lab">手机号</span>
+          <div class="inp" id="phoneBox" style="display:flex;align-items:center;justify-content:space-between">
+            <span id="phone">未授权</span>
+            <button class="cta" id="authPhone" style="width:auto;height:36px;padding:0 12px;font-size:13px;margin:0;border-radius:10px">授权手机号</button>
+          </div>
         </div>
       </div>
       <div class="hint">无后端无法解密真实手机号。开发工具请用演示模式。</div>
@@ -103,8 +134,8 @@
         <div class="lab2">未答题</div><div class="val">5</div>
         <div class="lab2">标疑题</div><div class="val">0</div>
         <div style="margin-top:8px"><button class="win-btn">刷新</button> <button class="win-btn primary">交卷</button></div>
-        <div style="color:#b00000;font-size:11px;margin-top:8px">注意：练习分若干段进行。进入下一段后，本段试题将不能回看和修改。</div>
-        <div style="margin-top:8px;background:#316ac5;color:#fff;padding:5px 8px">A1 : 1~5</div>
+        <div style="color:#b42318;font-size:11px;margin-top:8px">注意：练习分若干段进行。进入下一段后，本段试题将不能回看和修改。</div>
+        <div style="margin-top:8px;background:#1b4f9c;color:#fff;padding:6px 8px;border-radius:8px">A1 : 1~5</div>
       </div>
       <div class="main">
         <div class="typebar"><b>题型 A1</b> 每一道练习题下面有A、B、C、D、E五个备选答案。请从中选择一个最佳答案。</div>
@@ -133,7 +164,7 @@
       <div class="grid">
         <div class="cell">1</div><div class="cell">2</div><div class="cell">3</div><div class="cell">4</div><div class="cell">5</div>
       </div>
-      <div style="font-size:11px">标疑 · 未答 · 已答</div>
+      <div style="font-size:11px;color:#5b6472">标疑 · 未答 · 已答</div>
     </div>
   </div>
   <script>

@@ -148,41 +148,54 @@ function buildShellStyle(info, orientation) {
   const inset = readInsets(info)
   const cap = readCapsulePad(info)
   const landscape = orientation === 'landscape'
-  const padRight = landscape ? Math.max(inset.right, cap) : inset.right
-  const useJs = inset.top + inset.left + inset.bottom + padRight > 0
   let titlebarStyle = ''
+  // Portrait: titlebar consumes status-bar + capsule. Shell must NOT also pad-top
+  // (env(safe-area) + JS inset + titlebar height stacked = 页面被顶歪).
+  let padTop = landscape ? inset.top : 0
+  let padRight = landscape ? Math.max(inset.right, cap) : inset.right
+  const padBottom = inset.bottom
+  const padLeft = inset.left
+
   if (!landscape) {
-    let height = 44
+    let barPadTop = inset.top
+    let barH = 44 + barPadTop
+    let barPadRight = Math.max(16, cap)
     try {
       if (typeof wx !== 'undefined' && wx.getMenuButtonBoundingClientRect) {
         const mb = wx.getMenuButtonBoundingClientRect()
-        if (mb && mb.height) {
-          const extra = Math.max(4, mb.top - inset.top)
-          height = Math.max(44, extra + mb.height + extra)
+        if (mb && mb.height && mb.bottom) {
+          barPadTop = Math.max(0, mb.top)
+          const below = Math.max(6, barPadTop - (inset.top || 0))
+          barH = mb.bottom + below
+          barPadRight = Math.max(16, cap)
         }
       }
     } catch (e) {}
     titlebarStyle =
-      'min-height:' +
-      height +
+      'padding-top:' +
+      barPadTop +
       'px;height:' +
-      height +
+      barH +
+      'px;min-height:' +
+      barH +
       'px;padding-right:' +
-      Math.max(12, cap) +
-      'px;'
+      barPadRight +
+      'px;box-sizing:border-box;'
+  } else if (cap) {
+    titlebarStyle = 'padding-right:' + Math.max(12, cap) + 'px;'
   }
+
   return {
-    shellStyle: useJs
-      ? 'padding-top:' +
-        inset.top +
-        'px;padding-right:' +
-        padRight +
-        'px;padding-bottom:' +
-        inset.bottom +
-        'px;padding-left:' +
-        inset.left +
-        'px;'
-      : '',
+    shellStyle:
+      'padding-top:' +
+      padTop +
+      'px;padding-right:' +
+      padRight +
+      'px;padding-bottom:' +
+      padBottom +
+      'px;padding-left:' +
+      padLeft +
+      'px;',
     titlebarStyle
   }
 }
@@ -192,12 +205,17 @@ function applyShell(page, orientation, opts) {
   const dir = orientation || page._shellOrientation || 'portrait'
   page._shellOrientation = dir
   const skipOrientation = !!options.skipOrientation
-  // Record last BEFORE the API call: setPageOrientation retriggers resize/onShow.
-  // Calling it again from those handlers causes infinite orientation thrash.
-  if (!skipOrientation && dir !== page._lastPageOrientation) {
-    page._lastPageOrientation = dir
-    if (typeof wx !== 'undefined' && wx.setPageOrientation) {
-      wx.setPageOrientation({ orientation: dir })
+  // Portrait: page-meta + page json only. setPageOrientation('portrait') on
+  // navigateTo(login) makes DevTools rotate 90° (「进入登录都是歪的」).
+  // Landscape: call API only when last !== landscape. Resize always skips.
+  if (!skipOrientation) {
+    if (dir === 'landscape' && page._lastPageOrientation !== 'landscape') {
+      page._lastPageOrientation = 'landscape'
+      if (typeof wx !== 'undefined' && wx.setPageOrientation) {
+        wx.setPageOrientation({ orientation: dir })
+      }
+    } else if (dir !== 'landscape') {
+      page._lastPageOrientation = dir
     }
   }
   const info = readWindowInfo()

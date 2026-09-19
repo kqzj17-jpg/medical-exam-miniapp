@@ -73,6 +73,12 @@ const ORIENT = {
     assert(wxml.indexOf('class="desk"') === -1, name + ' 竖屏页不应再用横屏 desk 窗口壳')
     assert(wxml.indexOf('class="win ') === -1 && wxml.indexOf('class="win"') === -1, name + ' 竖屏页不应再用桌面窗口壳')
     assert(wxss.indexOf('.cta') !== -1, name + ' 竖屏页须有清晰主按钮')
+    assert(wxml.indexOf('portrait-shell') !== -1, name + ' 须用竖屏壳，不得套横屏机考 chrome')
+    assert(wxml.indexOf('exam-shell') === -1, name + ' 竖屏页不得渲染横屏机考壳')
+    assert(js.indexOf("'landscape'") === -1 && js.indexOf('"landscape"') === -1, name + ' 竖屏页不得 setPageOrientation landscape')
+  }
+  if (ORIENT[name] === 'landscape') {
+    assert(js.indexOf("'portrait'") === -1 && js.indexOf('"portrait"') === -1, name + ' 横屏页不得卡在 portrait')
   }
 })
 
@@ -85,9 +91,44 @@ assert(uiSrc.indexOf('skipOrientation') !== -1, 'resize 时须 skipOrientation�
 assert(uiSrc.indexOf('_lastPageOrientation') !== -1, '须记录上次方向，相同则不再 setPageOrientation')
 assert(uiSrc.indexOf("wx.setPageOrientation({ orientation: 'landscape' })") === -1, 'ui.js 不应无条件强制横屏')
 assert(
+  uiSrc.indexOf("dir === 'landscape'") !== -1 || uiSrc.indexOf('dir === "landscape"') !== -1,
+  'setPageOrientation 仅允许 landscape；竖屏只靠 page-meta / json，避免进登录 90° 歪斜'
+)
+assert(
   /_onShellResize[\s\S]*skipOrientation:\s*true/.test(uiSrc),
   'bindShell 的 window resize 回调须 skipOrientation:true'
 )
+
+const portraitShell = ui.buildShellStyle(
+  {
+    windowWidth: 393,
+    windowHeight: 852,
+    safeArea: { left: 0, top: 59, right: 393, bottom: 818 }
+  },
+  'portrait'
+)
+assert(
+  /padding-top:0px/.test(portraitShell.shellStyle.replace(/\s/g, '')),
+  '竖屏 shell 顶 padding 须为 0，避免与 titlebar 叠出双倍安全区把页面顶歪'
+)
+assert(
+  /padding-top:59px/.test(portraitShell.titlebarStyle.replace(/\s/g, '')),
+  '竖屏 titlebar 须自己消化 safe-area-top，并给胶囊留右 padding'
+)
+assert(
+  /padding-right:\d+px/.test(portraitShell.titlebarStyle),
+  '竖屏 titlebar 须避开微信胶囊'
+)
+const landShell = ui.buildShellStyle(
+  {
+    windowWidth: 852,
+    windowHeight: 393,
+    safeArea: { left: 59, top: 0, right: 818, bottom: 393 }
+  },
+  'landscape'
+)
+assert(/padding-left:59px/.test(landShell.shellStyle.replace(/\s/g, '')), '横屏 shell 须避开左侧刘海')
+assert(/padding-top:0px/.test(landShell.shellStyle.replace(/\s/g, '')), '横屏刘海在左右，顶 inset 通常为 0')
 
 const loginWxss = fs.readFileSync(path.join(__dirname, '../pages/login/login.wxss'), 'utf8')
 assert(/height:\s*48px/.test(loginWxss) && loginWxss.indexOf('.inp') !== -1, '登录输入框须足够高，方便竖屏点按输入')
@@ -227,6 +268,13 @@ global.wx = {
   }
 }
 
+const pageP = { setData() {} }
+ui.applyShell(pageP, 'portrait')
+assert(setCount === 0, '竖屏不得调用 setPageOrientation，否则 navigateTo 登录会 90° 歪斜')
+assert(pageP._lastPageOrientation === 'portrait', '竖屏仍须记下 last，方便之后进横屏')
+ui.applyShell(pageP, 'portrait')
+assert(setCount === 0, '重复竖屏不得 setPageOrientation')
+
 const pageA = { setData() {} }
 ui.applyShell(pageA, 'landscape')
 assert(setCount === 1, '首次进入 landscape 应 setPageOrientation')
@@ -236,14 +284,18 @@ assert(setCount === 1, '相同方向不得再次 setPageOrientation')
 ui.applyShell(pageA, 'landscape', { skipOrientation: true })
 assert(setCount === 1, 'skipOrientation 不得调用 setPageOrientation')
 ui.applyShell(pageA, 'portrait')
-assert(setCount === 2, '方向真正变化时才 setPageOrientation')
+assert(setCount === 1, '回到竖屏不得再调 setPageOrientation，交给 page-meta')
 
 const pageB = { setData() {} }
 ui.bindShell(pageB, 'landscape')
-assert(setCount === 3, 'bindShell 首次应 setPageOrientation')
+assert(setCount === 2, 'bindShell landscape 首次应 setPageOrientation')
 assert(typeof resizeHandler === 'function', '须绑定 onWindowResize')
 resizeHandler()
 resizeHandler()
-assert(setCount === 3, 'onWindowResize 只重建 shell 样式，禁止再 setPageOrientation')
-console.log(' - orientation guard: setPageOrientation only on real change; resize skip => OK')
+assert(setCount === 2, 'onWindowResize 只重建 shell 样式，禁止再 setPageOrientation')
+
+const pageC = { setData() {} }
+ui.bindShell(pageC, 'portrait')
+assert(setCount === 2, 'bindShell portrait 不得 setPageOrientation')
+console.log(' - orientation guard: landscape-only setPageOrientation; portrait/resize skip => OK')
 

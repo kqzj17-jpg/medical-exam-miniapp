@@ -6,10 +6,10 @@
     "pages/result/result"
   ],
   "window": {
-    "navigationBarBackgroundColor": "#1F4B99",
+    "navigationBarBackgroundColor": "#1B4F9C",
     "navigationBarTitleText": "模拟仿真考试系统",
     "navigationBarTextStyle": "white",
-    "backgroundColor": "#D4D0C8",
+    "backgroundColor": "#F3F5F8",
     "backgroundTextStyle": "light",
     "pageOrientation": "portrait"
   },

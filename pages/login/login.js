@@ -31,7 +31,7 @@ Page({
   },
 
   onResize() {
-    ui.applyShell(this, 'portrait')
+    ui.applyShell(this, 'portrait', { skipOrientation: true })
   },
 
   onUnload() {

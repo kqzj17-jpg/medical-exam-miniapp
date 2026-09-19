@@ -187,11 +187,18 @@ function buildShellStyle(info, orientation) {
   }
 }
 
-function applyShell(page, orientation) {
+function applyShell(page, orientation, opts) {
+  const options = opts && typeof opts === 'object' ? opts : {}
   const dir = orientation || page._shellOrientation || 'portrait'
   page._shellOrientation = dir
-  if (typeof wx !== 'undefined' && wx.setPageOrientation) {
-    wx.setPageOrientation({ orientation: dir })
+  const skipOrientation = !!options.skipOrientation
+  // Record last BEFORE the API call: setPageOrientation retriggers resize/onShow.
+  // Calling it again from those handlers causes infinite orientation thrash.
+  if (!skipOrientation && dir !== page._lastPageOrientation) {
+    page._lastPageOrientation = dir
+    if (typeof wx !== 'undefined' && wx.setPageOrientation) {
+      wx.setPageOrientation({ orientation: dir })
+    }
   }
   const info = readWindowInfo()
   const styles = buildShellStyle(info, dir)
@@ -209,7 +216,7 @@ function bindShell(page, orientation) {
   if (page._shellBound) return
   page._shellBound = true
   page._onShellResize = function () {
-    applyShell(page, page._shellOrientation)
+    applyShell(page, page._shellOrientation, { skipOrientation: true })
   }
   if (typeof wx !== 'undefined' && wx.onWindowResize) {
     wx.onWindowResize(page._onShellResize)

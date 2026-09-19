@@ -70,7 +70,7 @@ Page({
   },
 
   onResize() {
-    ui.applyShell(this, 'landscape')
+    ui.applyShell(this, 'landscape', { skipOrientation: true })
   },
 
   onUnload() {

@@ -61,6 +61,10 @@ const ORIENT = {
   assert(js.indexOf('DEFAULT_STAGE_STYLE') === -1, name + ' 不应再使用固定舞台')
   assert(wxml.indexOf('{{productName}}') !== -1, name + ' 须使用产品名绑定')
   assert(js.indexOf("'" + ORIENT[name] + "'") !== -1 || js.indexOf('"' + ORIENT[name] + '"') !== -1, name + ' 须按页 setPageOrientation ' + ORIENT[name])
+  assert(
+    js.indexOf('skipOrientation: true') !== -1 || js.indexOf('skipOrientation:true') !== -1,
+    name + ' onResize 须 skipOrientation:true，禁止在 resize 里再 setPageOrientation'
+  )
   if (ORIENT[name] === 'portrait') {
     assert(wxml.indexOf('class="desk"') === -1, name + ' 竖屏页不应再用横屏 desk 窗口壳')
     assert(wxml.indexOf('class="win ') === -1 && wxml.indexOf('class="win"') === -1, name + ' 竖屏页不应再用桌面窗口壳')
@@ -73,7 +77,13 @@ assert(uiSrc.indexOf('Math.max(w / DESIGN_W') === -1, 'ui.js 不应再 cover sca
 assert(uiSrc.indexOf('safe-area') !== -1 || uiSrc.indexOf('safeArea') !== -1, 'ui.js 须处理 safeArea')
 assert(uiSrc.indexOf('estimateOpsFit') !== -1, 'ui.js 须估算底栏按钮横向是否装得下')
 assert(uiSrc.indexOf("orientation: dir") !== -1 || uiSrc.indexOf('orientation:dir') !== -1, 'ui.js 须按页设置 orientation，不能写死 landscape')
+assert(uiSrc.indexOf('skipOrientation') !== -1, 'resize 时须 skipOrientation，避免 setPageOrientation 死循环闪屏')
+assert(uiSrc.indexOf('_lastPageOrientation') !== -1, '须记录上次方向，相同则不再 setPageOrientation')
 assert(uiSrc.indexOf("wx.setPageOrientation({ orientation: 'landscape' })") === -1, 'ui.js 不应无条件强制横屏')
+assert(
+  /_onShellResize[\s\S]*skipOrientation:\s*true/.test(uiSrc),
+  'bindShell 的 window resize 回调须 skipOrientation:true'
+)
 
 const loginWxss = fs.readFileSync(path.join(__dirname, '../pages/login/login.wxss'), 'utf8')
 assert(/height:\s*48px/.test(loginWxss) && loginWxss.indexOf('.inp') !== -1, '登录输入框须足够高，方便竖屏点按输入')
@@ -193,3 +203,43 @@ console.log('Ops row innerW simulations')
 const legacy = ui.estimateLegacyFiveButtonRow(667, 184)
 assert(!legacy.fits, '回归：微信默认 min-width:184 的五按钮横排在 667 应装不下（否则检测失去意义）')
 console.log(' - legacy 5-btn min-width 184 @667: total ' + legacy.total + ' / avail ' + legacy.avail + ' => overflow (expected)')
+
+let setCount = 0
+let resizeHandler = null
+global.wx = {
+  setPageOrientation() {
+    setCount += 1
+  },
+  onWindowResize(fn) {
+    resizeHandler = fn
+  },
+  offWindowResize() {},
+  getWindowInfo() {
+    return {
+      windowWidth: 667,
+      windowHeight: 375,
+      safeArea: { left: 0, top: 0, right: 667, bottom: 375 }
+    }
+  }
+}
+
+const pageA = { setData() {} }
+ui.applyShell(pageA, 'landscape')
+assert(setCount === 1, '首次进入 landscape 应 setPageOrientation')
+assert(pageA._lastPageOrientation === 'landscape', '须记下上次方向')
+ui.applyShell(pageA, 'landscape')
+assert(setCount === 1, '相同方向不得再次 setPageOrientation')
+ui.applyShell(pageA, 'landscape', { skipOrientation: true })
+assert(setCount === 1, 'skipOrientation 不得调用 setPageOrientation')
+ui.applyShell(pageA, 'portrait')
+assert(setCount === 2, '方向真正变化时才 setPageOrientation')
+
+const pageB = { setData() {} }
+ui.bindShell(pageB, 'landscape')
+assert(setCount === 3, 'bindShell 首次应 setPageOrientation')
+assert(typeof resizeHandler === 'function', '须绑定 onWindowResize')
+resizeHandler()
+resizeHandler()
+assert(setCount === 3, 'onWindowResize 只重建 shell 样式，禁止再 setPageOrientation')
+console.log(' - orientation guard: setPageOrientation only on real change; resize skip => OK')
+

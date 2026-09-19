@@ -6,10 +6,34 @@
   <title>模拟仿真考试系统（桌面预览）</title>
   <style>
     * { box-sizing: border-box; }
-    html, body { margin: 0; height: 100%; background: #d4d0c8; font-family: SimSun, "Songti SC", serif; }
-    .shell { width: 100%; height: 100%; display: flex; flex-direction: column; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
-    .titlebar { height: 32px; min-height: 32px; background: #1f4b99; color: #fff; display: flex; align-items: center; padding: 0 12px; font-size: 14px; font-weight: 700; flex-shrink: 0; }
+    html, body { margin: 0; height: 100%; }
+    button { min-width: 0; width: auto; display: inline-flex; align-items: center; justify-content: center; font-family: inherit; }
+    .hidden { display: none !important; }
+    body.phone-mode { background: #2b2b2b; display: flex; align-items: center; justify-content: center; }
+    .phone {
+      width: 390px; height: 100%; max-height: 844px;
+      background: #f3f1ea; display: flex; flex-direction: column;
+      font-family: "PingFang SC", "Noto Sans SC", sans-serif;
+    }
+    .titlebar { min-height: 44px; background: #1f4b99; color: #fff; display: flex; align-items: center; padding: 0 12px; font-size: 15px; font-weight: 700; flex-shrink: 0; }
     .titlebar .demo { margin-left: 10px; font-size: 11px; font-weight: 400; border: 1px solid rgba(255,255,255,.45); padding: 0 6px; height: 18px; line-height: 16px; }
+    .p-body { flex: 1; overflow: auto; padding: 20px 20px 8px; }
+    .hero { text-align: center; margin-bottom: 20px; }
+    .emblem { width: 64px; height: 64px; margin: 8px auto 12px; background: #1f4b99; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 700; }
+    .hero-name { font-size: 20px; font-weight: 700; }
+    .hero-sub { margin-top: 6px; font-size: 13px; color: #666; }
+    .field { margin-bottom: 16px; }
+    .lab { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+    .inp { width: 100%; height: 48px; padding: 0 14px; border: 1px solid #c8c3ba; font-size: 16px; }
+    .hint { font-size: 13px; color: #666; line-height: 1.5; }
+    .foot { padding: 10px 20px 16px; flex-shrink: 0; }
+    .cta, .cta-ghost { width: 100%; border: none; }
+    .cta-ghost { height: 44px; font-size: 16px; background: #fff; color: #1f4b99; border: 1px solid #1f4b99; margin-bottom: 10px; }
+    .cta { height: 48px; font-size: 17px; font-weight: 700; background: #1f4b99; color: #fff; }
+    .card { background: #fff; border: 1px solid #e2ddd4; padding: 16px; margin-bottom: 12px; font-size: 14px; line-height: 1.55; }
+    .card h3 { margin: 0 0 8px; color: #1f4b99; font-size: 16px; }
+
+    .exam-shell { width: 100%; height: 100%; display: flex; flex-direction: column; background: #d4d0c8; font-family: SimSun, "Songti SC", serif; }
     .workspace { flex: 1; min-height: 0; display: flex; }
     .sidebar { width: 24%; min-width: 168px; max-width: 280px; background: #ece9e0; border-right: 1px solid #808080; padding: 8px 10px; overflow: auto; }
     .remain { background: #f3b0cc; border: 1px solid #c45a86; text-align: center; font-weight: 700; padding: 5px 0; margin: 6px 0; letter-spacing: 1px; }
@@ -18,59 +42,59 @@
     .qarea { flex: 1; min-height: 0; overflow: auto; padding: 10px 14px; }
     .opt { display: flex; gap: 8px; padding: 6px 8px; margin-bottom: 4px; border: 1px solid transparent; }
     .opt.on { background: #fff6b3; border-color: #1f4b99; }
-    button { min-width: 0; width: auto; display: inline-flex; align-items: center; justify-content: center; }
-    .nav { flex-shrink: 0; width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; background: #ece9e0; border-top: 1px solid #808080; padding: 6px 10px; }
-    .ops { display: flex; flex-direction: row; align-items: flex-start; justify-content: space-between; width: 100%; min-width: 0; margin-bottom: 6px; }
-    .ops-left { flex: 1 1 auto; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; }
-    .ops-right { flex: 0 0 auto; flex-shrink: 0; display: flex; flex-wrap: nowrap; align-items: center; margin-left: 8px; }
-    .win-btn { background: #ececec; border: 2px solid #fff; border-right-color: #6a6a6a; border-bottom-color: #6a6a6a; height: 26px; padding: 0 8px; font-size: 12px; font-family: inherit; min-width: 0; width: auto; margin: 0 6px 4px 0; }
-    .win-btn.primary { background: #3a63a8; color: #fff; border-color: #7ea0d4 #1d3c73 #1d3c73 #7ea0d4; }
+    .nav { flex-shrink: 0; width: 100%; box-sizing: border-box; background: #ece9e0; border-top: 1px solid #808080; padding: 6px 10px; }
+    .ops { display: flex; justify-content: space-between; width: 100%; min-width: 0; margin-bottom: 6px; }
+    .ops-left { flex: 1 1 auto; min-width: 0; display: flex; flex-wrap: wrap; }
+    .ops-right { flex: 0 0 auto; flex-shrink: 0; display: flex; margin-left: 8px; }
+    .win-btn { background: #ececec; border: 2px solid #fff; border-right-color: #6a6a6a; border-bottom-color: #6a6a6a; height: 26px; padding: 0 8px; font-size: 12px; min-width: 0; margin: 0 6px 4px 0; }
+    .win-btn.primary { background: #3a63a8; color: #fff; }
     .ops-right .win-btn { flex-shrink: 0; margin-bottom: 0; }
-    .ops-right .win-btn:last-child { margin-right: 0; }
     .grid { display: flex; flex-wrap: wrap; }
     .cell { min-width: 28px; height: 20px; margin: 0 4px 4px 0; background: #cc2f2f; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; }
-    .desk { flex: 1; background: #3a6ea5; display: flex; align-items: center; justify-content: center; padding: 10px 12px; }
-    .win { background: #d4d0c8; border: 2px solid #fff; border-right-color: #404040; border-bottom-color: #404040; width: 86%; max-width: 720px; }
-    .hidden { display: none !important; }
-    .lab { font-size: 11px; color: #555; } .val { font-weight: 700; font-size: 13px; }
+    .lab2 { font-size: 11px; color: #555; } .val { font-weight: 700; font-size: 13px; }
   </style>
 </head>
-<body>
-  <div class="shell" id="login">
+<body class="phone-mode" id="body">
+  <div class="phone" id="index">
     <div class="titlebar">模拟仿真考试系统<span class="demo">仿真练习</span></div>
-    <div class="desk">
-      <div class="win">
-        <div class="titlebar">模拟仿真考试系统 · 登录</div>
-        <div style="display:flex;padding:20px 16px">
-          <div style="width:200px;text-align:center;border-right:1px solid #bdb8ae;padding-right:16px">
-            <div style="width:64px;height:64px;margin:6px auto 10px;background:#1f4b99;color:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700">仿</div>
-            <div style="font-size:16px;font-weight:700">模拟仿真考试系统</div>
-            <div style="margin-top:8px;font-size:12px;color:#444">口腔医学仿真练习（演示）</div>
-            <div style="margin-top:10px;font-size:12px;color:#666">本地仿真练习 · 演示数据</div>
-          </div>
-          <div style="flex:1;padding-left:22px">
-            <div>准考证号 <input id="ticket" value="202509180010016" /></div>
-            <div style="margin-top:8px">证件号 <input id="idno" value="110101199001011234" /></div>
-            <div style="margin-top:10px;font-size:12px;color:#555">演示模式不校验真实考籍。可直接登录，或一键填入示例账号。</div>
-            <div style="margin-top:12px;text-align:right">
-              <button class="win-btn" id="fill">演示填入</button>
-              <button class="win-btn primary" id="enter">登录</button>
-            </div>
-          </div>
-        </div>
+    <div class="p-body">
+      <div class="hero">
+        <div class="emblem">仿</div>
+        <div class="hero-name">模拟仿真考试系统</div>
+        <div class="hero-sub">本地仿真练习 · 演示数据</div>
       </div>
+      <div class="card"><h3>作答说明</h3>登录后进入横屏作答。准考证号 + 证件号即可开始；底部题号红/灰/黄表示未答/已答/标疑。</div>
+      <div class="card"><h3>使用说明</h3>题目与成绩均为演示数据。说明页与登录为竖屏，进入作答后自动横屏。</div>
+    </div>
+    <div class="foot"><button class="cta" id="toLogin">进入登录</button></div>
+  </div>
+  <div class="phone hidden" id="login">
+    <div class="titlebar">模拟仿真考试系统<span class="demo">仿真练习</span></div>
+    <div class="p-body">
+      <div class="hero">
+        <div class="emblem">仿</div>
+        <div class="hero-name">模拟仿真考试系统</div>
+        <div class="hero-sub">口腔医学仿真练习（演示）</div>
+      </div>
+      <div class="field"><span class="lab">准考证号</span><input class="inp" id="ticket" value="202509180010016" /></div>
+      <div class="field"><span class="lab">证件号</span><input class="inp" id="idno" value="110101199001011234" /></div>
+      <div class="hint">演示模式不校验真实考籍。可一键填入示例账号后进入横屏作答。</div>
+    </div>
+    <div class="foot">
+      <button class="cta-ghost" id="fill">演示填入</button>
+      <button class="cta" id="enter">登录并开始练习</button>
     </div>
   </div>
-  <div class="shell hidden" id="exam">
+  <div class="exam-shell hidden" id="exam">
     <div class="titlebar">模拟仿真考试系统<span class="demo">仿真练习</span></div>
     <div class="workspace">
       <div class="sidebar">
-        <div class="lab">姓名</div><div class="val">演示考生</div>
-        <div class="lab">准考证号</div><div class="val">202509180010016</div>
-        <div class="lab">练习时间</div><div class="val">09:00-09:30</div>
-        <div class="lab">剩余时间</div><div class="remain">00:29:12</div>
-        <div class="lab">未答题</div><div class="val">5</div>
-        <div class="lab">标疑题</div><div class="val">0</div>
+        <div class="lab2">姓名</div><div class="val">演示考生</div>
+        <div class="lab2">准考证号</div><div class="val">202509180010016</div>
+        <div class="lab2">练习时间</div><div class="val">09:00-09:30</div>
+        <div class="lab2">剩余时间</div><div class="remain">00:29:12</div>
+        <div class="lab2">未答题</div><div class="val">5</div>
+        <div class="lab2">标疑题</div><div class="val">0</div>
         <div style="margin-top:8px"><button class="win-btn">刷新</button> <button class="win-btn primary">交卷</button></div>
         <div style="color:#b00000;font-size:11px;margin-top:8px">注意：练习分若干段进行。进入下一段后，本段试题将不能回看和修改。</div>
         <div style="margin-top:8px;background:#316ac5;color:#fff;padding:5px 8px">A1 : 1~5</div>
@@ -106,15 +130,20 @@
     </div>
   </div>
   <script>
-    document.getElementById('enter').onclick = function () {
-      document.getElementById('login').classList.add('hidden')
-      document.getElementById('exam').classList.remove('hidden')
+    function show(id) {
+      ;['index', 'login', 'exam'].forEach(function (n) {
+        document.getElementById(n).classList.toggle('hidden', n !== id)
+      })
+      document.getElementById('body').className = id === 'exam' ? '' : 'phone-mode'
     }
+    document.getElementById('toLogin').onclick = function () { show('login') }
+    document.getElementById('enter').onclick = function () { show('exam') }
     document.getElementById('fill').onclick = function () {
       document.getElementById('ticket').value = '202509180010016'
       document.getElementById('idno').value = '110101199001011234'
     }
-    if (/exam=1/.test(location.search)) document.getElementById('enter').click()
+    if (/exam=1/.test(location.search)) show('exam')
+    else if (/login=1/.test(location.search)) show('login')
   </script>
 </body>
 </html>

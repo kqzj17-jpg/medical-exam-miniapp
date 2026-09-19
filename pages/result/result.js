@@ -28,7 +28,7 @@ Page({
   },
 
   onLoad() {
-    ui.bindShell(this)
+    ui.bindShell(this, 'landscape')
     const app = getApp()
     const result = app.globalData.result || exam.loadResult()
     if (!result) {
@@ -59,11 +59,11 @@ Page({
   },
 
   onShow() {
-    ui.applyShell(this)
+    ui.applyShell(this, 'landscape')
   },
 
   onResize() {
-    ui.applyShell(this)
+    ui.applyShell(this, 'landscape')
   },
 
   onUnload() {

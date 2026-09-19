@@ -1,35 +1,44 @@
-<page-meta page-orientation="landscape" />
-<view class="shell" style="{{shellStyle}}">
+<page-meta page-orientation="portrait" />
+<view class="shell portrait-shell" style="{{shellStyle}}">
   <view class="titlebar" style="{{titlebarStyle}}">
     <text>{{productName}}</text>
     <text class="demo">{{productTag}}</text>
   </view>
-  <view class="desk">
-    <view class="win login-win">
-      <view class="titlebar">{{productName}} · 登录</view>
-      <view class="login-body">
-        <view class="login-left">
-          <view class="emblem">仿</view>
-          <view class="sys">{{productName}}</view>
-          <view class="paper">{{demo.examName}}</view>
-          <view class="note">本地仿真练习 · 演示数据</view>
-        </view>
-        <view class="login-right">
-          <view class="row">
-            <text class="lab">准考证号</text>
-            <input class="inp" maxlength="20" value="{{ticketNo}}" bindinput="onTicket" />
-          </view>
-          <view class="row">
-            <text class="lab">证件号</text>
-            <input class="inp" maxlength="18" value="{{idNo}}" bindinput="onId" />
-          </view>
-          <view class="hint">演示模式不校验真实考籍。可直接登录，或一键填入示例账号。</view>
-          <view class="btns">
-            <button class="win-btn" bindtap="onFillDemo">演示填入</button>
-            <button class="win-btn primary" bindtap="onLogin">登录</button>
-          </view>
-        </view>
-      </view>
+  <scroll-view class="portrait-body" scroll-y>
+    <view class="hero">
+      <view class="emblem">仿</view>
+      <view class="hero-name">{{productName}}</view>
+      <view class="hero-sub">{{demo.examName}}</view>
     </view>
+
+    <view class="field">
+      <view class="lab">准考证号</view>
+      <input
+        class="inp"
+        maxlength="20"
+        value="{{ticketNo}}"
+        bindinput="onTicket"
+        adjust-position
+        confirm-type="next"
+        placeholder="请输入准考证号"
+      />
+    </view>
+    <view class="field">
+      <view class="lab">证件号</view>
+      <input
+        class="inp"
+        maxlength="18"
+        value="{{idNo}}"
+        bindinput="onId"
+        adjust-position
+        confirm-type="done"
+        placeholder="请输入证件号"
+      />
+    </view>
+    <view class="hint">演示模式不校验真实考籍。可一键填入示例账号后进入横屏作答。</view>
+  </scroll-view>
+  <view class="portrait-foot">
+    <button class="cta-ghost" bindtap="onFillDemo">演示填入</button>
+    <button class="cta" bindtap="onLogin">登录并开始练习</button>
   </view>
 </view>

@@ -13,8 +13,9 @@ function flatten(src) {
 const brand = require('../utils/brand.js')
 
 const app = JSON.parse(fs.readFileSync(path.join(__dirname, '../app.json'), 'utf8'))
-assert(app.pageOrientation === 'landscape', 'app.json 顶层须 pageOrientation: landscape')
-assert(app.window && app.window.pageOrientation === 'landscape', 'app.json window 须 pageOrientation: landscape')
+assert(app.pageOrientation !== 'landscape', 'app.json 顶层不应锁定 landscape，否则说明/登录无法竖屏')
+assert(app.pageOrientation === 'auto' || app.pageOrientation === 'portrait', 'app.json 顶层须 auto 或 portrait 以允许分页面旋转')
+assert(app.window && (app.window.pageOrientation === 'portrait' || app.window.pageOrientation === 'auto'), 'window 默认应为 portrait 或 auto')
 assert(brand.PRODUCT_NAME === '模拟仿真考试系统', '产品名须为模拟仿真考试系统')
 assert(app.window.navigationBarTitleText === brand.PRODUCT_NAME, 'app.json 标题须为产品名')
 
@@ -41,23 +42,42 @@ collectFiles(path.join(__dirname, '..'), []).forEach((file) => {
   })
 })
 
+const ORIENT = {
+  index: 'portrait',
+  login: 'portrait',
+  exam: 'landscape',
+  result: 'landscape'
+}
+
 ;['index', 'login', 'exam', 'result'].forEach((name) => {
   const json = JSON.parse(fs.readFileSync(path.join(__dirname, '../pages/' + name + '/' + name + '.json'), 'utf8'))
-  assert(json.pageOrientation === 'landscape', name + ' 页面 json 须横屏')
+  assert(json.pageOrientation === ORIENT[name], name + ' 页面 json 须 ' + ORIENT[name])
   const wxml = fs.readFileSync(path.join(__dirname, '../pages/' + name + '/' + name + '.wxml'), 'utf8')
   const wxss = fs.readFileSync(path.join(__dirname, '../pages/' + name + '/' + name + '.wxss'), 'utf8')
   const js = fs.readFileSync(path.join(__dirname, '../pages/' + name + '/' + name + '.js'), 'utf8')
-  assert(wxml.indexOf('page-orientation="landscape"') !== -1, name + ' wxml 须含 page-meta landscape')
+  assert(wxml.indexOf('page-orientation="' + ORIENT[name] + '"') !== -1, name + ' wxml 须含 page-meta ' + ORIENT[name])
   assert(wxml.indexOf('transform:scale') === -1, name + ' wxml 不应再 scale')
   assert(wxss.indexOf('transform:scale') === -1, name + ' wxss 不应再 scale')
   assert(js.indexOf('DEFAULT_STAGE_STYLE') === -1, name + ' 不应再使用固定舞台')
   assert(wxml.indexOf('{{productName}}') !== -1, name + ' 须使用产品名绑定')
+  assert(js.indexOf("'" + ORIENT[name] + "'") !== -1 || js.indexOf('"' + ORIENT[name] + '"') !== -1, name + ' 须按页 setPageOrientation ' + ORIENT[name])
+  if (ORIENT[name] === 'portrait') {
+    assert(wxml.indexOf('class="desk"') === -1, name + ' 竖屏页不应再用横屏 desk 窗口壳')
+    assert(wxml.indexOf('class="win ') === -1 && wxml.indexOf('class="win"') === -1, name + ' 竖屏页不应再用桌面窗口壳')
+    assert(wxss.indexOf('.cta') !== -1, name + ' 竖屏页须有清晰主按钮')
+  }
 })
 
 const uiSrc = fs.readFileSync(path.join(__dirname, '../utils/ui.js'), 'utf8')
 assert(uiSrc.indexOf('Math.max(w / DESIGN_W') === -1, 'ui.js 不应再 cover scale')
 assert(uiSrc.indexOf('safe-area') !== -1 || uiSrc.indexOf('safeArea') !== -1, 'ui.js 须处理 safeArea')
 assert(uiSrc.indexOf('estimateOpsFit') !== -1, 'ui.js 须估算底栏按钮横向是否装得下')
+assert(uiSrc.indexOf("orientation: dir") !== -1 || uiSrc.indexOf('orientation:dir') !== -1, 'ui.js 须按页设置 orientation，不能写死 landscape')
+assert(uiSrc.indexOf("wx.setPageOrientation({ orientation: 'landscape' })") === -1, 'ui.js 不应无条件强制横屏')
+
+const loginWxss = fs.readFileSync(path.join(__dirname, '../pages/login/login.wxss'), 'utf8')
+assert(/height:\s*48px/.test(loginWxss) && loginWxss.indexOf('.inp') !== -1, '登录输入框须足够高，方便竖屏点按输入')
+assert(fs.readFileSync(path.join(__dirname, '../pages/login/login.wxml'), 'utf8').indexOf('演示填入') !== -1, '登录须保留演示填入')
 
 const appWxss = fs.readFileSync(path.join(__dirname, '../app.wxss'), 'utf8')
 assert(appWxss.indexOf('safe-area-inset') !== -1, 'app.wxss 须含安全区 padding')

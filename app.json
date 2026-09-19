@@ -11,9 +11,9 @@
     "navigationBarTextStyle": "white",
     "backgroundColor": "#D4D0C8",
     "backgroundTextStyle": "light",
-    "pageOrientation": "landscape"
+    "pageOrientation": "portrait"
   },
-  "pageOrientation": "landscape",
+  "pageOrientation": "auto",
   "style": "v2",
   "sitemapLocation": "sitemap.json"
 }

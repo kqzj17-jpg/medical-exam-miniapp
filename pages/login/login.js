@@ -14,15 +14,15 @@ Page({
   },
 
   onLoad() {
-    ui.bindShell(this)
+    ui.bindShell(this, 'portrait')
   },
 
   onShow() {
-    ui.applyShell(this)
+    ui.applyShell(this, 'portrait')
   },
 
   onResize() {
-    ui.applyShell(this)
+    ui.applyShell(this, 'portrait')
   },
 
   onUnload() {

@@ -43,7 +43,7 @@ Page({
   submitting: false,
 
   onLoad() {
-    ui.bindShell(this)
+    ui.bindShell(this, 'landscape')
     const app = getApp()
     const session = app.globalData.session || exam.loadSession()
     const candidate = app.globalData.candidate || exam.loadCandidate()
@@ -63,11 +63,11 @@ Page({
   },
 
   onShow() {
-    ui.applyShell(this)
+    ui.applyShell(this, 'landscape')
   },
 
   onResize() {
-    ui.applyShell(this)
+    ui.applyShell(this, 'landscape')
   },
 
   onUnload() {

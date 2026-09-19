@@ -1,7 +1,7 @@
 {
   "usingComponents": {},
   "navigationStyle": "custom",
-  "disableScroll": true,
-  "backgroundColor": "#D4D0C8",
-  "pageOrientation": "landscape"
+  "disableScroll": false,
+  "backgroundColor": "#F3F1EA",
+  "pageOrientation": "portrait"
 }

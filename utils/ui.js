@@ -144,11 +144,33 @@ function computeLayout(info) {
   }
 }
 
-function buildShellStyle(info) {
+function buildShellStyle(info, orientation) {
   const inset = readInsets(info)
   const cap = readCapsulePad(info)
-  const padRight = Math.max(inset.right, cap)
+  const landscape = orientation === 'landscape'
+  const padRight = landscape ? Math.max(inset.right, cap) : inset.right
   const useJs = inset.top + inset.left + inset.bottom + padRight > 0
+  let titlebarStyle = ''
+  if (!landscape) {
+    let height = 44
+    try {
+      if (typeof wx !== 'undefined' && wx.getMenuButtonBoundingClientRect) {
+        const mb = wx.getMenuButtonBoundingClientRect()
+        if (mb && mb.height) {
+          const extra = Math.max(4, mb.top - inset.top)
+          height = Math.max(44, extra + mb.height + extra)
+        }
+      }
+    } catch (e) {}
+    titlebarStyle =
+      'min-height:' +
+      height +
+      'px;height:' +
+      height +
+      'px;padding-right:' +
+      Math.max(12, cap) +
+      'px;'
+  }
   return {
     shellStyle: useJs
       ? 'padding-top:' +
@@ -161,16 +183,18 @@ function buildShellStyle(info) {
         inset.left +
         'px;'
       : '',
-    titlebarStyle: ''
+    titlebarStyle
   }
 }
 
-function applyShell(page) {
+function applyShell(page, orientation) {
+  const dir = orientation || page._shellOrientation || 'portrait'
+  page._shellOrientation = dir
   if (typeof wx !== 'undefined' && wx.setPageOrientation) {
-    wx.setPageOrientation({ orientation: 'landscape' })
+    wx.setPageOrientation({ orientation: dir })
   }
   const info = readWindowInfo()
-  const styles = buildShellStyle(info)
+  const styles = buildShellStyle(info, dir)
   page.setData({
     shellStyle: styles.shellStyle,
     titlebarStyle: styles.titlebarStyle,
@@ -179,12 +203,13 @@ function applyShell(page) {
   })
 }
 
-function bindShell(page) {
-  applyShell(page)
+function bindShell(page, orientation) {
+  page._shellOrientation = orientation || page._shellOrientation || 'portrait'
+  applyShell(page, page._shellOrientation)
   if (page._shellBound) return
   page._shellBound = true
   page._onShellResize = function () {
-    applyShell(page)
+    applyShell(page, page._shellOrientation)
   }
   if (typeof wx !== 'undefined' && wx.onWindowResize) {
     wx.onWindowResize(page._onShellResize)

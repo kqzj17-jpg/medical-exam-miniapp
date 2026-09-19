@@ -49,6 +49,7 @@ Page({
 
   onResize() {
     ui.applyShell(this, 'landscape', { skipOrientation: true })
+    this.checkPaperFits()
   },
 
   onUnload() {
@@ -60,16 +61,48 @@ Page({
     const paragraphs = TEXTS[i] || briefing.PROMISE
     const readReady = false
     const agreed = false
-    this.setData({
-      current: i,
-      stepTitle: step.title,
-      paragraphs,
-      confirmText: step.confirm,
-      readReady,
-      agreed,
-      reminderShow: false,
-      canConfirm: false
-    })
+    this.setData(
+      {
+        current: i,
+        stepTitle: step.title,
+        paragraphs,
+        confirmText: step.confirm,
+        readReady,
+        agreed,
+        reminderShow: false,
+        canConfirm: false
+      },
+      () => {
+        const self = this
+        setTimeout(function () {
+          self.checkPaperFits()
+        }, 50)
+      }
+    )
+  },
+
+  checkPaperFits() {
+    if (this.data.current >= 2 || this.data.readReady) return
+    if (typeof this.createSelectorQuery !== 'function') {
+      this.onScrollEnd()
+      return
+    }
+    const self = this
+    this.createSelectorQuery()
+      .select('.qarea')
+      .boundingClientRect()
+      .select('.paper')
+      .boundingClientRect()
+      .exec(function (res) {
+        const area = res && res[0]
+        const paper = res && res[1]
+        if (!area || !paper || !area.height) return
+        if (paper.height <= area.height + 24) self.onScrollEnd()
+      })
+  },
+
+  onMarkRead() {
+    this.onScrollEnd()
   },
 
   onScrollEnd() {

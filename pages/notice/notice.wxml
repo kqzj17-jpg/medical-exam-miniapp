@@ -40,7 +40,7 @@
         <view class="paper">
           <view class="paper-tag">演示</view>
           <view class="p" wx:for="{{paragraphs}}" wx:key="*this">{{item}}</view>
-          <view class="p hint" wx:if="{{current < 2}}">请滚动至本页末尾，底栏「已阅读确认」才会点亮。</view>
+          <view class="p hint" wx:if="{{current < 2 && !readReady}}">请滚动至本页末尾，底栏「已阅读确认」才会点亮；若全文已在一屏内，可点「我已读完」。</view>
         </view>
         <view wx:if="{{current === 2}}" class="agree-box" bindtap="onToggleAgree">
           <view class="chk {{agreed ? 'on' : ''}}"><text wx:if="{{agreed}}">✓</text></view>
@@ -52,6 +52,7 @@
         <view class="ops">
           <view class="ops-left">
             <button class="win-btn" bindtap="onBack">{{current === 0 ? '返回登录' : '上一步'}}</button>
+            <button wx:if="{{current < 2 && !readReady}}" class="win-btn" bindtap="onMarkRead">我已读完</button>
           </view>
           <view class="ops-right">
             <button

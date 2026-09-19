@@ -224,6 +224,13 @@
 .ops-left {
   flex: 1 1 auto;
   min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.ops-left .win-btn {
+  margin-right: 8px;
 }
 
 .ops-right {

@@ -151,7 +151,7 @@
         </div>
         <div class="nav">
           <div class="ops">
-            <div class="ops-left"><button class="win-btn" id="noticeBack">返回登录</button></div>
+            <div class="ops-left"><button class="win-btn" id="noticeBack">返回登录</button> <button class="win-btn" id="noticeRead">我已读完</button></div>
             <div class="ops-right"><button class="win-btn primary" id="noticeGo">已阅读确认</button></div>
           </div>
         </div>
@@ -212,6 +212,7 @@
     document.getElementById('toLogin').onclick = function () { show('login') }
     document.getElementById('enter').onclick = function () { show('notice') }
     document.getElementById('noticeBack').onclick = function () { show('login') }
+    document.getElementById('noticeRead').onclick = function () { document.getElementById('noticeGo').click() }
     document.getElementById('noticeGo').onclick = function () { show('exam') }
     document.getElementById('fill').onclick = function () {
       document.getElementById('nickname').value = '演示考生'

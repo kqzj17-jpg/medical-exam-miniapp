@@ -203,6 +203,9 @@ assert(briefing.REMINDER.join('').indexOf('倒计时') !== -1 || briefing.REMIND
 
 const noticeWxml = fs.readFileSync(path.join(__dirname, '../pages/notice/notice.wxml'), 'utf8')
 assert(noticeWxml.indexOf('已阅读确认') !== -1, '须知页须有已阅读确认')
+assert(noticeWxml.indexOf('我已读完') !== -1, '一屏装得下时须提供「我已读完」，避免 scrolltolower 永不触发')
+const noticeJs = fs.readFileSync(path.join(__dirname, '../pages/notice/notice.js'), 'utf8')
+assert(noticeJs.indexOf('checkPaperFits') !== -1 && noticeJs.indexOf('boundingClientRect') !== -1, 'applyStep 后须测量 paper 是否一屏内并自动点亮确认')
 assert(noticeWxml.indexOf('练习承诺') !== -1, '须有练习承诺步骤')
 assert(noticeWxml.indexOf('onEnterExam') !== -1, '提醒对话框须能进入作答')
 assert(noticeWxml.indexOf('show-scrollbar') !== -1, '须知页滚动条须隐藏')
